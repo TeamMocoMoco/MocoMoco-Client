@@ -5,7 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { SimpleLineIcons, Ionicons } from '@expo/vector-icons';
 
 import { MyPage } from '../pages/user';
-import { Map, Main } from '../pages/post';
+import { MapView, MainList } from '../pages/post';
 import { ChatList } from '../pages/chat';
 
 const Tabs = createBottomTabNavigator();
@@ -18,10 +18,10 @@ const TabNavigator = () => {
           let iconName = Platform.OS === 'ios' ? 'ios-' : 'md-';
           let iconKind = '';
 
-          if (route.name === 'Main') {
+          if (route.name === 'MainList') {
             iconKind = 'SimpleLineIcons';
             iconName = 'list';
-          } else if (route.name === 'Map') {
+          } else if (route.name === 'MapView') {
             iconKind = 'Ionicons';
             iconName = 'map-outline';
           } else if (route.name === 'ChatList') {
@@ -60,8 +60,8 @@ const TabNavigator = () => {
         },
       }}
     >
-      <Tabs.Screen name="Main" component={Main} />
-      <Tabs.Screen name="Map" component={Map} />
+      <Tabs.Screen name="MainList" component={MainList} />
+      <Tabs.Screen name="MapView" component={MapView} />
       <Tabs.Screen name="ChatList" component={ChatList} />
       <Tabs.Screen name="MyPage" component={MyPage} />
     </Tabs.Navigator>
