@@ -16,7 +16,7 @@ const StackNavigator = () => {
       style={{ marginTop: getStatusBarHeight() }}
     >
       <Stack.Screen name="SingIn" component={SignIn} />
-      {/* <Stack.Screen name="SingUP" component={SignUp} /> */}
+      <Stack.Screen name="SingUP" component={SignUp} />
       <Stack.Screen name="TabNavigator" component={TabNavigator} />
     </Stack.Navigator>
   );

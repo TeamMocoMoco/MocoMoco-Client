@@ -1,6 +1,6 @@
-import React from "react"
-import { getStatusBarHeight } from "react-native-status-bar-height"
-import { StyleSheet, Text, View } from "react-native"
+import React from 'react';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
+import { StyleSheet, Text, View } from 'react-native';
 
 export default function Main() {
   return (
@@ -9,16 +9,16 @@ export default function Main() {
         <Text>Main</Text>
       </View>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: getStatusBarHeight(),
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   content: {
-    alignItems: "center",
+    alignItems: 'center',
   },
-})
+});
