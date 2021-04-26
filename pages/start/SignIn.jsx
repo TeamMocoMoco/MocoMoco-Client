@@ -6,7 +6,7 @@ export default function SignIn() {
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        <Text>Main</Text>
+        <Text>signin</Text>
       </View>
     </View>
   );

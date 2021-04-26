@@ -6,7 +6,7 @@ export default function SignUp() {
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        <Text>Main</Text>
+        <Text>signup</Text>
       </View>
     </View>
   );

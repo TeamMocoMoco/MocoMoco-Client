@@ -1,5 +1,8 @@
-import 파일명 from '파일경로';
+import SignIn from './SignIn';
+import SignUp from './SignUp'
+
 
 module.exports = {
-    파일명,
+    SignIn,
+    SignUp,
 };
