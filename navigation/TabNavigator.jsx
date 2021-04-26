@@ -2,7 +2,7 @@ import React from 'react';
 import Platform from 'react-native';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Entypo, Ionicons, Octicons } from '@expo/vector-icons';
+import { SimpleLineIcons, Ionicons } from '@expo/vector-icons';
 
 import Main from '../pages/Main';
 import Map from '../pages/Map';
@@ -20,11 +20,11 @@ const TabNavigator = () => {
           let iconKind = '';
 
           if (route.name === 'Main') {
-            iconKind = 'Octicons';
-            iconName = 'three-bars';
+            iconKind = 'SimpleLineIcons';
+            iconName = 'list';
           } else if (route.name === 'Map') {
-            iconKind = 'Entypo';
-            iconName = 'map';
+            iconKind = 'Ionicons';
+            iconName = 'map-outline';
           } else if (route.name === 'ChatList') {
             iconKind = 'Ionicons';
             iconName = 'chatbox-outline';
@@ -33,9 +33,9 @@ const TabNavigator = () => {
             iconName = 'person-outline';
           }
 
-          if (iconKind === 'Entypo') {
+          if (iconKind === 'SimpleLineIcons') {
             return (
-              <Entypo
+              <SimpleLineIcons
                 name={iconName}
                 color={focused ? '#ED6653' : '#777'}
                 size={24}
@@ -44,14 +44,6 @@ const TabNavigator = () => {
           } else if (iconKind === 'Ionicons') {
             return (
               <Ionicons
-                name={iconName}
-                color={focused ? '#ED6653' : '#777'}
-                size={24}
-              />
-            );
-          } else if (iconKind === 'Octicons') {
-            return (
-              <Octicons
                 name={iconName}
                 color={focused ? '#ED6653' : '#777'}
                 size={24}
