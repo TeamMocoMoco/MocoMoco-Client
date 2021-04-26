@@ -2,7 +2,7 @@ import React from 'react';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { StyleSheet, Text, View } from 'react-native';
 
-export default function Main() {
+export default function MainList() {
   return (
     <View style={styles.container}>
       <View style={styles.content}>
