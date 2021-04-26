@@ -19,6 +19,7 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-41.0.0.tar.gz",
     "react-native-reanimated": "~2.1.0",
     "react-native-screens": "~3.0.0",
+    "react-native-status-bar-height": "^2.6.0",
     "react-native-web": "~0.13.12"
   },
   "devDependencies": {
