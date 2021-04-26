@@ -4,10 +4,9 @@ import Platform from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { SimpleLineIcons, Ionicons } from '@expo/vector-icons';
 
-import Main from '../pages/Main';
-import Map from '../pages/Map';
-import ChatList from '../pages/ChatList';
-import MyPage from '../pages/MyPage';
+import { MyPage } from '../pages/user';
+import { Map, Main } from '../pages/post';
+import { ChatList } from '../pages/chat';
 
 const Tabs = createBottomTabNavigator();
 
