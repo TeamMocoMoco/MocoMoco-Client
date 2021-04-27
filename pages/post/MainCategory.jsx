@@ -1,5 +1,4 @@
 import React from 'react';
-import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { StyleSheet, Text, View } from 'react-native';
 
 export default function MainCategory() {
