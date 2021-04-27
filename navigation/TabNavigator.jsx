@@ -4,9 +4,10 @@ import Platform from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { SimpleLineIcons, Ionicons } from '@expo/vector-icons';
 
-import { MyPage } from '../pages/user';
-import { MapView, MainList } from '../pages/post';
+import TabTopNavigator from './TabTopNavigator';
+import { MapView } from '../pages/post';
 import { ChatList } from '../pages/chat';
+import { MyPage } from '../pages/user';
 
 const Tabs = createBottomTabNavigator();
 
@@ -18,7 +19,7 @@ const TabNavigator = () => {
           let iconName = Platform.OS === 'ios' ? 'ios-' : 'md-';
           let iconKind = '';
 
-          if (route.name === 'MainList') {
+          if (route.name === 'TabTopNavigator') {
             iconKind = 'SimpleLineIcons';
             iconName = 'list';
           } else if (route.name === 'MapView') {
@@ -60,7 +61,7 @@ const TabNavigator = () => {
         },
       }}
     >
-      <Tabs.Screen name="MainList" component={MainList} />
+      <Tabs.Screen name="TabTopNavigator" component={TabTopNavigator} />
       <Tabs.Screen name="MapView" component={MapView} />
       <Tabs.Screen name="ChatList" component={ChatList} />
       <Tabs.Screen name="MyPage" component={MyPage} />
