@@ -1,11 +1,12 @@
 import React from 'react';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { StyleSheet, Text, View } from 'react-native';
 
-export default function MainList() {
+export default function MainCategory() {
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        <Text>Main</Text>
+        <Text>MainCategory</Text>
       </View>
     </View>
   );
