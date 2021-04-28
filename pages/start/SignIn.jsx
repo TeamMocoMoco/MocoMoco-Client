@@ -11,16 +11,17 @@ import {
 } from 'react-native';
 const diviceWidth = Dimensions.get('window').width;
 
-import HeaderTitle from '../../components/HeaderTitle';
+import { HeaderTitle } from '../../components/header';
 import { SignInput } from '../../components/SignInput';
+import SignUp from './SignUp';
 
-export default function SignIn() {
+export default function SignIn({ navigation }) {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
 
   return (
     <View style={styles.container}>
-      <HeaderTitle headerTitle="로그인" />
+      <HeaderTitle title="로그인" />
 
       <Text
         style={{
@@ -51,7 +52,10 @@ export default function SignIn() {
             로그인
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.loginBox}>
+        <TouchableOpacity
+          style={styles.loginBox}
+          onPress={() => navigation.navigate('Verification')}
+        >
           <Text style={{ textAlign: 'center', color: 'white', fontSize: 20 }}>
             회원가입
           </Text>
