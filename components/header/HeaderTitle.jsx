@@ -11,13 +11,16 @@ export default function HeaderTitle({ title }) {
 
 const styles = StyleSheet.create({
   header: {
-    paddingVertical: 25,
+    flexDirection: 'row',
+    paddingVertical: 15,
+    paddingHorizontal: 15,
+    backgroundColor: '#08F',
     alignItems: 'center',
-    backgroundColor: 'skyblue',
-    borderBottomWidth: 0.1,
   },
   headerText: {
-    fontSize: 20,
-    color: 'white',
+    color: '#FFF',
+    flex: 1,
+    fontSize: 18,
+    textAlign: 'center',
   },
 });
