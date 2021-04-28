@@ -6,14 +6,11 @@ import {
   View,
   Dimensions,
   TouchableOpacity,
-  TextInput,
-  Form,
 } from 'react-native';
 const diviceWidth = Dimensions.get('window').width;
 
 import { HeaderTitle } from '../../components/header';
-import { SignInput } from '../../components/SignInput';
-import SignUp from './SignUp';
+import { SignInput } from '../../components/input';
 
 export default function SignIn({ navigation }) {
   const [id, setId] = useState('');
@@ -28,16 +25,44 @@ export default function SignIn({ navigation }) {
           fontSize: 25,
           textAlign: 'center',
           marginTop: diviceWidth * 0.2,
+          marginBottom: diviceWidth * 0.1,
         }}
       >
         MocoMoco 로그인
       </Text>
 
-      <TextInput value={'아이디비밀번호인푹박스나중에'} />
+      {/* 아이디 비밀번호 입력란 */}
+      <View
+        style={{
+          marginTop: 30,
+          alignItems: 'center',
+        }}
+      >
+        {/* 아이디 */}
+        <SignInput
+          label={'아이디'}
+          value={id}
+          type={'id'}
+          hint={'아이디를 입력하세요.'}
+          setValue={setId}
+        />
 
-      {/* 회원가입, 비번찾기 */}
-      <View style={{ flexDirection: 'row', margin: 20 }}>
-        <TouchableOpacity style={styles.varifacationTextBox}>
+        {/* 비밀번호 */}
+        <SignInput
+          label={'비밀번호'}
+          value={password}
+          type={'password'}
+          hint={'비밀번호를 입력하세요.'}
+          setValue={setPassword}
+        />
+      </View>
+
+      {/* 회원가입, 비번찾기 밑줄 */}
+      <View style={styles.passwordFind}>
+        <TouchableOpacity
+          style={styles.varifacationTextBox}
+          onPress={() => navigation.navigate('Verification')}
+        >
           <Text style={styles.varifacationText}>회원가입</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.passwordTextBox}>
@@ -53,7 +78,7 @@ export default function SignIn({ navigation }) {
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.loginBox}
+          style={styles.SignUpBox}
           onPress={() => navigation.navigate('Verification')}
         >
           <Text style={{ textAlign: 'center', color: 'white', fontSize: 20 }}>
@@ -69,6 +94,11 @@ const styles = StyleSheet.create({
   container: {
     marginTop: getStatusBarHeight(),
   },
+  passwordFind: {
+    flexDirection: 'row',
+    marginHorizontal: diviceWidth * 0.1,
+    marginBottom: diviceWidth * 0.1,
+  },
   varifacationTextBox: { flex: 1, alignItems: 'flex-start' },
   varifacationText: {
     color: 'grey',
@@ -80,7 +110,13 @@ const styles = StyleSheet.create({
   loginBox: {
     backgroundColor: 'skyblue',
     padding: 10,
-    marginHorizontal: 20,
+    marginHorizontal: diviceWidth * 0.1,
+    marginVertical: 10,
+  },
+  SignUpBox: {
+    backgroundColor: 'blue',
+    padding: 10,
+    marginHorizontal: diviceWidth * 0.1,
     marginVertical: 10,
   },
 });
