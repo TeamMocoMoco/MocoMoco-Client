@@ -6,13 +6,11 @@ import {
   View,
   Dimensions,
   TouchableOpacity,
-  TextInput,
-  Form,
 } from 'react-native';
 const diviceWidth = Dimensions.get('window').width;
 
 import { HeaderBack } from '../../components/header';
-import { SignInput } from '../../components/SignInput';
+import { SignInput } from '../../components/input';
 
 export default function Verification({ navigation }) {
   const [id, setId] = useState('');
