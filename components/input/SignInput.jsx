@@ -9,22 +9,20 @@ export default function SignInput({ label, value, type, hint, setValue }) {
   // };
 
   return (
-    <View style={{ width: '80%', marginBottom: 20 }}>
+    <View style={{ width: '100%', marginBottom: 20 }}>
       <Text style={styles.label}>{label}</Text>
-      <View regular style={styles.allBox}>
-        <View style={styles.inputBox}>
-          <TextInput
-            style={value == '' ? styles.hint : styles.input}
-            // type이 패스워드면 화면상에 텍스트가 안보이게 처리하는 속성
-            secureTextEntry={type == 'password' ? true : false}
-            placeholder={hint}
-            placeholderTextColor={'#111'}
-            value={value}
-            onChangeText={(text) => {
-              setValue(text);
-            }}
-          />
-        </View>
+      <View style={styles.inputBox}>
+        <TextInput
+          style={value == '' ? styles.hint : styles.input}
+          // type이 패스워드면 화면상에 텍스트가 안보이게 처리하는 속성
+          secureTextEntry={type == 'password' ? true : false}
+          placeholder={hint}
+          placeholderTextColor={'#111'}
+          value={value}
+          onChangeText={(text) => {
+            setValue(text);
+          }}
+        />
       </View>
       {/* {message()} */}
     </View>
@@ -33,15 +31,9 @@ export default function SignInput({ label, value, type, hint, setValue }) {
 
 const styles = StyleSheet.create({
   label: {
-    paddingLeft: 5,
     color: '#263238',
     fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  allBox: {
-    paddingLeft: 5,
-    borderRadius: 4,
-    borderColor: '#999',
+    marginVertical: 10,
   },
   inputBox: {
     padding: 10,

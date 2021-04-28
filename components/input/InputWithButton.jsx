@@ -17,7 +17,7 @@ export default function InputWithButton({ value, type, hint, setValue }) {
   // };
 
   return (
-    <View style={{ marginHorizontal: diviceWidth * 0.1 }}>
+    <View style={{ width: '100%', marginBottom: 20 }}>
       <View regular style={styles.allBox}>
         <View style={styles.inputBox}>
           {/* 입력란 */}
