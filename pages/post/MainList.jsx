@@ -1,19 +1,32 @@
 import React from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+
+import { Entypo } from '@expo/vector-icons';
 
 import { SearchBar } from '../../components/input';
 import { MainCard } from '../../components/card';
 
-export default function MainList() {
+export default function MainList({ route }) {
+  const navigation = route.navigation;
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       <SearchBar />
-      <View style={styles.content}>
-        <MainCard />
-        <MainCard />
-        <MainCard />
-      </View>
-    </ScrollView>
+      <ScrollView>
+        <View style={styles.content}>
+          <MainCard />
+          <MainCard />
+          <MainCard />
+        </View>
+      </ScrollView>
+      <TouchableOpacity
+        style={styles.FAB}
+        onPress={() => {
+          navigation.push('CreatePost');
+        }}
+      >
+        <Entypo name="plus" size={24} color="white" />
+      </TouchableOpacity>
+    </View>
   );
 }
 
@@ -25,6 +38,16 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     marginVertical: 10,
+  },
+  FAB: {
+    backgroundColor: '#0E4DA4',
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+    width: 50,
+    height: 50,
+    borderRadius: 50,
+    alignItems: 'center',
     justifyContent: 'center',
   },
 });

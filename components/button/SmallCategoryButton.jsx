@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 
 export default function SmallCategoryButton({ title }) {
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity disabled style={styles.container}>
       <Text style={styles.title}>{title}</Text>
     </TouchableOpacity>
   );

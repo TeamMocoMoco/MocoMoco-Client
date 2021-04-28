@@ -1,9 +1,10 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { useWindowDimensions } from 'react-native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 
 import { MainList, MainCategory } from '../pages/post';
+import { useNavigation } from '@react-navigation/native';
 
 const renderScene = SceneMap({
   MainList: MainList,
@@ -15,14 +16,15 @@ const renderTabBar = (props) => (
   <TabBar {...props} indicatorStyle={{ backgroundColor: 'white' }} />
 );
 
-export default function TabTopNavigator() {
+const TabTopNavigator = () => {
   const layout = useWindowDimensions();
+  const navigation = useNavigation();
 
-  const [index, setIndex] = React.useState(0);
-  const [routes] = React.useState([
-    { key: 'MainList', title: '전체' },
-    { key: 'Online', title: '온라인' },
-    { key: 'Offline', title: '오프라인' },
+  const [index, setIndex] = useState(0);
+  const [routes] = useState([
+    { key: 'MainList', title: '전체', navigation: navigation },
+    { key: 'Online', title: '온라인', navigation: navigation },
+    { key: 'Offline', title: '오프라인', navigation: navigation },
   ]);
 
   return (
@@ -35,4 +37,6 @@ export default function TabTopNavigator() {
       initialLayout={{ width: layout.width }}
     />
   );
-}
+};
+
+export default TabTopNavigator;
