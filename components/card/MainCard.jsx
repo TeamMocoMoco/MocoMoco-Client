@@ -1,11 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { SmallCategoryButton, HashtagButton } from '../button';
 
 export default function MainCard() {
   return (
-    <View style={styles.cardContainer}>
+    <TouchableOpacity style={styles.cardContainer}>
       <View style={styles.firstRow}>
         <Text style={styles.nickname}>닉네임</Text>
         <Text style={styles.date}>• 4월 24일 14:00 ~ 20:00</Text>
@@ -19,7 +19,7 @@ export default function MainCard() {
       <View style={styles.hashtagRow}>
         <HashtagButton title={'Python'} />
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 
