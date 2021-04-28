@@ -1,10 +1,10 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 
-export default function HeaderTitle({ headerTitle }) {
+export default function HeaderTitle({ title }) {
   return (
     <View style={styles.header}>
-      <Text style={styles.headerText}>{headerTitle}</Text>
+      <Text style={styles.headerText}>{title}</Text>
     </View>
   );
 }
@@ -15,7 +15,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'skyblue',
     borderBottomWidth: 0.1,
-    elevation: 2,
   },
   headerText: {
     fontSize: 20,
