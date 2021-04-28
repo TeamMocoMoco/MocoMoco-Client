@@ -1,8 +1,8 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
+import { SignIn, SignUp, Verification } from '../pages/start';
 import TabNavigator from './TabNavigator';
-import { SignIn, SignUp } from '../pages/start';
 import { SubList, CreatePost, ReadPost, UpdatePost } from '../pages/post';
 
 const Stack = createStackNavigator();
@@ -14,8 +14,9 @@ const StackNavigator = () => {
         headerShown: false,
       }}
     >
-      {/* <Stack.Screen name="SingIn" component={SignIn} />
-      <Stack.Screen name="SingUP" component={SignUp} /> */}
+      <Stack.Screen name="SignIn" component={SignIn} />
+      <Stack.Screen name="SignUP" component={SignUp} />
+      <Stack.Screen name="Verification" component={Verification} />
       <Stack.Screen name="TabNavigator" component={TabNavigator} />
       <Stack.Screen name="SubList" component={SubList} />
       <Stack.Screen name="CreatePost" component={CreatePost} />
