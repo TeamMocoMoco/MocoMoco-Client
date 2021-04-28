@@ -19,39 +19,40 @@ export default function Verification({ navigation }) {
   return (
     <View style={styles.container}>
       <HeaderBack navigation={navigation} title="전화번호 인증" />
+      <View style={styles.content}>
+        <View style={styles.topBox}>
+          {/* 전화번호 입력란 */}
+          <View style={styles.inputBox}>
+            <InputWithButton
+              value={phone}
+              type={'phone'}
+              hint={'전화번호를 입력하세요.'}
+              setValue={setPhone}
+            />
+          </View>
+        </View>
 
-      <View style={styles.topBox}>
-        {/* 전화번호 입력란 */}
         <View style={styles.inputBox}>
-          <InputWithButton
-            value={phone}
-            type={'phone'}
-            hint={'전화번호를 입력하세요.'}
-            setValue={setPhone}
+          <SignInput
+            label={'인증번호'}
+            value={code}
+            type={'code'}
+            hint={'인증번호를 입력하세요.'}
+            setValue={setCode}
           />
         </View>
-      </View>
 
-      <View style={styles.inputBox}>
-        <SignInput
-          label={'인증번호'}
-          value={code}
-          type={'code'}
-          hint={'인증번호를 입력하세요.'}
-          setValue={setCode}
-        />
-      </View>
-
-      {/* 전화번호 인증완료 버튼 */}
-      <View style={{ marginTop: 20 }}>
-        <TouchableOpacity
-          style={styles.VerificationBox}
-          onPress={() => navigation.navigate('SignUp')}
-        >
-          <Text style={{ textAlign: 'center', color: 'white', fontSize: 20 }}>
-            전화번호 인증 완료
-          </Text>
-        </TouchableOpacity>
+        {/* 전화번호 인증완료 버튼 */}
+        <View style={{ marginTop: 20 }}>
+          <TouchableOpacity
+            style={styles.VerificationBox}
+            onPress={() => navigation.navigate('SignUp')}
+          >
+            <Text style={{ textAlign: 'center', color: 'white', fontSize: 20 }}>
+              전화번호 인증 완료
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -61,6 +62,7 @@ const styles = StyleSheet.create({
   container: {
     marginTop: getStatusBarHeight(),
   },
+  content: { padding: 20 },
   topBox: {
     flexDirection: 'row',
     marginTop: diviceWidth * 0.4,
