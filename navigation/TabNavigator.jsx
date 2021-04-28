@@ -15,7 +15,7 @@ const TabNavigator = () => {
   return (
     <Tabs.Navigator
       screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused }) => {
+        tabBarIcon: () => {
           let iconName = Platform.OS === 'ios' ? 'ios-' : 'md-';
           let iconKind = '';
 
@@ -34,31 +34,20 @@ const TabNavigator = () => {
           }
 
           if (iconKind === 'SimpleLineIcons') {
-            return (
-              <SimpleLineIcons
-                name={iconName}
-                color={focused ? '#ED6653' : '#777'}
-                size={24}
-              />
-            );
+            return <SimpleLineIcons name={iconName} color={'#FFF'} size={24} />;
           } else if (iconKind === 'Ionicons') {
-            return (
-              <Ionicons
-                name={iconName}
-                color={focused ? '#ED6653' : '#777'}
-                size={24}
-              />
-            );
+            return <Ionicons name={iconName} color={'#FFF'} size={24} />;
           }
         },
       })}
       tabBarOptions={{
         showLabel: false,
         style: {
-          backgroundColor: '#FFF',
-          borderTopColor: '#EEE',
+          backgroundColor: '#0085FF',
+          borderTopColor: '#0085FF',
           height: '8%',
         },
+        activeBackgroundColor: '#0E4DA4',
       }}
     >
       <Tabs.Screen name="TabTopNavigator" component={TabTopNavigator} />

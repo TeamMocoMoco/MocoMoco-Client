@@ -1,22 +1,30 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
+
+import { SearchBar } from '../../components/input';
+import { MainCard } from '../../components/card';
 
 export default function MainList() {
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
+      <SearchBar />
       <View style={styles.content}>
-        <Text>Main</Text>
+        <MainCard />
+        <MainCard />
+        <MainCard />
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: '#FFF',
     flex: 1,
-    justifyContent: 'center',
   },
   content: {
-    alignItems: 'center',
+    flex: 1,
+    marginVertical: 10,
+    justifyContent: 'center',
   },
 });
