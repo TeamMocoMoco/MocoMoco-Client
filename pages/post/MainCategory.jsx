@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import BigCategoryButton from '../../components/button/BigCategoryButton';
+import { BigCategoryButton } from '../../components/button';
 
 export default function MainCategory() {
   return (
