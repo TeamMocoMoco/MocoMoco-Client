@@ -6,52 +6,149 @@ import {
   View,
   Dimensions,
   TouchableOpacity,
+  TextInput,
 } from 'react-native';
 const diviceWidth = Dimensions.get('window').width;
 
 import { HeaderBack } from '../../components/header';
-import { SignInput, InputWithButton } from '../../components/input';
 
 export default function Verification({ navigation }) {
   const [phone, setPhone] = useState('');
   const [code, setCode] = useState('');
 
+  const showSendButton = () => {
+    if (phone == '') {
+      return (
+        <TouchableOpacity
+          disabled
+          style={[styles.buttonContainer, { opacity: 0.4 }]}
+        >
+          <Text style={styles.buttonText}>인증번호 발송</Text>
+        </TouchableOpacity>
+      );
+    } else {
+      return (
+        <TouchableOpacity style={[styles.buttonContainer, { opacity: 1 }]}>
+          <Text style={styles.buttonText}>인증번호 발송</Text>
+        </TouchableOpacity>
+      );
+    }
+  };
+
+  const showConfirmButton = () => {
+    if (code == '') {
+      return (
+        <TouchableOpacity
+          disabled
+          style={[styles.buttonContainer, { opacity: 0.4 }]}
+        >
+          <Text style={styles.buttonText}>인증번호 확인</Text>
+        </TouchableOpacity>
+      );
+    } else {
+      return (
+        <TouchableOpacity style={[styles.buttonContainer, { opacity: 1 }]}>
+          <Text style={styles.buttonText}>인증번호 확인</Text>
+        </TouchableOpacity>
+      );
+    }
+  };
+
   return (
     <View style={styles.container}>
       <HeaderBack navigation={navigation} title="전화번호 인증" />
       <View style={styles.content}>
-        <View style={styles.topBox}>
-          {/* 전화번호 입력란 */}
-          <View style={styles.inputBox}>
-            <InputWithButton
-              value={phone}
-              type={'phone'}
-              hint={'전화번호를 입력하세요.'}
-              setValue={setPhone}
-            />
+        {/* 전화번호 입력 + 인증번호 발송버튼 */}
+        <View style={styles.row}>
+          <View
+            style={{
+              width: '100%',
+              paddingBottom: 20,
+              paddingTop: diviceWidth * 0.5,
+            }}
+          >
+            <Text
+              style={{
+                color: '#263238',
+                fontWeight: 'bold',
+                marginVertical: 10,
+              }}
+            >
+              전화번호
+            </Text>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}
+            >
+              <View
+                style={{
+                  width: '70%',
+                  padding: 10,
+                  borderWidth: 1,
+                  borderColor: '#999',
+                  borderRadius: 4,
+                }}
+              >
+                <TextInput
+                  placeholder={'전화번호를 입력하세요.'}
+                  value={phone}
+                  onChangeText={(text) => {
+                    setPhone(text);
+                  }}
+                />
+              </View>
+              {/* 인증번호 발송버튼 */}
+              <View style={{ width: '27%' }}>{showSendButton()}</View>
+            </View>
           </View>
         </View>
 
-        <View style={styles.inputBox}>
-          <SignInput
-            label={'인증번호'}
-            value={code}
-            type={'code'}
-            hint={'인증번호를 입력하세요.'}
-            setValue={setCode}
-          />
-        </View>
-
-        {/* 전화번호 인증완료 버튼 */}
-        <View style={{ marginTop: 20 }}>
-          <TouchableOpacity
-            style={styles.VerificationBox}
-            onPress={() => navigation.navigate('SignUp')}
+        {/* 인증번호 입력 + 인증완료 버튼 */}
+        <View style={[styles.row, { opacity: 1 }]}>
+          <View
+            style={{
+              width: '100%',
+              paddingBottom: 20,
+            }}
           >
-            <Text style={{ textAlign: 'center', color: 'white', fontSize: 20 }}>
-              전화번호 인증 완료
+            <Text
+              style={{
+                color: '#263238',
+                fontWeight: 'bold',
+                marginVertical: 10,
+              }}
+            >
+              인증번호
             </Text>
-          </TouchableOpacity>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}
+            >
+              <View
+                style={{
+                  width: '70%',
+                  padding: 10,
+                  borderWidth: 1,
+                  borderColor: '#999',
+                  borderRadius: 4,
+                }}
+              >
+                <TextInput
+                  placeholder={'인증번호를 입력하세요.'}
+                  value={code}
+                  onChangeText={(text) => {
+                    setCode(text);
+                  }}
+                />
+              </View>
+              {/* 인증번호 확인버튼 */}
+              <View style={{ width: '27%' }}>{showConfirmButton()}</View>
+            </View>
+          </View>
         </View>
       </View>
     </View>
@@ -60,28 +157,23 @@ export default function Verification({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     marginTop: getStatusBarHeight(),
   },
-  content: { padding: 20 },
-  topBox: {
+  content: {
+    flex: 1,
+    backgroundColor: '#FFF',
+    padding: 20,
+  },
+  row: {
     flexDirection: 'row',
-    marginTop: diviceWidth * 0.4,
+    justifyContent: 'space-between',
   },
-  inputBox: {
-    alignItems: 'center',
-    marginTop: 20,
-  },
-  sendMessageBox: {
-    backgroundColor: 'skyblue',
-    padding: 10,
-    marginVertical: 30,
+  buttonContainer: {
+    flex: 1,
+    backgroundColor: '#1EA7F8',
     borderRadius: 5,
-    width: diviceWidth * 0.3,
-  },
-  VerificationBox: {
-    backgroundColor: 'skyblue',
-    padding: 10,
-    marginHorizontal: '10%',
-    marginVertical: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
