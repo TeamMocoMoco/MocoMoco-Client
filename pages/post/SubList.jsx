@@ -7,18 +7,18 @@ import { SearchBar } from '../../components/input';
 import { MainCard } from '../../components/card';
 
 export default function SubList({ route }) {
-  const data = route.params;
-  const navigation = data.navigation;
-  const title = data.title + ' - ' + data.category;
+  let data = route.params;
+  let navigation = data.navigation;
+  let title = data.title + ' - ' + data.category;
   return (
     <View style={styles.container}>
       <HeaderBack navigation={navigation} title={title} />
       <SearchBar />
       <ScrollView>
         <View style={styles.content}>
-          <MainCard />
-          <MainCard />
-          <MainCard />
+          <MainCard navigation={navigation} />
+          <MainCard navigation={navigation} />
+          <MainCard navigation={navigation} />
         </View>
       </ScrollView>
     </View>
