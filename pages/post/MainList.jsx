@@ -13,9 +13,9 @@ export default function MainList({ route }) {
       <SearchBar />
       <ScrollView>
         <View style={styles.content}>
-          <MainCard />
-          <MainCard />
-          <MainCard />
+          <MainCard navigation={navigation} />
+          <MainCard navigation={navigation} />
+          <MainCard navigation={navigation} />
         </View>
       </ScrollView>
       <TouchableOpacity

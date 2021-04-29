@@ -1,7 +1,9 @@
 import MainCard from './MainCard';
-import MapCard from './MapCard'
+import DetailCard from './DetailCard';
+import MapCard from './MapCard';
 
 module.exports = {
   MainCard,
+  DetailCard,
   MapCard,
 };

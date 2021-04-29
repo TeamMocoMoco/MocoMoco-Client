@@ -3,24 +3,27 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { SmallCategoryButton, HashtagButton } from '../button';
 
-export default function MainCard({ navigation }) {
+export default function DetailCard() {
   return (
-    <TouchableOpacity
-      style={styles.cardContainer}
-      onPress={() => {
-        navigation.push('ReadPost');
-      }}
-    >
-      <View style={styles.firstRow}>
+    <TouchableOpacity style={styles.cardContainer}>
+      <View style={styles.row}>
         <Text style={styles.nickname}>닉네임</Text>
-        <Text style={styles.date}>• 4월 24일 14:00 ~ 20:00</Text>
+        <Text style={styles.authorInfoBox}>백엔드 개발자 / Python</Text>
       </View>
       <Text style={styles.title}>파이썬 알고리즘 스터디 하실 분 모아요~</Text>
-      <Text style={styles.people}>• 모집인원 : 6명</Text>
-      <View style={styles.categoryRow}>
+      <View style={styles.row}>
+        <Text style={styles.people}>• 모집인원 : 6명</Text>
+        <Text style={styles.date}>• 4월 24일 14:00 ~ 20:00</Text>
+      </View>
+      <View style={[styles.row, { marginVertical: 15 }]}>
         <SmallCategoryButton title={'온라인'} />
         <SmallCategoryButton title={'알고리즘 스터디'} />
       </View>
+      <Text style={styles.content}>
+        {
+          '줌으로 함께할 예정입니다!\n\n프로그래머스 2단계 문제 20문제 정도 풀 생각입니다.'
+        }
+      </Text>
       <View style={styles.hashtagRow}>
         <HashtagButton title={'Python'} />
       </View>
@@ -37,16 +40,16 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     elevation: 3,
   },
-  firstRow: {
+  row: {
     flexDirection: 'row',
-    justifyContent: 'center',
+    alignItems: 'center',
   },
   nickname: {
     width: '30%',
     fontSize: 15,
     fontWeight: 'bold',
   },
-  date: {
+  authorInfoBox: {
     width: '70%',
   },
   title: {
@@ -55,11 +58,15 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   people: {
+    width: '40%',
     color: '#555',
   },
-  categoryRow: {
-    flexDirection: 'row',
-    marginVertical: 15,
+  date: {
+    width: '60%',
+  },
+  content: {
+    color: '#000',
+    minHeight: 150,
   },
   hashtagRow: {
     flexDirection: 'row',
