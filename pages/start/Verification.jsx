@@ -28,10 +28,7 @@ export default function Verification({ navigation }) {
       );
     } else {
       return (
-        <TouchableOpacity
-          style={[styles.buttonContainer, { opacity: 1 }]}
-          // doFunction={() => upload()}
-        >
+        <TouchableOpacity style={[styles.buttonContainer, { opacity: 1 }]}>
           <Text style={styles.buttonText}>인증번호 발송</Text>
         </TouchableOpacity>
       );
@@ -50,10 +47,7 @@ export default function Verification({ navigation }) {
       );
     } else {
       return (
-        <TouchableOpacity
-          style={[styles.buttonContainer, { opacity: 1 }]}
-          // doFunction={() => upload()}
-        >
+        <TouchableOpacity style={[styles.buttonContainer, { opacity: 1 }]}>
           <Text style={styles.buttonText}>인증번호 확인</Text>
         </TouchableOpacity>
       );
