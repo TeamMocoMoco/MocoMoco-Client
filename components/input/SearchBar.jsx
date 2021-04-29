@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 
 export default function SearchBar() {
-  const [value, setValue] = useState('알고리즘');
+  const [value, setValue] = useState('');
 
   return (
     <View style={styles.container}>
@@ -16,6 +16,8 @@ export default function SearchBar() {
         <TextInput
           style={styles.input}
           value={value}
+          placeholder={'검색어를 입력하세요.'}
+          placeholderTextColor="#FFF"
           onChangeText={(text) => {
             setValue(text);
           }}
