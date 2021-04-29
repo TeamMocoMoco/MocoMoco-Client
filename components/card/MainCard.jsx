@@ -3,9 +3,14 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { SmallCategoryButton, HashtagButton } from '../button';
 
-export default function MainCard() {
+export default function MainCard({ navigation }) {
   return (
-    <TouchableOpacity style={styles.cardContainer}>
+    <TouchableOpacity
+      style={styles.cardContainer}
+      onPress={() => {
+        navigation.push('ReadPost');
+      }}
+    >
       <View style={styles.firstRow}>
         <Text style={styles.nickname}>닉네임</Text>
         <Text style={styles.date}>• 4월 24일 14:00 ~ 20:00</Text>
