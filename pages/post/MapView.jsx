@@ -7,10 +7,9 @@ import {
   TouchableOpacity,
   View,
   Modal,
-  Touchable,
 } from 'react-native';
 
-import { Ionicons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 import { MapCard } from '../../components/card';
 export default function MapView() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -26,39 +25,54 @@ export default function MapView() {
         </TouchableOpacity>
 
         {/* pin모달 (컴포넌트화 해야됨)*/}
-        <View>
-          <Modal visible={modalOpen} animationType="slide">
+        <Modal transparent visible={modalOpen} animationType="slide">
+          <View
+            style={{
+              flex: 1,
+              borderTopLeftRadius: 15,
+              borderTopRightRadius: 15,
+              marginTop: 100,
+              backgroundColor: 'white',
+            }}
+          >
             <View
               style={{
-                flex: 1,
-                borderTopLeftRadius: 20,
-                borderTopRightRadius: 20,
-                backgroundColor: 'ligtgrey',
+                flexDirection: 'row',
+                alignItems: 'center',
+                backgroundColor: '#1EA7F8',
+                borderTopLeftRadius: 15,
+                borderTopRightRadius: 15,
+                height: 60,
+                padding: 15,
               }}
             >
-              <View
+              <AntDesign
+                name="arrowleft"
+                size={30}
+                color="white"
+                onPress={() => setModalOpen(false)}
+              />
+              <Text
                 style={{
+                  flex: 1,
                   flexDirection: 'row',
-                  alignItems: 'center',
+                  textAlign: 'center',
+                  fontSize: 18,
                 }}
               >
-                <TouchableOpacity onPress={() => setModalOpen(false)}>
-                  <Ionicons name="chevron-back" size={40} color="black" />
-                </TouchableOpacity>
-                <Text style={{ textAlign: 'center' }}>
-                  서울시 강남구 대치동
-                </Text>
-              </View>
-
-              <ScrollView style={styles.modalView}>
-                <MapCard />
-                <MapCard />
-                <MapCard />
-                <MapCard />
-              </ScrollView>
+                서울시 강남구 대치동
+              </Text>
+              <AntDesign name="arrowleft" size={30} color="transparent" />
             </View>
-          </Modal>
-        </View>
+
+            <ScrollView style={styles.modalView}>
+              <MapCard />
+              <MapCard />
+              <MapCard />
+              <MapCard />
+            </ScrollView>
+          </View>
+        </Modal>
       </View>
     </View>
   );
@@ -68,6 +82,4 @@ const styles = StyleSheet.create({
   container: {
     marginTop: getStatusBarHeight(),
   },
-  content: {},
-  modalView: {},
 });
