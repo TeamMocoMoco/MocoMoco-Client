@@ -1,11 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 import { SmallCategoryButton, HashtagButton } from '../button';
 
 export default function DetailCard() {
   return (
-    <TouchableOpacity style={styles.cardContainer}>
+    <View style={styles.cardContainer}>
       <View style={styles.row}>
         <Text style={styles.nickname}>닉네임</Text>
         <Text style={styles.authorInfoBox}>백엔드 개발자 / Python</Text>
@@ -27,7 +27,7 @@ export default function DetailCard() {
       <View style={styles.hashtagRow}>
         <HashtagButton title={'Python'} />
       </View>
-    </TouchableOpacity>
+    </View>
   );
 }
 
