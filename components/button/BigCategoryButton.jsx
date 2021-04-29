@@ -1,13 +1,18 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-export default function BigCategoryButton({ title }) {
-  if (title == 'transparent') {
+export default function BigCategoryButton({ navigation, title, category }) {
+  if (category == 'transparent') {
     return <View style={styles.transparent}></View>;
   } else {
     return (
-      <TouchableOpacity style={styles.container}>
-        <Text>{title}</Text>
+      <TouchableOpacity
+        style={styles.container}
+        onPress={() => {
+          navigation.push('SubList', { navigation, title, category });
+        }}
+      >
+        <Text>{category}</Text>
       </TouchableOpacity>
     );
   }
