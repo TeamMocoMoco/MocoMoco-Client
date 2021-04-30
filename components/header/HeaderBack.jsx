@@ -1,17 +1,22 @@
 import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 
-import { AntDesign } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
 
 export default function HeaderBack({ navigation, title }) {
   return (
     <View style={styles.header}>
       <TouchableOpacity onPress={() => navigation.goBack()}>
-        <AntDesign name="arrowleft" size={24} color="white" />
+        <Entypo name="chevron-small-left" size={38} color="black" />
       </TouchableOpacity>
-      <Text style={styles.headerText}>{title}</Text>
+      {/* <Text style={styles.headerText}>{title}</Text> */}
       <TouchableOpacity disabled>
-        <AntDesign name="arrowleft" size={24} color="transparent" />
+        <Entypo
+          name="chevron-small-left"
+          size={38}
+          color="black"
+          color="transparent"
+        />
       </TouchableOpacity>
     </View>
   );
@@ -22,7 +27,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingVertical: 15,
     paddingHorizontal: 15,
-    backgroundColor: '#08F',
+    backgroundColor: 'white',
     alignItems: 'center',
   },
   headerText: {
