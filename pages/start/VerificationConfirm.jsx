@@ -12,26 +12,26 @@ const diviceWidth = Dimensions.get('window').width;
 
 import { HeaderBack } from '../../components/header';
 
-export default function Verification({ navigation }) {
-  const [phone, setPhone] = useState('');
-
-  const showSendButton = () => {
-    if (phone == '') {
+export default function VerificationConfirm({ navigation, route }) {
+  let phone = route.params;
+  const [code, setCode] = useState('');
+  const showConfirmButton = () => {
+    if (code == '') {
       return (
         <TouchableOpacity
           disabled
           style={[styles.buttonContainer, { opacity: 0.4 }]}
         >
-          <Text style={styles.buttonText}>인증 요청</Text>
+          <Text style={styles.buttonText}>확인</Text>
         </TouchableOpacity>
       );
     } else {
       return (
         <TouchableOpacity
           style={[styles.buttonContainer, { opacity: 1 }]}
-          onPress={() => navigation.push('VerificationConfirm', phone)}
+          onPress={() => navigation.push('SignUp', phone)}
         >
-          <Text style={styles.buttonText}>인증 요청</Text>
+          <Text style={styles.buttonText}>확인</Text>
         </TouchableOpacity>
       );
     }
@@ -70,11 +70,40 @@ export default function Verification({ navigation }) {
                   borderColor: 'black',
                 }}
               >
+                <Text style={{ fontSize: 15 }}>{phone}</Text>
+              </View>
+            </View>
+          </View>
+        </View>
+
+        {/* 인증번호 입력 + 인증완료 버튼 */}
+        <View>
+          <View
+            style={{
+              width: '100%',
+              paddingBottom: 20,
+              paddingTop: diviceWidth * 0.05,
+            }}
+          >
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}
+            >
+              <View
+                style={{
+                  width: '100%',
+                  padding: 10,
+                  borderBottomWidth: 1,
+                  borderColor: 'black',
+                }}
+              >
                 <TextInput
-                  placeholder={'010-0000-0000 (-없이 번호만 입력)'}
-                  value={phone}
+                  placeholder={'인증번호 6자리'}
+                  value={code}
                   onChangeText={(text) => {
-                    setPhone(text);
+                    setCode(text);
                   }}
                   style={{ fontSize: 15 }}
                 />
@@ -84,7 +113,7 @@ export default function Verification({ navigation }) {
         </View>
       </View>
       {/* 인증번호 발송버튼 */}
-      <View>{showSendButton()}</View>
+      <View>{showConfirmButton()}</View>
     </View>
   );
 }
