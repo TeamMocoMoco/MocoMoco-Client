@@ -4,6 +4,72 @@ import axios from 'axios';
 
 const host = 'http://3.35.166.243';
 
+export async function getPosts() {
+  try {
+    const response = await axios({
+      method: 'get',
+      url: host + '/posts',
+    });
+
+    console.log(response.data.result);
+  } catch (err) {
+    const error = err.response.data.err || err.message;
+
+    Alert.alert(error);
+  }
+}
+
+export async function getPostsOnline(category) {
+  try {
+    const response = await axios({
+      method: 'get',
+      url: host + '/posts/online',
+      params: {
+        category: category,
+      },
+    });
+
+    console.log(response.data.result);
+  } catch (err) {
+    const error = err.response.data.err || err.message;
+
+    Alert.alert(error);
+  }
+}
+
+export async function getPostsOffline(category) {
+  try {
+    const response = await axios({
+      method: 'get',
+      url: host + '/posts/offline',
+      params: {
+        category: category,
+      },
+    });
+
+    console.log(response.data.result);
+  } catch (err) {
+    const error = err.response.data.err || err.message;
+
+    Alert.alert(error);
+  }
+}
+
+export async function getPostsById(postId) {
+  try {
+    const response = await axios({
+      method: 'get',
+      url: host + '/posts/' + postId,
+    });
+
+    console.log(response.data.result);
+  } catch (err) {
+    const error = err.response.data.err || err.message;
+
+    Alert.alert(error);
+  }
+}
+
 export async function postPosts(
   onAndOff,
   title,
@@ -37,6 +103,70 @@ export async function postPosts(
         location: location,
         startDate: startDate,
         dueDate: dueDate,
+      },
+    });
+
+    console.log(response.data.result);
+  } catch (err) {
+    const error = err.response.data.err || err.message;
+
+    Alert.alert(error);
+  }
+}
+
+export async function patchPosts(
+  postId,
+  onAndOff,
+  title,
+  category,
+  personnel,
+  location,
+  startDate,
+  dueDate,
+  position,
+  language,
+  intro,
+  hashtagList
+) {
+  const token = await SecureStore.getItemAsync('token');
+  try {
+    const response = await axios({
+      method: 'patch',
+      url: host + '/posts/' + postId,
+      headers: {
+        token: token,
+      },
+      data: {
+        title: title,
+        category: category,
+        content: intro,
+        position: position,
+        language: language,
+        personnel: personnel,
+        hashtag: hashtagList,
+        meeting: onAndOff,
+        location: location,
+        startDate: startDate,
+        dueDate: dueDate,
+      },
+    });
+
+    console.log(response.data.result);
+  } catch (err) {
+    const error = err.response.data.err || err.message;
+
+    Alert.alert(error);
+  }
+}
+
+export async function deletePosts(postId) {
+  const token = await SecureStore.getItemAsync('token');
+  try {
+    const response = await axios({
+      method: 'delete',
+      url: host + '/posts/' + postId,
+      headers: {
+        token: token,
       },
     });
 
