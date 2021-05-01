@@ -9,14 +9,24 @@ import {
   View,
 } from 'react-native';
 
+import { Picker } from '@react-native-picker/picker';
+
 import { HeaderBack } from '../../components/header';
 import { SignInput } from '../../components/input';
 import { HashtagButton, FullButton } from '../../components/button';
 
+import { postPosts } from '../../config/PostAPI';
+import kind from '../../config/mock/category.json';
+import DatePickModal from '../../components/modal/DatePickModal';
+
 export default function CreatePost({ navigation }) {
+  const categoryList = kind.category;
+
+  const [onAndOff, setOnAndOff] = useState('온라인');
   const [title, setTitle] = useState('');
-  const [category, setCategory] = useState('');
+  const [category, setCategory] = useState('선택');
   const [personnel, setPersonnel] = useState('');
+  const [location, setLocation] = useState([36.7, 37.7]);
   const [startDate, setStartDate] = useState('');
   const [dueDate, setDueDate] = useState('');
   const [position, setPosition] = useState('');
@@ -25,8 +35,23 @@ export default function CreatePost({ navigation }) {
   const [hashtagList, setHashtagList] = useState([]);
   const [hashtag, setHashtag] = useState('');
 
-  const upload = () => {
-    console.log('업로드');
+  const [currentModal, setCurrentModal] = useState('');
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const upload = async () => {
+    await postPosts(
+      onAndOff,
+      title,
+      category,
+      personnel,
+      location,
+      startDate,
+      dueDate,
+      position,
+      language,
+      intro,
+      hashtagList
+    );
   };
 
   const showAddButton = () => {
@@ -57,7 +82,7 @@ export default function CreatePost({ navigation }) {
   const showSubmitButton = () => {
     if (
       title == '' ||
-      category == '' ||
+      category == '선택' ||
       personnel == '' ||
       startDate == '' ||
       dueDate == '' ||
@@ -73,6 +98,26 @@ export default function CreatePost({ navigation }) {
           title={'작성 완료'}
           empty={false}
           doFunction={() => upload()}
+        />
+      );
+    }
+  };
+
+  const showModal = () => {
+    if (currentModal == 'start') {
+      return (
+        <DatePickModal
+          modalOpen={modalOpen}
+          setModalOpen={setModalOpen}
+          setDate={setStartDate}
+        />
+      );
+    } else {
+      return (
+        <DatePickModal
+          modalOpen={modalOpen}
+          setModalOpen={setModalOpen}
+          setDate={setDueDate}
         />
       );
     }
@@ -97,19 +142,27 @@ export default function CreatePost({ navigation }) {
           <View style={styles.row}>
             {/* 모집분류 */}
             <View style={{ width: '60%' }}>
-              <SignInput
-                style={{ flex: 3 }}
-                label={'모집 분류'}
-                value={category}
-                type={'category'}
-                hint={'모집 분류를 입력하세요.'}
-                setValue={setCategory}
-              />
+              <View style={{ width: '100%', marginBottom: 20 }}>
+                <Text style={styles.label}>모집 분류</Text>
+                <View style={styles.inputBox}>
+                  <Picker
+                    mode="dropdown"
+                    style={styles.picker}
+                    itemStyle={styles.pickerItem}
+                    selectedValue={category}
+                    onValueChange={(value) => setCategory(value)}
+                  >
+                    {categoryList.map((item, i) => {
+                      return <Picker.Item label={item} value={item} key={i} />;
+                    })}
+                  </Picker>
+                </View>
+              </View>
             </View>
+
             {/* 모집인원 */}
             <View style={{ width: '35%' }}>
               <SignInput
-                style={{ flex: 1 }}
                 label={'모집 인원'}
                 value={personnel}
                 type={'personnel'}
@@ -119,31 +172,51 @@ export default function CreatePost({ navigation }) {
             </View>
           </View>
 
+          {/* 스터디 기간 */}
           <View style={styles.row}>
-            <View style={{ width: '47.5%' }}>
-              {/* 시작 일시 */}
-              <SignInput
-                style={{ flex: 3 }}
-                label={'시작 일시'}
-                value={startDate}
-                type={'startDate'}
-                hint={'시작 일시를 입력하세요.'}
-                setValue={setStartDate}
-              />
+            {/* 시작 일시 */}
+            <View style={{ width: '47.5%', marginBottom: 20 }}>
+              <Text style={styles.label}>시작 일시</Text>
+              <TouchableOpacity
+                style={styles.inputBox}
+                onPress={() => {
+                  setCurrentModal('start');
+                  setModalOpen(true);
+                }}
+              >
+                <TextInput
+                  style={{ color: '#111' }}
+                  editable={false}
+                  placeholder={'시작 일시를 선택하세요.'}
+                  placeholderTextColor={'#999'}
+                  value={startDate}
+                />
+              </TouchableOpacity>
             </View>
+
             {/* 종료 일시 */}
-            <View style={{ width: '47.5%' }}>
-              <SignInput
-                style={{ flex: 3 }}
-                label={'종료 일시'}
-                value={dueDate}
-                type={'dueDate'}
-                hint={'종료 일시를 입력하세요.'}
-                setValue={setDueDate}
-              />
+            <View style={{ width: '47.5%', marginBottom: 20 }}>
+              <Text style={styles.label}>종료 일시</Text>
+              <TouchableOpacity
+                style={styles.inputBox}
+                onPress={() => {
+                  setCurrentModal('due');
+                  setModalOpen(true);
+                }}
+              >
+                <TextInput
+                  style={{ color: '#111' }}
+                  editable={false}
+                  placeholder={'종료 일시를 선택하세요.'}
+                  placeholderTextColor={'#999'}
+                  value={dueDate}
+                />
+              </TouchableOpacity>
             </View>
           </View>
+          {showModal()}
 
+          {/* 포지션 / 사용언어 */}
           <View style={styles.row}>
             <View style={{ width: '47.5%' }}>
               {/* 작성자 포지션 */}
@@ -203,6 +276,7 @@ export default function CreatePost({ navigation }) {
             </View>
           </View>
 
+          {/* 선택된 해시태그 */}
           <View style={{ flexDirection: 'row', marginVertical: 10 }}>
             {hashtagList.map((tag, i) => {
               return <HashtagButton title={tag} key={i} />;
@@ -268,9 +342,26 @@ const styles = StyleSheet.create({
   },
   row: { flexDirection: 'row', justifyContent: 'space-between' },
   label: {
+    color: '#263238',
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginVertical: 10,
   },
+  inputBox: {
+    padding: 10,
+    borderWidth: 1,
+    borderColor: '#999',
+    borderRadius: 4,
+  },
+  picker: {
+    backgroundColor: '#FFF0E0',
+    flex: 1,
+    minHeight: 25,
+  },
+  pickerItem: {
+    height: 44,
+    color: 'red',
+  },
+
   contentInputContainer: {
     borderRadius: 5,
     borderWidth: 1,
