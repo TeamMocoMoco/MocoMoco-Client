@@ -11,6 +11,7 @@ import {
 const diviceWidth = Dimensions.get('window').width;
 
 import { HeaderBack } from '../../components/header';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default function Verification({ navigation }) {
   const [phone, setPhone] = useState('');
@@ -47,8 +48,8 @@ export default function Verification({ navigation }) {
           </Text>
         </View>
 
-        {/* 전화번호 입력 + 인증번호 발송버튼 */}
-        <View>
+        {/* 전화번호 입력 */}
+        <KeyboardAwareScrollView>
           <View
             style={{
               width: '100%',
@@ -81,7 +82,7 @@ export default function Verification({ navigation }) {
               </View>
             </View>
           </View>
-        </View>
+        </KeyboardAwareScrollView>
       </View>
       {/* 인증번호 발송버튼 */}
       <View>{showSendButton()}</View>
