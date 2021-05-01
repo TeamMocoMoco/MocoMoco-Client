@@ -6,7 +6,7 @@ const diviceWidth = Dimensions.get('window').width;
 import { HeaderTitle } from '../../components/header';
 import { ChatCard } from '../../components/card';
 
-export default function ChatList() {
+export default function ChatList({ navigation }) {
   return (
     <View style={styles.container}>
       <HeaderTitle title={'채팅'} />
@@ -17,7 +17,8 @@ export default function ChatList() {
           }
           name={'이지은'}
           time={'12:45 PM'}
-          message={'유애나 1인 팬미팅 이벤트에 당첨돼셨습니다!'}
+          message={'유애나 1인 팬미팅 이벤트에 당첨되셨습니다!'}
+          navigation={navigation}
         />
 
         <ChatCard
@@ -27,6 +28,7 @@ export default function ChatList() {
           name={'징쨩'}
           time={'12:55 PM'}
           message={'뭐해??'}
+          navigation={navigation}
         />
 
         <ChatCard
@@ -36,6 +38,7 @@ export default function ChatList() {
           name={'아이유'}
           time={'07:33 PM'}
           message={'라일락~!'}
+          navigation={navigation}
         />
       </ScrollView>
     </View>
