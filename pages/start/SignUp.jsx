@@ -8,16 +8,25 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
-const diviceWidth = Dimensions.get('window').width;
+
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import { PickRoleCard } from '../../components/card';
 import { HeaderBack } from '../../components/header';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-export default function SignUp({ navigation, route }) {
-  let phone = route.params;
+import { register } from '../../config/UserAPI';
+
+const diviceWidth = Dimensions.get('window').width;
+
+export default function SignUp({ navigation }) {
   const [name, setName] = useState('');
   const [pickRole, setPickRole] = useState('');
+
+  const doRegister = async () => {
+    await register(name, pickRole);
+    navigation.push('Starting', { name, pickRole });
+  };
+
   const roles = [
     { role: '기획자', name: 'ellipse' },
     { role: '디자이너', name: 'triangle-sharp' },
@@ -37,8 +46,10 @@ export default function SignUp({ navigation, route }) {
     } else {
       return (
         <TouchableOpacity
-          style={[styles.buttonContainer, { opacity: 1 }]}
-          onPress={() => navigation.push('TabNavigator', phone, pickRole)}
+          style={styles.buttonContainer}
+          onPress={() => {
+            doRegister();
+          }}
         >
           <Text style={styles.buttonText}>선택완료</Text>
         </TouchableOpacity>
@@ -50,11 +61,9 @@ export default function SignUp({ navigation, route }) {
     <View style={styles.container}>
       <HeaderBack navigation={navigation} title="전화번호 인증" />
       <View style={styles.content}>
-        <View style={styles.headTextBox}>
-          <Text style={styles.headText}>
-            사용할 이름과{'\n'}관심있는 직군을 알려주세요!
-          </Text>
-        </View>
+        <Text style={styles.title}>
+          사용할 이름과{'\n'}관심있는 직군을 알려주세요!
+        </Text>
 
         <KeyboardAwareScrollView>
           {/* 직군선택 */}
@@ -70,48 +79,23 @@ export default function SignUp({ navigation, route }) {
               );
             })}
           </View>
-          {/* 전화번호 입력 + 인증번호 발송버튼 */}
-          <View>
-            <View
-              style={{
-                width: '100%',
-                paddingBottom: 20,
-                paddingTop: diviceWidth * 0.1,
+
+          {/* 이름 입력 */}
+          <View style={styles.inputContainer}>
+            <TextInput
+              placeholder={'홍모코'}
+              value={name}
+              onChangeText={(text) => {
+                setName(text);
               }}
-            >
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  paddingBottom: 10,
-                }}
-              >
-                <View
-                  style={{
-                    width: '100%',
-                    padding: 10,
-                    borderBottomWidth: 1,
-                    borderColor: 'black',
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <TextInput
-                    placeholder={'홍모코'}
-                    value={name}
-                    onChangeText={(text) => {
-                      setName(text);
-                    }}
-                    style={{ fontSize: 15 }}
-                  />
-                  <Text>Tip! 대부분 실명을 사용해요</Text>
-                </View>
-              </View>
-            </View>
+              style={{ fontSize: 15 }}
+            />
+            <Text>Tip! 대부분 실명을 사용해요</Text>
           </View>
         </KeyboardAwareScrollView>
       </View>
-      {/* 인증번호 발송버튼 */}
+
+      {/* 완료 버튼 */}
       <View>{showCompleteButton()}</View>
     </View>
   );
@@ -127,14 +111,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
     padding: 20,
   },
-  headTextBox: { backgroundColor: 'white' },
-  headText: {
+  title: {
     fontSize: 23,
     fontWeight: 'bold',
   },
-  row: {
+  inputContainer: {
+    flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    padding: 10,
+    marginVertical: diviceWidth * 0.1,
+    borderBottomWidth: 1,
+    borderColor: 'black',
   },
   buttonContainer: {
     backgroundColor: '#1EA7F8',
