@@ -19,11 +19,11 @@ const StackNavigator = () => {
       }}
     >
       {/* <Stack.Screen name="SignIn" component={SignIn} /> */}
-      {/* <Stack.Screen name="Verification" component={Verification} />
+      <Stack.Screen name="Verification" component={Verification} />
       <Stack.Screen
         name="VerificationConfirm"
         component={VerificationConfirm}
-      /> */}
+      />
 
       <Stack.Screen name="SignUp" component={SignUp} />
       <Stack.Screen name="TabNavigator" component={TabNavigator} />
