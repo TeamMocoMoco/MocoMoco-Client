@@ -11,11 +11,18 @@ import {
 const diviceWidth = Dimensions.get('window').width;
 
 import { HeaderBack } from '../../components/header';
+import { checkSMS } from '../../config/UserAPI';
+
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default function VerificationConfirm({ navigation, route }) {
   let phone = route.params;
   const [code, setCode] = useState('');
+
+  const doCheck = async () => {
+    await checkSMS(navigation, phone, code);
+  };
+
   const showConfirmButton = () => {
     if (code == '') {
       return (
@@ -30,7 +37,9 @@ export default function VerificationConfirm({ navigation, route }) {
       return (
         <TouchableOpacity
           style={[styles.buttonContainer, { opacity: 1 }]}
-          onPress={() => navigation.push('SignUp', phone)}
+          onPress={() => {
+            doCheck();
+          }}
         >
           <Text style={styles.buttonText}>확인</Text>
         </TouchableOpacity>

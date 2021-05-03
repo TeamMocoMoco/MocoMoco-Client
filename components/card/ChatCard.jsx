@@ -9,9 +9,12 @@ import {
 } from 'react-native';
 const diviceWidth = Dimensions.get('window').width;
 
-export default function ChatCard({ img, name, time, message }) {
+export default function ChatCard({ navigation, img, name, time, message }) {
+  const goRoom = async () => {
+    navigation.push('ChatRoom', { navigation, name, img });
+  };
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={() => goRoom()}>
       <View style={styles.cardFrame}>
         <Image
           source={{

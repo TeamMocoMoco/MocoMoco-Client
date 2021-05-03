@@ -7,14 +7,26 @@ import {
   Dimensions,
   TouchableOpacity,
   TextInput,
+  Alert,
 } from 'react-native';
 const diviceWidth = Dimensions.get('window').width;
 
 import { HeaderBack } from '../../components/header';
+import { sendSMS } from '../../config/UserAPI';
+
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default function Verification({ navigation }) {
   const [phone, setPhone] = useState('');
+
+  const send = async () => {
+    if (phone.length < 10) {
+      Alert.alert('올바른 전화번호를 입력해주세요.');
+    } else {
+      await sendSMS(phone);
+      navigation.push('VerificationConfirm', phone);
+    }
+  };
 
   const showSendButton = () => {
     if (phone == '') {
@@ -30,7 +42,7 @@ export default function Verification({ navigation }) {
       return (
         <TouchableOpacity
           style={[styles.buttonContainer, { opacity: 1 }]}
-          onPress={() => navigation.push('VerificationConfirm', phone)}
+          onPress={() => send()}
         >
           <Text style={styles.buttonText}>인증 요청</Text>
         </TouchableOpacity>
@@ -72,6 +84,7 @@ export default function Verification({ navigation }) {
                 }}
               >
                 <TextInput
+                  maxLength={11}
                   placeholder={'010-0000-0000 (-없이 번호만 입력)'}
                   value={phone}
                   onChangeText={(text) => {
