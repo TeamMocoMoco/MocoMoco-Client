@@ -24,7 +24,7 @@ export default function SignUp({ navigation }) {
 
   const doRegister = async () => {
     await register(name, pickRole);
-    navigation.push('Starting', { name, pickRole });
+    navigation.push('TabNavigator');
   };
 
   const roles = [
@@ -88,9 +88,9 @@ export default function SignUp({ navigation }) {
               onChangeText={(text) => {
                 setName(text);
               }}
-              style={{ fontSize: 15 }}
+              style={{ fontSize: 15, width: '50%' }}
             />
-            <Text>Tip! 대부분 실명을 사용해요</Text>
+            <Text style={{ width: '50%' }}>Tip! 대부분 실명을 사용해요</Text>
           </View>
         </KeyboardAwareScrollView>
       </View>
