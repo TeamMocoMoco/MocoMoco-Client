@@ -1,7 +1,8 @@
 import HeaderTitle from './HeaderTitle';
-import HeaderBack from './HeaderBack'
-
+import HeaderBack from './HeaderBack';
+import ChatHeader from './ChatHeader';
 module.exports = {
-    HeaderTitle,
-    HeaderBack,
+  HeaderTitle,
+  HeaderBack,
+  ChatHeader,
 };
