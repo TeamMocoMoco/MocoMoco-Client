@@ -65,9 +65,6 @@ export async function register(name, pickRole) {
       },
     });
 
-    const user = response.data.result;
-    console.log(user);
-
     await login();
   } catch (err) {
     const error = err.response.data.err || err.message;
