@@ -1,30 +1,35 @@
-import React from 'react';
-import { StyleSheet, View, Modal, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, View, Modal, Dimensions } from 'react-native';
 
 import DatePicker from 'react-native-modern-datepicker';
 
-export default function DatePickModal({ modalOpen, setModalOpen, setDate }) {
+const pickerWidth = Dimensions.get('window').width * 0.8;
+
+export default function DatePickModal({
+  modalOpen,
+  setModalOpen,
+  setDateTime,
+}) {
+  const [date, setDate] = useState('');
+  const [time, setTime] = useState('');
+
+  useEffect;
+
   return (
-    <Modal
-      transparent
-      visible={modalOpen}
-      onRequestClose={() => {
-        setModalOpen(false);
-      }}
-    >
-      <TouchableOpacity
-        style={styles.modalFrame}
-        onPressOut={() => {
-          setModalOpen(false);
-        }}
-      >
+    <Modal transparent visible={modalOpen}>
+      <View style={styles.modalFrame}>
         <View style={styles.modalContent}>
           <DatePicker
             style={styles.datePicker}
-            onSelectedChange={(date) => setDate(date)}
+            onDateChange={(d) => setDate(d)}
+            onTimeChange={(t) => {
+              setTime(t);
+              setDateTime(date + ' ' + time);
+              setModalOpen(false);
+            }}
           />
         </View>
-      </TouchableOpacity>
+      </View>
     </Modal>
   );
 }
@@ -36,7 +41,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   modalContent: {
-    width: '80%',
+    width: pickerWidth,
+    height: pickerWidth * 1.1,
     backgroundColor: '#FFF',
     paddingHorizontal: 10,
     elevation: 3,
