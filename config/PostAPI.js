@@ -85,7 +85,8 @@ export async function postPosts(
   hashtagList
 ) {
   // const token = await SecureStore.getItemAsync('token');
-  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MDhmYWI4ODBmYWIxNzMzMzE2ZWVmZjEiLCJpYXQiOjE2MjAwNTkwMTR9.MszJf899rROPdg-cVHYoKG8N-rBKi9ReAeIMOWfRibM'
+  const token =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MDhmYWI4ODBmYWIxNzMzMzE2ZWVmZjEiLCJpYXQiOjE2MjAwNTkwMTR9.MszJf899rROPdg-cVHYoKG8N-rBKi9ReAeIMOWfRibM';
   try {
     const response = await axios({
       method: 'post',
@@ -108,8 +109,8 @@ export async function postPosts(
       },
     });
 
-    if(response.data.result) {
-      navigation.push('TabNavigator')
+    if (response.data.result) {
+      navigation.push('TabNavigator');
     }
   } catch (err) {
     const error = err.response.data.err || err.message;
