@@ -2,7 +2,7 @@ import React from 'react';
 import Platform, { StyleSheet, Text, View } from 'react-native';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { SimpleLineIcons, Ionicons } from '@expo/vector-icons';
+import { SimpleLineIcons, Ionicons, Feather } from '@expo/vector-icons';
 
 import TabTopNavigator from './TabTopNavigator';
 import { SearchMap } from '../pages/post';
@@ -21,13 +21,13 @@ const TabNavigator = () => {
           let iconLabel = '';
 
           if (route.name === 'TabTopNavigator') {
-            iconKind = 'SimpleLineIcons';
-            iconName = 'list';
+            iconKind = 'Feather';
+            iconName = 'compass';
             iconLabel = '탐색';
           } else if (route.name === 'SearchMap') {
             iconKind = 'Ionicons';
             iconName = 'map-outline';
-            iconLabel = '개설';
+            iconLabel = '내 근처';
           } else if (route.name === 'ChatList') {
             iconKind = 'Ionicons';
             iconName = 'chatbox-outline';
@@ -38,13 +38,13 @@ const TabNavigator = () => {
             iconLabel = '마이페이지';
           }
 
-          if (iconKind === 'SimpleLineIcons') {
+          if (iconKind === 'Feather') {
             return (
               <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                <SimpleLineIcons
+                <Feather
                   name={iconName}
                   color={focused ? '#000' : '#CBCBCB'}
-                  size={24}
+                  size={28}
                 />
                 <Text
                   style={[

@@ -15,6 +15,9 @@ export default function SearchBar() {
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
+        <TouchableHighlight style={styles.buttonContainer}>
+          <Entypo name="magnifying-glass" size={20} color="#8E8E8E" />
+        </TouchableHighlight>
         <TextInput
           style={styles.input}
           value={value}
@@ -25,10 +28,6 @@ export default function SearchBar() {
           }}
         />
       </View>
-      <View></View>
-      <TouchableHighlight style={styles.buttonContainer}>
-        <Entypo name="magnifying-glass" size={20} color="#8E8E8E" />
-      </TouchableHighlight>
     </View>
   );
 }
@@ -42,6 +41,7 @@ const styles = StyleSheet.create({
   inputContainer: {
     backgroundColor: '#F6F7F9',
     flex: 1,
+    flexDirection: 'row',
     height: 40,
     marginEnd: 10,
     borderRadius: 5,
@@ -55,5 +55,6 @@ const styles = StyleSheet.create({
   buttonContainer: {
     justifyContent: 'center',
     alignItems: 'center',
+    marginLeft: '5%',
   },
 });
