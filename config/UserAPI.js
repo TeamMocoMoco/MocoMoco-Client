@@ -85,8 +85,6 @@ export async function login() {
     });
 
     const new_token = response.data.result.user.token;
-    console.log(token);
-    console.log(new_token);
 
     await SecureStore.deleteItemAsync('phonetoken');
     await SecureStore.setItemAsync('usertoken', new_token);
@@ -95,9 +93,4 @@ export async function login() {
     console.log('login error');
     Alert.alert(error);
   }
-}
-
-export async function test() {
-  const token = await SecureStore.getItemAsync('phonetoken');
-  console.log(token);
 }
