@@ -21,7 +21,7 @@ import {
   FullButton,
   OnAndOffButton,
 } from '../../components/button';
-import DatePickModal from '../../components/modal/DatePickModal';
+import { DatePickModal } from '../../components/modal';
 
 import kind from '../../config/mock/category.json';
 import { postPosts } from '../../config/PostAPI';

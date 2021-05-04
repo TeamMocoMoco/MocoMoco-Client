@@ -4,7 +4,7 @@ import { Dimensions, StyleSheet, View } from 'react-native';
 
 import MapView from 'react-native-maps';
 
-import { MapModal } from '../../components/map';
+import { MapModal } from '../../components/modal';
 
 export default function SearchMap({ navigation }) {
   const [modalOpen, setModalOpen] = useState(false);
