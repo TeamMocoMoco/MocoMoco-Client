@@ -14,7 +14,12 @@ export default function ReadPost({ navigation }) {
         <View style={styles.content}>
           <DetailCard />
           <View style={{ width: '50%', alignSelf: 'center' }}>
-            <FullButton title={'신청하기'} />
+            <FullButton
+              title={'신청하기'}
+              doFunction={() => {
+                navigation.push('ChatRoom');
+              }}
+            />
           </View>
         </View>
       </ScrollView>
