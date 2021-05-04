@@ -17,8 +17,9 @@ import { Feather } from '@expo/vector-icons';
 import { ScrollView } from 'react-native-gesture-handler';
 
 export default function ChatRoom({ navigation, route }) {
+  const item = route.params;
+
   const [chat, setChat] = useState('');
-  const item = route.params.item;
 
   const showSendButton = () => {
     if (chat == '') {
@@ -44,12 +45,16 @@ export default function ChatRoom({ navigation, route }) {
         navigation={navigation}
       />
       <ScrollView style={styles.content}>
-        <ChatMessage message={item.message} />
+        <ChatMessage
+          user={item.user}
+          message={item.content}
+          time={item.createAt}
+        />
       </ScrollView>
       {/* <FlatList
         data={item}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <ChatMessage message={item.message} />}
+        keyExtractor={(item) => item._id}
+        renderItem={({ item }) => <ChatMessage message={item.content} />}
       /> */}
 
       <View style={styles.bottomBox}>

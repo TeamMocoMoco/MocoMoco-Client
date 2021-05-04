@@ -1,14 +1,14 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-export default function ChatMessage({ message }) {
+export default function ChatMessage({ user, message, time }) {
   return (
     <View style={styles.container}>
       <View style={{ width: '70%' }}>
         <View style={styles.card}>
           <Text>{message}</Text>
         </View>
-        <Text style={{ textAlign: 'right', marginRight: '5%' }}>오전12:45</Text>
+        <Text style={{ textAlign: 'right', marginRight: '5%' }}>{time}</Text>
       </View>
     </View>
   );
