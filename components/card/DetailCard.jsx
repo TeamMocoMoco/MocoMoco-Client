@@ -25,7 +25,7 @@ export default function DetailCard() {
         }
       </Text>
       <View style={styles.hashtagRow}>
-        <HashtagButton title={'Python'} />
+        <HashtagButton feat={'read'} title={'Python'} />
       </View>
     </View>
   );

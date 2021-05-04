@@ -158,6 +158,7 @@ export default function CreatePost({ navigation }) {
             {hashtagList.map((tag, i) => {
               return (
                 <HashtagButton
+                  feat={'create'}
                   title={tag}
                   index={i}
                   onRemove={onRemove}
