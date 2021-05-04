@@ -1,17 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { Entypo } from '@expo/vector-icons';
 
 import { SearchBar } from '../../components/input';
 import { MainCard } from '../../components/card';
+import { TabButton } from '../../components/button';
 
-export default function MainList({ route }) {
-  const navigation = route.navigation;
+export default function MainList({ navigation }) {
+  const [tab, setTab] = useState('전체보기');
+
   return (
     <View style={styles.container}>
       <SearchBar />
-      <ScrollView>
+
+      <View style={{ flexDirection: 'row', marginVertical: 10 }}>
+        <TabButton title={'전체보기'} state={tab} setState={setTab} />
+        <TabButton title={'온라인'} state={tab} setState={setTab} />
+        <TabButton title={'오프라인'} state={tab} setState={setTab} />
+      </View>
+
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.content}>
           <MainCard navigation={navigation} />
           <MainCard navigation={navigation} />
@@ -34,6 +44,9 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#FFF',
     flex: 1,
+    marginTop: getStatusBarHeight(),
+    paddingTop: 20,
+    paddingHorizontal: 25,
   },
   content: {
     flex: 1,
