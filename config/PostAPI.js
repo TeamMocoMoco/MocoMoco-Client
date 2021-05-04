@@ -2,7 +2,7 @@ import { Alert } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import axios from 'axios';
 
-const host = 'http://3.35.166.243';
+const host = 'http://3.34.137.188';
 
 export async function getPosts() {
   try {
@@ -71,6 +71,7 @@ export async function getPostsById(postId) {
 }
 
 export async function postPosts(
+  navigation,
   onAndOff,
   title,
   category,
@@ -83,7 +84,9 @@ export async function postPosts(
   intro,
   hashtagList
 ) {
-  const token = await SecureStore.getItemAsync('token');
+  // const token = await SecureStore.getItemAsync('token');
+  const token =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MDhmYWI4ODBmYWIxNzMzMzE2ZWVmZjEiLCJpYXQiOjE2MjAwNTkwMTR9.MszJf899rROPdg-cVHYoKG8N-rBKi9ReAeIMOWfRibM';
   try {
     const response = await axios({
       method: 'post',
@@ -99,14 +102,16 @@ export async function postPosts(
         language: language,
         personnel: personnel,
         hashtag: hashtagList,
-        meeting: onAndOff,
         location: location,
-        startDate: startDate,
-        dueDate: dueDate,
+        meeting: onAndOff,
+        startDate: new Date(startDate).toISOString(),
+        dueDate: new Date(dueDate).toISOString(),
       },
     });
 
-    console.log(response.data.result);
+    if (response.data.result) {
+      navigation.push('TabNavigator');
+    }
   } catch (err) {
     const error = err.response.data.err || err.message;
 

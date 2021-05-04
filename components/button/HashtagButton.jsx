@@ -1,24 +1,38 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-export default function HashtagButton({ title }) {
+import { Ionicons } from '@expo/vector-icons';
+
+export default function HashtagButton({ title, index, onRemove }) {
   return (
-    <TouchableOpacity disabled style={styles.container}>
+    <View disabled style={styles.container}>
       <Text style={styles.title}># {title}</Text>
-    </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => {
+          onRemove(index);
+        }}
+      >
+        <Ionicons name="close" size={12} color="#818181" />
+      </TouchableOpacity>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#777',
+    backgroundColor: '#F8F9FB',
+    flexDirection: 'row',
     paddingVertical: 5,
-    paddingHorizontal: 10,
+    paddingHorizontal: 5,
+    marginBottom: 10,
     marginEnd: 10,
     borderRadius: 5,
+    alignItems: 'center',
   },
   title: {
-    color: '#FFF',
+    color: '#818181',
     fontSize: 10,
+    fontWeight: 'bold',
+    marginEnd: 10,
   },
 });

@@ -25,8 +25,8 @@ export default function FullButton({ title, empty, doFunction }) {
 
 const styles = StyleSheet.create({
   buttonContainer: {
-    backgroundColor: '#0085FF',
-    padding: 10,
+    backgroundColor: '#777',
+    paddingVertical: 13,
     marginTop: 20,
   },
   buttonText: {
