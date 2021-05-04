@@ -7,7 +7,7 @@ import {
   View,
 } from 'react-native';
 
-import { Entypo } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function SearchBar() {
   const [value, setValue] = useState('');
@@ -16,7 +16,7 @@ export default function SearchBar() {
     <View style={styles.container}>
       <View style={styles.inputContainer}>
         <TouchableHighlight style={styles.buttonContainer}>
-          <Entypo name="magnifying-glass" size={20} color="#8E8E8E" />
+          <Ionicons name="md-search-outline" size={25} color="#8E8E8E" />
         </TouchableHighlight>
         <TextInput
           style={styles.input}
@@ -36,20 +36,21 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     width: '100%',
-    padding: 10,
   },
   inputContainer: {
     backgroundColor: '#F6F7F9',
     flex: 1,
     flexDirection: 'row',
-    height: 40,
-    marginEnd: 10,
     borderRadius: 5,
+    paddingVertical: 5,
+    marginVertical: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   input: {
     color: '#777',
     marginStart: 15,
-    fontSize: 16,
+    fontSize: 14,
     flex: 1,
   },
   buttonContainer: {
