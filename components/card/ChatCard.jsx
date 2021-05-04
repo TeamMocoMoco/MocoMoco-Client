@@ -9,19 +9,22 @@ import {
 } from 'react-native';
 const diviceWidth = Dimensions.get('window').width;
 
-export default function ChatCard({ navigation, img, name, time, message }) {
+export default function ChatCard({ navigation, item }) {
   const goRoom = async () => {
-    navigation.push('ChatRoom', { navigation, name, img });
+    navigation.push('ChatRoom', { item });
   };
+
   return (
     <TouchableOpacity onPress={() => goRoom()}>
       <View style={styles.cardFrame}>
+        {/* 프로필사진 */}
         <Image
           source={{
-            uri: img,
+            uri: item.userImage,
           }}
           style={styles.img}
         />
+
         <View style={{ margin: 10, flex: 1 }}>
           {/* 이름, 채팅온시간 */}
           <View style={styles.textCard}>
@@ -31,13 +34,13 @@ export default function ChatCard({ navigation, img, name, time, message }) {
                 fontWeight: 'bold',
               }}
             >
-              {name}
+              {item.userName}
             </Text>
-            <Text>{time}</Text>
+            <Text>{item.messageTime}</Text>
           </View>
 
           {/* 마지막온 채팅 보이기 */}
-          <Text numberOfLines={1}>{message}</Text>
+          <Text numberOfLines={1}>{item.message}</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -54,7 +57,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   img: {
-    resizeMode: 'contain',
+    resizeMode: 'cover',
     height: diviceWidth * 0.2,
     width: diviceWidth * 0.2,
     borderRadius: 100,
