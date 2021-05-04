@@ -10,7 +10,7 @@ import {
 const diviceWidth = Dimensions.get('window').width;
 
 import { Entypo } from '@expo/vector-icons';
-export default function ChatHeader({ navigation, title, img }) {
+export default function ChatHeader({ navigation, name, img }) {
   return (
     <View style={styles.header}>
       <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -24,7 +24,7 @@ export default function ChatHeader({ navigation, title, img }) {
           }}
           style={styles.img}
         />
-        <Text style={styles.headerText}>{title}</Text>
+        <Text style={styles.headerText}>{name}</Text>
         <Image />
       </TouchableOpacity>
     </View>
