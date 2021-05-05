@@ -11,7 +11,7 @@ import {
 import { HeaderBack } from '../../../components/header';
 import { HashtagButton, FullButton } from '../../../components/button';
 
-import { postPosts } from '../../../config/PostAPI';
+import { postPosts } from '../../../config/api/PostAPI';
 
 import { ProgressBar, Colors } from 'react-native-paper';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
