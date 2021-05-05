@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { HashtagButton } from '../button';
@@ -8,7 +8,8 @@ export default function MainCard({ navigation, post }) {
     <TouchableOpacity
       style={styles.cardContainer}
       onPress={() => {
-        navigation.push('ReadPost');
+        const postId = post._id;
+        navigation.push('ReadPost', { postId });
       }}
     >
       <Text style={styles.date}>{post.startDate}</Text>
