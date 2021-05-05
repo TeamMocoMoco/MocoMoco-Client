@@ -74,7 +74,7 @@ export default function MainList({ navigation }) {
       <TouchableOpacity
         style={styles.FAB}
         onPress={() => {
-          navigation.push('CreatePost');
+          navigation.push('CreatePostFirst');
         }}
       >
         <Entypo name="plus" size={24} color="white" />
