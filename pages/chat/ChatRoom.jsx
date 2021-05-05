@@ -9,15 +9,15 @@ import {
   TouchableOpacity,
   FlatList,
 } from 'react-native';
-const diviceWidth = Dimensions.get('window').width;
 
 import { ChatHeader } from '../../components/header';
 import { ChatMessage } from '../../components/card';
 
 import { Feather } from '@expo/vector-icons';
-import { ScrollView } from 'react-native-gesture-handler';
 
 import { getChatsByRoom } from '../../config/api/ChatAPI';
+
+const diviceWidth = Dimensions.get('window').width;
 
 export default function ChatRoom({ navigation, route }) {
   const roomId = route.params;
@@ -30,6 +30,7 @@ export default function ChatRoom({ navigation, route }) {
   useEffect(() => {
     setTimeout(async () => {
       const result = await getChatsByRoom(roomId);
+      console.log(result);
       setRoomInfo(result.roomInfo);
       setChat(result.chat);
       setReady(true);
@@ -37,10 +38,10 @@ export default function ChatRoom({ navigation, route }) {
   }, [navigation]);
 
   const showSendButton = () => {
-    if (chat == '') {
+    if (message == '') {
       return (
         <TouchableOpacity disabled style={{ opacity: 0.4 }}>
-          <Feather name="send" size={24} color="black" />
+          <Feather name="send" size={24} color="#777" />
         </TouchableOpacity>
       );
     } else {
@@ -54,29 +55,27 @@ export default function ChatRoom({ navigation, route }) {
 
   return ready ? (
     <View style={styles.container}>
-      {/* <ChatHeader
-        name={item.userName}
-        img={item.userImage}
+      <ChatHeader
+        name={roomInfo.admin.name}
+        // img={item.userImage}
         navigation={navigation}
-      /> */}
-      <ScrollView style={styles.content}>
-        {chat.map((chatInfo) => {
+      />
+      <FlatList
+        style={styles.content}
+        data={chat}
+        keyExtractor={(item) => item._id}
+        renderItem={(chatInfo) => {
           return (
             <ChatMessage
-              leader={roomInfo.admin}
-              user={chatInfo.user}
-              message={chatInfo.content}
-              createdAt={chatInfo.createdAt}
-              key={chatInfo._id}
+              leader={roomInfo.admin._id}
+              user={chatInfo.item.user}
+              message={chatInfo.item.content}
+              createdAt={chatInfo.item.createdAt.substr(11, 5)}
+              key={chatInfo.item._id}
             />
           );
-        })}
-      </ScrollView>
-      {/* <FlatList
-        data={item}
-        keyExtractor={(item) => item._id}
-        renderItem={({ item }) => <ChatMessage message={item.content} />}
-      /> */}
+        }}
+      />
 
       <View style={styles.bottomBox}>
         <View style={styles.sendBox}>
