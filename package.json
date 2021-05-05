@@ -32,7 +32,8 @@
     "react-native-screens": "~3.0.0",
     "react-native-status-bar-height": "^2.6.0",
     "react-native-tab-view": "^3.0.1",
-    "react-native-web": "~0.13.12"
+    "react-native-web": "~0.13.12",
+    "socket.io-client": "^4.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0"
