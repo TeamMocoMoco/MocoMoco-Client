@@ -50,7 +50,7 @@ export default function Location({ navigation }) {
           기획자, 개발자, 디자이너를{'\n'}모코모코에서 간편하게 만나자!
         </Text>
         <TouchableOpacity
-          onPress={() => navigation.push('Verification')}
+          onPress={() => navigation.push('TabNavigator')}
           style={{
             width: '100%',
             height: '8%',

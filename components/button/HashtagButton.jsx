@@ -3,19 +3,28 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { Ionicons } from '@expo/vector-icons';
 
-export default function HashtagButton({ title, index, onRemove }) {
-  return (
-    <View disabled style={styles.container}>
-      <Text style={styles.title}># {title}</Text>
-      <TouchableOpacity
-        onPress={() => {
-          onRemove(index);
-        }}
-      >
-        <Ionicons name="close" size={12} color="#818181" />
-      </TouchableOpacity>
-    </View>
-  );
+export default function HashtagButton({ feat, title, index, onRemove }) {
+  if (feat == 'create') {
+    return (
+      <View disabled style={styles.container}>
+        <Text style={styles.title}># {title}</Text>
+        <TouchableOpacity
+          style={{ marginStart: 10 }}
+          onPress={() => {
+            onRemove(index);
+          }}
+        >
+          <Ionicons name="close" size={12} color="#818181" />
+        </TouchableOpacity>
+      </View>
+    );
+  } else if (feat == 'read') {
+    return (
+      <View disabled style={styles.container}>
+        <Text style={styles.title}># {title}</Text>
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -23,8 +32,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F8F9FB',
     flexDirection: 'row',
     paddingVertical: 5,
-    paddingHorizontal: 5,
-    marginBottom: 10,
+    paddingHorizontal: 7,
     marginEnd: 10,
     borderRadius: 5,
     alignItems: 'center',
@@ -33,6 +41,5 @@ const styles = StyleSheet.create({
     color: '#818181',
     fontSize: 10,
     fontWeight: 'bold',
-    marginEnd: 10,
   },
 });

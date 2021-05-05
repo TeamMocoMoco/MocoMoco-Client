@@ -1,21 +1,74 @@
-import React from 'react';
-import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
+import {
+  ActivityIndicator,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 import { Entypo } from '@expo/vector-icons';
 
 import { SearchBar } from '../../components/input';
 import { MainCard } from '../../components/card';
+import { TabButton } from '../../components/button';
 
-export default function MainList({ route }) {
-  const navigation = route.navigation;
-  return (
+import {
+  getPosts,
+  getPostsOnline,
+  getPostsOffline,
+} from '../../config/api/PostAPI';
+
+export default function MainList({ navigation }) {
+  const [ready, setReady] = useState(false);
+  const [posts, setPosts] = useState([]);
+  const [tab, setTab] = useState('전체보기');
+
+  useEffect(() => {
+    navigation.addListener('focus', (e) => {
+      setTimeout(() => {
+        setReady(false);
+        setTab('전체보기');
+        download(tab);
+        setReady(true);
+      });
+    });
+  }, [navigation]);
+
+  const download = useCallback(async (title) => {
+    setTab(title);
+    let result = [];
+    if (title == '전체보기') {
+      result = await getPosts();
+    } else if (title == '온라인') {
+      result = await getPostsOnline();
+    } else if (title == '오프라인') {
+      result = await getPostsOffline();
+    }
+    setPosts(result);
+  });
+
+  return ready ? (
     <View style={styles.container}>
       <SearchBar />
-      <ScrollView>
+
+      <View style={{ flexDirection: 'row', marginVertical: 10 }}>
+        <TabButton
+          title={'전체보기'}
+          state={tab}
+          setState={setTab}
+          download={download}
+        />
+        <TabButton title={'온라인'} state={tab} download={download} />
+        <TabButton title={'오프라인'} state={tab} download={download} />
+      </View>
+
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.content}>
-          <MainCard navigation={navigation} />
-          <MainCard navigation={navigation} />
-          <MainCard navigation={navigation} />
+          {posts.map((post, i) => {
+            return <MainCard navigation={navigation} post={post} key={i} />;
+          })}
         </View>
       </ScrollView>
       <TouchableOpacity
@@ -27,6 +80,33 @@ export default function MainList({ route }) {
         <Entypo name="plus" size={24} color="white" />
       </TouchableOpacity>
     </View>
+  ) : (
+    <View style={styles.container}>
+      <SearchBar />
+
+      <View style={{ flexDirection: 'row', marginVertical: 10 }}>
+        <TabButton
+          title={'전체보기'}
+          state={tab}
+          setState={setTab}
+          download={download}
+        />
+        <TabButton
+          title={'온라인'}
+          state={tab}
+          setState={setTab}
+          download={download}
+        />
+        <TabButton
+          title={'오프라인'}
+          state={tab}
+          setState={setTab}
+          download={download}
+        />
+      </View>
+
+      <ActivityIndicator size="small" color="#0000ff" />
+    </View>
   );
 }
 
@@ -34,6 +114,9 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#FFF',
     flex: 1,
+    marginTop: getStatusBarHeight(),
+    paddingTop: 20,
+    paddingHorizontal: 25,
   },
   content: {
     flex: 1,

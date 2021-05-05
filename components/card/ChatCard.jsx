@@ -10,12 +10,12 @@ import {
 const diviceWidth = Dimensions.get('window').width;
 
 export default function ChatCard({ navigation, item }) {
-  const goRoom = async () => {
-    navigation.push('ChatRoom', { item });
-  };
-
   return (
-    <TouchableOpacity onPress={() => goRoom()}>
+    <TouchableOpacity
+      onPress={() => {
+        navigation.push('ChatRoom', item);
+      }}
+    >
       <View style={styles.cardFrame}>
         {/* 프로필사진 */}
         <Image
@@ -36,11 +36,11 @@ export default function ChatCard({ navigation, item }) {
             >
               {item.userName}
             </Text>
-            <Text>{item.messageTime}</Text>
+            <Text>{item.createAt}</Text>
           </View>
 
           {/* 마지막온 채팅 보이기 */}
-          <Text numberOfLines={1}>{item.message}</Text>
+          <Text numberOfLines={1}>{item.content}</Text>
         </View>
       </View>
     </TouchableOpacity>

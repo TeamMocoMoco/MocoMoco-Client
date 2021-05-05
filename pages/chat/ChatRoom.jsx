@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import {
+  ActivityIndicator,
   StyleSheet,
   View,
   Dimensions,
@@ -16,9 +17,24 @@ import { ChatMessage } from '../../components/card';
 import { Feather } from '@expo/vector-icons';
 import { ScrollView } from 'react-native-gesture-handler';
 
+import { getChatsByRoom } from '../../config/api/ChatAPI';
+
 export default function ChatRoom({ navigation, route }) {
-  const [chat, setChat] = useState('');
-  const item = route.params.item;
+  const roomId = route.params;
+
+  const [ready, setReady] = useState(false);
+  const [roomInfo, setRoomInfo] = useState({});
+  const [chat, setChat] = useState([]);
+  const [message, setMessage] = useState('');
+
+  useEffect(() => {
+    setTimeout(async () => {
+      const result = await getChatsByRoom(roomId);
+      setRoomInfo(result.roomInfo);
+      setChat(result.chat);
+      setReady(true);
+    });
+  }, [navigation]);
 
   const showSendButton = () => {
     if (chat == '') {
@@ -36,29 +52,60 @@ export default function ChatRoom({ navigation, route }) {
     }
   };
 
-  return (
+  return ready ? (
     <View style={styles.container}>
-      <ChatHeader
+      {/* <ChatHeader
         name={item.userName}
         img={item.userImage}
         navigation={navigation}
-      />
+      /> */}
       <ScrollView style={styles.content}>
-        <ChatMessage message={item.message} />
+        {chat.map((chatInfo) => {
+          return (
+            <ChatMessage
+              leader={roomInfo.admin}
+              user={chatInfo.user}
+              message={chatInfo.content}
+              createdAt={chatInfo.createdAt}
+              key={chatInfo._id}
+            />
+          );
+        })}
       </ScrollView>
       {/* <FlatList
         data={item}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <ChatMessage message={item.message} />}
+        keyExtractor={(item) => item._id}
+        renderItem={({ item }) => <ChatMessage message={item.content} />}
       /> */}
 
       <View style={styles.bottomBox}>
         <View style={styles.sendBox}>
           <TextInput
             placeholder={'Write a Messages'}
-            value={chat}
+            value={message}
             onChangeText={(text) => {
-              setChat(text);
+              setMessage(text);
+            }}
+            style={{
+              fontSize: 15,
+              width: '85%',
+            }}
+          />
+          <View>{showSendButton()}</View>
+        </View>
+      </View>
+    </View>
+  ) : (
+    <View style={styles.container}>
+      <ActivityIndicator size="small" color="#0000ff" />
+
+      <View style={styles.bottomBox}>
+        <View style={styles.sendBox}>
+          <TextInput
+            placeholder={'Write a Messages'}
+            value={message}
+            onChangeText={(text) => {
+              setMessage(text);
             }}
             style={{
               fontSize: 15,

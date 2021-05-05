@@ -1,28 +1,28 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import { SmallCategoryButton, HashtagButton } from '../button';
+import { HashtagButton } from '../button';
 
-export default function MainCard({ navigation }) {
+export default function MainCard({ navigation, post }) {
   return (
     <TouchableOpacity
       style={styles.cardContainer}
       onPress={() => {
-        navigation.push('ReadPost');
+        const postId = post._id;
+        navigation.push('ReadPost', { postId });
       }}
     >
-      <View style={styles.firstRow}>
-        <Text style={styles.nickname}>닉네임</Text>
-        <Text style={styles.date}>• 4월 24일 14:00 ~ 20:00</Text>
+      <Text style={styles.date}>{post.startDate}</Text>
+      <View style={{ marginVertical: 10 }}>
+        <Text style={styles.title}>
+          {post.meeting} {post.category}
+        </Text>
+        <Text style={styles.info}>{post.title}</Text>
       </View>
-      <Text style={styles.title}>파이썬 알고리즘 스터디 하실 분 모아요~</Text>
-      <Text style={styles.people}>• 모집인원 : 6명</Text>
-      <View style={styles.categoryRow}>
-        <SmallCategoryButton title={'온라인'} />
-        <SmallCategoryButton title={'알고리즘 스터디'} />
-      </View>
-      <View style={styles.hashtagRow}>
-        <HashtagButton title={'Python'} />
+      <View style={styles.hashtagList}>
+        {post.hashtag.map((title, i) => {
+          return <HashtagButton feat={'read'} title={title} key={i} />;
+        })}
       </View>
     </TouchableOpacity>
   );
@@ -33,35 +33,28 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
     flex: 1,
     padding: 20,
-    margin: 10,
+    marginVertical: 10,
+    marginHorizontal: 5,
     borderRadius: 5,
     elevation: 3,
   },
-  firstRow: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
-  nickname: {
-    width: '30%',
-    fontSize: 15,
-    fontWeight: 'bold',
-  },
   date: {
-    width: '70%',
+    color: '#8E9297',
+    fontSize: 15,
   },
   title: {
-    fontSize: 18,
+    color: '#212121',
+    fontSize: 20,
     fontWeight: 'bold',
-    marginVertical: 10,
+    marginBottom: 10,
   },
-  people: {
-    color: '#555',
+  info: {
+    color: '#8E9297',
+    fontSize: 13,
+    fontWeight: 'bold',
+    marginBottom: 10,
   },
-  categoryRow: {
-    flexDirection: 'row',
-    marginVertical: 15,
-  },
-  hashtagRow: {
+  hashtagList: {
     flexDirection: 'row',
   },
 });

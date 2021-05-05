@@ -5,7 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { SimpleLineIcons, Ionicons, Feather } from '@expo/vector-icons';
 
 import TabTopNavigator from './TabTopNavigator';
-import { SearchMap } from '../pages/post';
+import { MainList, SearchMap } from '../pages/post';
 import { ChatList } from '../pages/chat';
 import { MyPage } from '../pages/user';
 
@@ -20,7 +20,7 @@ const TabNavigator = () => {
           let iconKind = '';
           let iconLabel = '';
 
-          if (route.name === 'TabTopNavigator') {
+          if (route.name === 'MainList') {
             iconKind = 'Feather';
             iconName = 'compass';
             iconLabel = '탐색';
@@ -81,14 +81,12 @@ const TabNavigator = () => {
         showLabel: false,
         style: {
           backgroundColor: '#FFF',
-          height: 80,
-          // borderTopLeftRadius: 19,
-          // borderTopRightRadius: 19,
+          height: 60,
         },
         keyboardHidesTabBar: true,
       }}
     >
-      <Tabs.Screen name="TabTopNavigator" component={TabTopNavigator} />
+      <Tabs.Screen name="MainList" component={MainList} />
       <Tabs.Screen name="SearchMap" component={SearchMap} />
       <Tabs.Screen name="ChatList" component={ChatList} />
       <Tabs.Screen name="MyPage" component={MyPage} />
