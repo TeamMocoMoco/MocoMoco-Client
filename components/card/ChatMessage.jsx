@@ -1,24 +1,51 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-export default function ChatMessage({ user, message, time }) {
-  return (
-    <View style={styles.container}>
-      <View style={{ width: '70%' }}>
-        <View style={styles.card}>
-          <Text>{message}</Text>
+export default function ChatMessage({ leader, user, message, createdAt }) {
+  const time = createdAt;
+  // const time = new Date(createdAt).getHours();
+
+  if (leader == user) {
+    return (
+      <View style={styles.row}>
+        {/* 메세지 박스 */}
+        <View style={styles.leader_message}>
+          <Text style={{ color: '#FFF' }}>{message}</Text>
         </View>
+        {/* 시간 */}
         <Text style={{ textAlign: 'right', marginRight: '5%' }}>{time}</Text>
       </View>
-    </View>
-  );
+    );
+  } else {
+    return (
+      <View style={[styles.row, { justifyContent: 'flex-end' }]}>
+        {/* 시간 */}
+        <Text style={{ textAlign: 'right', marginRight: '5%' }}>{time}</Text>
+        {/* 메세지 박스 */}
+        <View style={styles.user_message}>
+          <Text>{message}</Text>
+        </View>
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
-  card: {
+  row: {
+    flexDirection: 'row',
+    marginVertical: 7,
+  },
+  leader_message: {
+    maxWidth: '70%',
     padding: '3%',
-    width: '100%',
     borderRadius: 5,
-    backgroundColor: '#D17CFE',
+    backgroundColor: '#007AFF',
+  },
+  user_message: {
+    maxWidth: '70%',
+    padding: '3%',
+    borderRadius: 5,
+    backgroundColor: '#FFF',
+    justifyContent: 'flex-end',
   },
 });
