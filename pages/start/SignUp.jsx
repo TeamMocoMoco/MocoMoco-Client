@@ -14,7 +14,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { PickRoleCard } from '../../components/card';
 import { HeaderBack } from '../../components/header';
 
-import { register } from '../../config/UserAPI';
+import { register } from '../../config/api/UserAPI';
 
 const diviceWidth = Dimensions.get('window').width;
 

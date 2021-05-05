@@ -24,7 +24,7 @@ import {
 import { DatePickModal } from '../../components/modal';
 
 import kind from '../../config/mock/category.json';
-import { postPosts } from '../../config/PostAPI';
+import { postPosts } from '../../config/api/PostAPI';
 
 export default function CreatePost({ navigation }) {
   const categoryList = kind.category;

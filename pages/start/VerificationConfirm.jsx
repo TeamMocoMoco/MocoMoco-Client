@@ -11,7 +11,7 @@ import {
 const diviceWidth = Dimensions.get('window').width;
 
 import { HeaderBack } from '../../components/header';
-import { checkSMS } from '../../config/UserAPI';
+import { checkSMS } from '../../config/api/UserAPI';
 
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
