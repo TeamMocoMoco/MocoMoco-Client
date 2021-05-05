@@ -91,6 +91,7 @@ export default function Verification({ navigation }) {
                     setPhone(text);
                   }}
                   style={{ fontSize: 15 }}
+                  keyboardType="number-pad"
                 />
               </View>
             </View>

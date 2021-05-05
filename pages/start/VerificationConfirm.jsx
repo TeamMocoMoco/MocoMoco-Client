@@ -116,6 +116,7 @@ export default function VerificationConfirm({ navigation, route }) {
                     setCode(text);
                   }}
                   style={{ fontSize: 15 }}
+                  keyboardType="number-pad"
                 />
               </View>
             </View>
