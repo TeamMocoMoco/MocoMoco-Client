@@ -4,6 +4,8 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { HashtagButton } from '../button';
 
 export default function MainCard({ navigation, post }) {
+  const startDate = post.startDate.substr(0, 10);
+
   return (
     <TouchableOpacity
       style={styles.cardContainer}
@@ -12,7 +14,7 @@ export default function MainCard({ navigation, post }) {
         navigation.push('ReadPost', { postId });
       }}
     >
-      <Text style={styles.date}>{post.startDate}</Text>
+      <Text style={styles.date}>{startDate}</Text>
       <View style={{ marginVertical: 10 }}>
         <Text style={styles.title}>
           {post.meeting} {post.category}
