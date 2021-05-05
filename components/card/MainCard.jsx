@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { HashtagButton } from '../button';
 
-export default function MainCard({ navigation }) {
+export default function MainCard({ navigation, post }) {
   return (
     <TouchableOpacity
       style={styles.cardContainer}
@@ -11,13 +11,17 @@ export default function MainCard({ navigation }) {
         navigation.push('ReadPost');
       }}
     >
-      <Text style={styles.date}>3일 뒤 시작</Text>
+      <Text style={styles.date}>{post.startDate}</Text>
       <View style={{ marginVertical: 10 }}>
-        <Text style={styles.title}>온라인 알고리즘 스터디</Text>
-        <Text style={styles.info}>소개글 시작 내용</Text>
+        <Text style={styles.title}>
+          {post.meeting} {post.category}
+        </Text>
+        <Text style={styles.info}>{post.title}</Text>
       </View>
       <View style={styles.hashtagList}>
-        <HashtagButton feat={'read'} title={'Python'} />
+        {post.hashtag.map((title, i) => {
+          return <HashtagButton feat={'read'} title={title} key={i} />;
+        })}
       </View>
     </TouchableOpacity>
   );

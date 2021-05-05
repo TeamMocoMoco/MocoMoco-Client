@@ -8,7 +8,11 @@ import { SearchBar } from '../../components/input';
 import { MainCard } from '../../components/card';
 import { TabButton } from '../../components/button';
 
+import data from '../../config/mock/posts.json';
+
 export default function MainList({ navigation }) {
+  const posts = data.result;
+
   const [tab, setTab] = useState('전체보기');
 
   return (
@@ -23,9 +27,9 @@ export default function MainList({ navigation }) {
 
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.content}>
-          <MainCard navigation={navigation} />
-          <MainCard navigation={navigation} />
-          <MainCard navigation={navigation} />
+          {posts.map((post, i) => {
+            return <MainCard navigation={navigation} post={post} key={i} />;
+          })}
         </View>
       </ScrollView>
       <TouchableOpacity
