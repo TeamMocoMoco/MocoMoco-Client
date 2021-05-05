@@ -59,7 +59,7 @@ export default function SignUp({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <HeaderBack navigation={navigation} title="전화번호 인증" />
+      <HeaderBack navigation={navigation} title={''} />
       <View style={styles.content}>
         <Text style={styles.title}>
           사용할 이름과{'\n'}관심있는 직군을 알려주세요!

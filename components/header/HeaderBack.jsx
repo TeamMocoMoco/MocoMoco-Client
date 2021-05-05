@@ -9,15 +9,8 @@ export default function HeaderBack({ navigation, title }) {
       <TouchableOpacity onPress={() => navigation.goBack()}>
         <Entypo name="chevron-small-left" size={38} color="black" />
       </TouchableOpacity>
-      {/* <Text style={styles.headerText}>{title}</Text> */}
-      <TouchableOpacity disabled>
-        <Entypo
-          name="chevron-small-left"
-          size={38}
-          color="black"
-          color="transparent"
-        />
-      </TouchableOpacity>
+
+      <Text style={styles.headerText}>{title}</Text>
     </View>
   );
 }
@@ -29,11 +22,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     backgroundColor: 'white',
     alignItems: 'center',
+    justifyContent: 'space-between',
   },
   headerText: {
-    color: '#FFF',
+    color: 'grey',
     flex: 1,
     fontSize: 18,
-    textAlign: 'center',
+    textAlign: 'right',
   },
 });
