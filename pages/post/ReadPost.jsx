@@ -1,33 +1,141 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import {
+  ActivityIndicator,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+
+import { Entypo } from '@expo/vector-icons';
 
 import { HeaderBack } from '../../components/header';
-import { DetailCard } from '../../components/card';
-import { FullButton } from '../../components/button';
+import { HashtagButton, RadiusButton } from '../../components/button';
 
-export default function ReadPost({ navigation }) {
-  return (
+import { getPostsById } from '../../config/api/PostAPI';
+import { createRoom } from '../../config/api/ChatAPI';
+
+export default function ReadPost({ navigation, route }) {
+  const postId = route.params.postId;
+
+  const [ready, setReady] = useState(false);
+  const [post, setPost] = useState({});
+
+  const date = new Date();
+
+  console.log(Date.parse(date));
+
+  useEffect(() => {
+    setTimeout(async () => {
+      const result = await getPostsById(postId);
+      setPost(result);
+      setReady(true);
+    });
+  }, [navigation]);
+
+  const showApplyButton = () => {
+    if (post.status == false) {
+      return <RadiusButton title={'모집이 마감되었습니다.'} status={false} />;
+    } else {
+      return (
+        <RadiusButton
+          title={'채팅으로 신청하기'}
+          status={true}
+          doFunction={async () => {
+            await createRoom(navigation, post._id, post.user._id);
+          }}
+        />
+      );
+    }
+  };
+
+  return ready ? (
     <View style={styles.container}>
       <HeaderBack navigation={navigation} title={'모집글 상세'} />
       <ScrollView>
-        <View style={styles.content}>
-          <DetailCard />
-          <View style={{ width: '50%', alignSelf: 'center' }}>
-            <FullButton
-              title={'신청하기'}
-              doFunction={() => {
-                navigation.push('ChatRoom');
-              }}
-            />
+        <View style={styles.m_h_25}>
+          {/* 해시태그 */}
+          <View style={styles.hashtagRow}>
+            {post.hashtag.map((title, i) => {
+              return <HashtagButton feat={'read'} title={title} key={i} />;
+            })}
+          </View>
+
+          {/* 제목 */}
+          <Text style={styles.title}>
+            {post.meeting} {post.category}
+          </Text>
+
+          {/* 날짜 */}
+          <Text style={styles.day}>D-3</Text>
+          <Text style={styles.date}>{post.startDate.parse}</Text>
+        </View>
+
+        {/* 위치 */}
+        <View style={styles.locationBox}>
+          <Text style={styles.location}>서울특별시 용산구 이태원동</Text>
+          <Entypo name="chevron-right" size={22} color="black" />
+        </View>
+
+        <View style={styles.m_h_25}>
+          <View style={styles.divider}></View>
+
+          {/* 주최자 */}
+          <View style={styles.row}>
+            <Text style={styles.label}>주최자</Text>
+            <Text style={styles.tag}>{post.user.name}</Text>
+            <Text style={styles.position}>
+              {post.position} / {post.language}
+            </Text>
+          </View>
+
+          {/* 모집 인원 */}
+          <View style={styles.row}>
+            <Text style={styles.label}>모집 인원</Text>
+            <Text style={styles.tag}>{post.personnel}명</Text>
+          </View>
+
+          {/* 참가자 */}
+          <View style={styles.row}>
+            <Text style={styles.label}>참가자</Text>
+            <View style={styles.arrowRow}>
+              <Text style={styles.tag}>{post.participants.length}명</Text>
+              <Entypo name="chevron-right" size={22} color="black" />
+            </View>
+          </View>
+
+          {/* 모집 분류 */}
+          <View style={styles.row}>
+            <Text style={styles.label}>모집 분류</Text>
+            <Text style={styles.tag}>{post.category}</Text>
           </View>
         </View>
+
+        {/* 소개글 */}
+        <View style={styles.m_h_25}>
+          <Text style={[styles.label, { marginVertical: 10 }]}>소개글</Text>
+        </View>
+        <View style={styles.descBox}>
+          <Text style={styles.desc}>{post.content}</Text>
+        </View>
+
+        {/* 신청 버튼 */}
+        <View style={styles.m_h_25}>{showApplyButton()}</View>
       </ScrollView>
+    </View>
+  ) : (
+    <View style={styles.container}>
+      <HeaderBack navigation={navigation} title={'모집글 상세'} />
+      <ActivityIndicator size="small" color="#0000ff" />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  m_h_25: {
+    marginHorizontal: 25,
+  },
   container: {
     backgroundColor: '#FFF',
     flex: 1,
@@ -36,6 +144,86 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
+  },
+  divider: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#ECEEF1',
+    marginVertical: 10,
+  },
+
+  arrowRow: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+
+  hashtagRow: {
+    flexDirection: 'row',
     alignItems: 'center',
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginVertical: 15,
+  },
+
+  day: {
+    color: '#484848',
+    fontSize: 12,
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
+  date: {
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+
+  locationBox: {
+    flexDirection: 'row',
+    backgroundColor: '#F8F9FB',
+    paddingVertical: 15,
+    paddingHorizontal: 25,
+    marginVertical: 10,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  location: {
+    fontWeight: 'bold',
+  },
+
+  name: {
+    width: '30%',
+    fontSize: 15,
+    fontWeight: 'bold',
+  },
+
+  row: {
+    flexDirection: 'row',
+    marginVertical: 10,
+    alignItems: 'center',
+  },
+  label: {
+    width: '30%',
+    color: '#646970',
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  tag: {
+    fontSize: 15,
+    fontWeight: 'bold',
+  },
+  position: {
+    color: '#8E9297',
+    marginStart: 15,
+  },
+
+  descBox: {
+    backgroundColor: '#F8F9FB',
+    paddingVertical: 15,
+    paddingHorizontal: 25,
+  },
+  desc: {
+    color: '#000',
+    marginBottom: 10,
   },
 });
