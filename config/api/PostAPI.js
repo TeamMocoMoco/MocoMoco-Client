@@ -11,7 +11,7 @@ export async function getPosts() {
       url: host + '/posts',
     });
 
-    console.log(response.data.result);
+    return response.data.result;
   } catch (err) {
     const error = err.response.data.err || err.message;
 
@@ -19,7 +19,37 @@ export async function getPosts() {
   }
 }
 
-export async function getPostsOnline(category) {
+export async function getPostsById(postId) {
+  try {
+    const response = await axios({
+      method: 'get',
+      url: host + '/posts/' + postId,
+    });
+
+    return response.data.result;
+  } catch (err) {
+    const error = err.response.data.err || err.message;
+
+    Alert.alert(error);
+  }
+}
+
+export async function getPostsOnline() {
+  try {
+    const response = await axios({
+      method: 'get',
+      url: host + '/posts/online',
+    });
+    
+    return response.data.result;
+  } catch (err) {
+    const error = err.response.data.err || err.message;
+
+    Alert.alert(error);
+  }
+}
+
+export async function getPostsOnlineByCategory(category) {
   try {
     const response = await axios({
       method: 'get',
@@ -37,17 +67,14 @@ export async function getPostsOnline(category) {
   }
 }
 
-export async function getPostsOffline(category) {
+export async function getPostsOffline() {
   try {
     const response = await axios({
       method: 'get',
       url: host + '/posts/offline',
-      params: {
-        category: category,
-      },
     });
 
-    console.log(response.data.result);
+    return response.data.result;
   } catch (err) {
     const error = err.response.data.err || err.message;
 
@@ -55,11 +82,14 @@ export async function getPostsOffline(category) {
   }
 }
 
-export async function getPostsById(postId) {
+export async function getPostsOfflineByCategory(category) {
   try {
     const response = await axios({
       method: 'get',
-      url: host + '/posts/' + postId,
+      url: host + '/posts/offline',
+      params: {
+        category: category,
+      },
     });
 
     console.log(response.data.result);
