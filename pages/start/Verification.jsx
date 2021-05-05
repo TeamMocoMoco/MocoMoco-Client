@@ -52,7 +52,7 @@ export default function Verification({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <HeaderBack navigation={navigation} title="전화번호 인증" />
+      <HeaderBack navigation={navigation} title={''} />
       <View style={styles.content}>
         <View style={styles.headTextBox}>
           <Text style={styles.headText}>
