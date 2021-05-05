@@ -1,8 +1,9 @@
 import React from 'react';
 import { StyleSheet, View, Modal, ScrollView, Text } from 'react-native';
 
-import MapCard from '../card/MapCard';
 import { AntDesign } from '@expo/vector-icons';
+
+import MapCard from '../card/MapCard';
 
 export default function MapModal({
   navigation,
