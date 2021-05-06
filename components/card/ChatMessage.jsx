@@ -1,10 +1,10 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-export default function ChatMessage({ leader, user, message, createdAt }) {
+export default function ChatMessage({ receiver, sender, message, createdAt }) {
   const time = createdAt;
 
-  if (leader == user) {
+  if (receiver != sender) {
     return (
       <View style={styles.row}>
         {/* 메세지 박스 */}
