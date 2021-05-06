@@ -58,3 +58,56 @@ export async function getChatsByRoom(roomId) {
     Alert.alert(error);
   }
 }
+
+export async function postChat(roomId, message) {
+  // const token = await SecureStore.getItemAsync('token');
+  const token =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MDhmYWI4ODBmYWIxNzMzMzE2ZWVmZjEiLCJpYXQiOjE2MjAwNTkwMTR9.MszJf899rROPdg-cVHYoKG8N-rBKi9ReAeIMOWfRibM';
+  try {
+    const response = await axios({
+      method: 'post',
+      url: host + '/rooms/' + roomId + '/chat',
+      headers: {
+        token: token,
+      },
+      data: {
+        content: message,
+      },
+    });
+
+    // console.log(response.data.result);
+  } catch (err) {
+    let error = err.response.data.err || err.message;
+
+    if (error.includes('Error: ')) {
+      error = error.substr(7);
+    }
+
+    Alert.alert(error);
+  }
+}
+
+export async function getMyRooms() {
+  // const token = await SecureStore.getItemAsync('token');
+  const token =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MDhmYWI4ODBmYWIxNzMzMzE2ZWVmZjEiLCJpYXQiOjE2MjAwNTkwMTR9.MszJf899rROPdg-cVHYoKG8N-rBKi9ReAeIMOWfRibM';
+  try {
+    const response = await axios({
+      method: 'get',
+      url: host + '/rooms/myroom',
+      headers: {
+        token: token,
+      },
+    });
+
+    return response.data.result;
+  } catch (err) {
+    let error = err.response.data.err || err.message;
+
+    if (error.includes('Error: ')) {
+      error = error.substr(7);
+    }
+
+    Alert.alert(error);
+  }
+}
