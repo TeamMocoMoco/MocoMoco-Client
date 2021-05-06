@@ -4,7 +4,7 @@ import axios from 'axios';
 
 const host = 'http://3.34.137.188';
 
-export async function createRoom(navigation, postId, admin) {
+export async function createRoom(navigation, postId, admin, userName) {
   const token = await SecureStore.getItemAsync('usertoken');
   try {
     const response = await axios({
@@ -20,7 +20,7 @@ export async function createRoom(navigation, postId, admin) {
     });
 
     const roomId = response.data.result;
-    navigation.push('ChatRoom', roomId);
+    navigation.push('ChatRoom', { roomId: roomId, userName: userName });
   } catch (err) {
     let error = err.response.data.err || err.message;
 
@@ -68,8 +68,6 @@ export async function postChat(roomId, message) {
         content: message,
       },
     });
-
-    // console.log(response.data.result);
   } catch (err) {
     let error = err.response.data.err || err.message;
 

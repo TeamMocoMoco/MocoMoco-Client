@@ -8,6 +8,7 @@ import {
   View,
   Modal,
 } from 'react-native';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
@@ -52,7 +53,12 @@ export default function ReadPost({ navigation, route }) {
           title={'모집 마감하기'}
           status={true}
           doFunction={async () => {
-            await createRoom(navigation, post._id, post.user._id);
+            await createRoom(
+              navigation,
+              post._id,
+              post.user._id,
+              post.user.name
+            );
           }}
         />
       );
@@ -62,7 +68,12 @@ export default function ReadPost({ navigation, route }) {
           title={'채팅으로 신청하기'}
           status={true}
           doFunction={async () => {
-            await createRoom(navigation, post._id, post.user._id);
+            await createRoom(
+              navigation,
+              post._id,
+              post.user._id,
+              post.user.name
+            );
           }}
         />
       );

@@ -10,44 +10,58 @@ import {
 
 const diviceWidth = Dimensions.get('window').width;
 
-export default function ChatCard({ navigation, room, chat, index }) {
-  console.log(room);
-  return (
-    <TouchableOpacity
-      onPress={() => {
-        navigation.push('ChatRoom', { roomId: room._id });
-      }}
-    >
-      <View style={styles.cardFrame}>
-        {/* 프로필사진 */}
-        <Image
-          source={{
-            uri:
-              'https://image.news1.kr/system/photos/2020/5/29/4215665/article.jpg/dims/optimize',
-          }}
-          style={styles.img}
-        />
+export default function ChatCard({ navigation, userId, room, chat, index }) {
+  const showName = () => {
+    if (userId == room.admin._id) {
+      return room.participant.name;
+    } else {
+      return room.admin.name;
+    }
+  };
 
-        <View style={{ margin: 10, flex: 1 }}>
-          {/* 이름, 채팅온시간 */}
-          <View style={styles.textCard}>
-            <Text
-              style={{
-                fontSize: 20,
-                fontWeight: 'bold',
-              }}
-            >
-              {room.admin.name}
-            </Text>
-            <Text>{room.createdAt.substr(11, 5)}</Text>
+  if (room.admin != null) {
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          navigation.push('ChatRoom', {
+            roomId: room._id,
+            userName: showName(),
+          });
+        }}
+      >
+        <View style={styles.cardFrame}>
+          {/* 프로필사진 */}
+          <Image
+            source={{
+              uri:
+                'https://image.news1.kr/system/photos/2020/5/29/4215665/article.jpg/dims/optimize',
+            }}
+            style={styles.img}
+          />
+
+          <View style={{ margin: 10, flex: 1 }}>
+            {/* 이름, 채팅온시간 */}
+            <View style={styles.textCard}>
+              <Text
+                style={{
+                  fontSize: 20,
+                  fontWeight: 'bold',
+                }}
+              >
+                {showName()}
+              </Text>
+              <Text>{room.createdAt.substr(11, 5)}</Text>
+            </View>
+
+            {/* 마지막온 채팅 보이기 */}
+            <Text numberOfLines={1}>{chat}</Text>
           </View>
-
-          {/* 마지막온 채팅 보이기 */}
-          <Text numberOfLines={1}>{chat}</Text>
         </View>
-      </View>
-    </TouchableOpacity>
-  );
+      </TouchableOpacity>
+    );
+  } else {
+    return <></>;
+  }
 }
 
 const styles = StyleSheet.create({

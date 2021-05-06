@@ -1,12 +1,15 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import {
+  Alert,
   ActivityIndicator,
   ScrollView,
   StyleSheet,
   TouchableOpacity,
   View,
 } from 'react-native';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { Entypo } from '@expo/vector-icons';
 
@@ -35,6 +38,16 @@ export default function MainList({ navigation }) {
       });
     });
   }, [navigation]);
+
+  const checkLogin = async () => {
+    const id = await AsyncStorage.getItem('myid');
+    if (id != null) {
+      navigation.push('CreatePostFirst');
+    } else {
+      Alert.alert('로그인이 필요한 기능입니다.');
+      navigation.push('Verification');
+    }
+  };
 
   const download = useCallback(async (title) => {
     setTab(title);
@@ -74,7 +87,7 @@ export default function MainList({ navigation }) {
       <TouchableOpacity
         style={styles.FAB}
         onPress={() => {
-          navigation.push('CreatePostFirst');
+          checkLogin();
         }}
       >
         <Entypo name="plus" size={24} color="white" />

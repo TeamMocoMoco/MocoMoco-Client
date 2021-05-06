@@ -10,6 +10,8 @@ import {
   FlatList,
 } from 'react-native';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { io } from 'socket.io-client';
 
 import { ChatHeader } from '../../components/header';
@@ -25,15 +27,16 @@ const diviceWidth = Dimensions.get('window').width;
 const SOCKET_URL = 'http://3.34.137.188/chat';
 
 export default function ChatRoom({ navigation, route }) {
-  const roomId = route.params;
+  const roomId = route.params.roomId;
+  const userName = route.params.userName;
 
   const ref = useRef();
   const chat = useRef([]);
+  const myid = useRef();
   // const flatlistRef = useRef();
 
   const [ready, setReady] = useState(false);
   const [roomInfo, setRoomInfo] = useState({});
-  // const [chat, setChat] = useState([]);
   const [message, setMessage] = useState('');
 
   const submitChatMessage = async () => {
@@ -53,6 +56,7 @@ export default function ChatRoom({ navigation, route }) {
         const result = await getChatsByRoom(roomId);
         setRoomInfo(result.roomInfo);
         chat.current = result.chat;
+        myid.current = await AsyncStorage.getItem('myid');
         // flatlistRef.current.scrollToEnd({ animating: true });
         setReady(true);
       });
@@ -90,7 +94,7 @@ export default function ChatRoom({ navigation, route }) {
   return ready ? (
     <View style={styles.container}>
       <ChatHeader
-        name={roomInfo.admin.name}
+        name={userName}
         // img={item.userImage}
         navigation={navigation}
       />
@@ -102,8 +106,8 @@ export default function ChatRoom({ navigation, route }) {
         renderItem={(chatInfo) => {
           return (
             <ChatMessage
-              leader={roomInfo.admin._id}
-              user={chatInfo.item.user}
+              receiver={myid.current}
+              sender={chatInfo.item.user}
               message={chatInfo.item.content}
               createdAt={chatInfo.item.createdAt.substr(11, 5)}
               key={chatInfo.item._id}
