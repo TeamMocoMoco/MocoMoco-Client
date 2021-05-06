@@ -8,6 +8,7 @@ import {
   TextInput,
   TouchableOpacity,
   FlatList,
+  RefreshControl,
 } from 'react-native';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -26,25 +27,24 @@ const diviceWidth = Dimensions.get('window').width;
 
 const SOCKET_URL = 'http://3.34.137.188/chat';
 
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
+
 export default function ChatRoom({ navigation, route }) {
+  // let flatListRef;
   const roomId = route.params.roomId;
   const userName = route.params.userName;
 
   const ref = useRef();
   const chat = useRef([]);
   const myid = useRef();
-  // const flatlistRef = useRef();
 
   const [ready, setReady] = useState(false);
-  const [roomInfo, setRoomInfo] = useState({});
-  const [message, setMessage] = useState('');
+  const [refreshing, setRefreshing] = useState(false);
 
-  const submitChatMessage = async () => {
-    ref.current.emit('message', { content: message, roomId: roomId });
-    await postChat(roomId, message);
-    setMessage('');
-    // flatlistRef.current.scrollToEnd({ animating: true });
-  };
+  const [message, setMessage] = useState('');
+  const [socketState, setSocketState] = useState(false);
 
   useEffect(() => {
     // 소켓 연결 (완료)
@@ -54,10 +54,8 @@ export default function ChatRoom({ navigation, route }) {
     navigation.addListener('focus', (e) => {
       setTimeout(async () => {
         const result = await getChatsByRoom(roomId);
-        setRoomInfo(result.roomInfo);
         chat.current = result.chat;
         myid.current = await AsyncStorage.getItem('myid');
-        // flatlistRef.current.scrollToEnd({ animating: true });
         setReady(true);
       });
     });
@@ -65,11 +63,22 @@ export default function ChatRoom({ navigation, route }) {
     // roomId emit (완료)
     socket.emit('connectRoom', { roomId: roomId });
 
-    socket.on('chat', (data) => {
-      console.log('메세지 알림');
+    socket.on('chat', async (data) => {
+      setSocketState(true);
       chat.current = [...chat.current, data];
+      setSocketState(false);
     });
   }, []);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    wait(1000).then(() => setRefreshing(false));
+  }, []);
+
+  const submitChatMessage = async () => {
+    await postChat(roomId, message);
+    setMessage('');
+  };
 
   const showSendButton = () => {
     if (message == '') {
@@ -99,7 +108,9 @@ export default function ChatRoom({ navigation, route }) {
         navigation={navigation}
       />
       <FlatList
-        // ref={flatlistRef}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
         contentContainerStyle={styles.content}
         data={chat.current}
         keyExtractor={(item) => item._id}
