@@ -1,5 +1,6 @@
 import { Alert } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
 const host = 'http://3.34.137.188';
@@ -10,7 +11,6 @@ export async function getPosts() {
       method: 'get',
       url: host + '/posts',
     });
-
     return response.data.result;
   } catch (err) {
     const error = err.response.data.err || err.message;
@@ -21,11 +21,11 @@ export async function getPosts() {
 
 export async function getPostsById(postId) {
   try {
+    const myid = await AsyncStorage.getItem('myid');
     const response = await axios({
       method: 'get',
       url: host + '/posts/' + postId,
     });
-
     return response.data.result;
   } catch (err) {
     const error = err.response.data.err || err.message;
@@ -114,9 +114,7 @@ export async function postPosts(
   intro,
   hashtagList
 ) {
-  // const token = await SecureStore.getItemAsync('token');
-  const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MDhmYWI4ODBmYWIxNzMzMzE2ZWVmZjEiLCJpYXQiOjE2MjAwNTkwMTR9.MszJf899rROPdg-cVHYoKG8N-rBKi9ReAeIMOWfRibM';
+  const token = await SecureStore.getItemAsync('usertoken');
   try {
     const response = await axios({
       method: 'post',
