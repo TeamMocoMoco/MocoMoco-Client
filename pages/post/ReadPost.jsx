@@ -22,10 +22,6 @@ export default function ReadPost({ navigation, route }) {
   const [ready, setReady] = useState(false);
   const [post, setPost] = useState({});
 
-  const date = new Date();
-
-  console.log(Date.parse(date));
-
   useEffect(() => {
     setTimeout(async () => {
       const result = await getPostsById(postId);
@@ -52,7 +48,7 @@ export default function ReadPost({ navigation, route }) {
 
   return ready ? (
     <View style={styles.container}>
-      <HeaderBack navigation={navigation} title={'모집글 상세'} />
+      <HeaderBack navigation={navigation} title={''} />
       <ScrollView>
         <View style={styles.m_h_25}>
           {/* 해시태그 */}
@@ -69,7 +65,10 @@ export default function ReadPost({ navigation, route }) {
 
           {/* 날짜 */}
           <Text style={styles.day}>D-3</Text>
-          <Text style={styles.date}>{post.startDate.parse}</Text>
+          <Text style={styles.date}>
+            {post.startDate.substr(0, 16).replace('T', ' ')} ~{' '}
+            {post.dueDate.substr(0, 16).replace('T', ' ')}
+          </Text>
         </View>
 
         {/* 위치 */}

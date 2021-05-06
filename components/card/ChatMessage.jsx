@@ -3,7 +3,6 @@ import { StyleSheet, Text, View } from 'react-native';
 
 export default function ChatMessage({ leader, user, message, createdAt }) {
   const time = createdAt;
-  // const time = new Date(createdAt).getHours();
 
   if (leader == user) {
     return (
@@ -13,14 +12,14 @@ export default function ChatMessage({ leader, user, message, createdAt }) {
           <Text style={{ color: '#FFF' }}>{message}</Text>
         </View>
         {/* 시간 */}
-        <Text style={{ textAlign: 'right', marginRight: '5%' }}>{time}</Text>
+        <Text style={styles.time}>{time}</Text>
       </View>
     );
   } else {
     return (
       <View style={[styles.row, { justifyContent: 'flex-end' }]}>
         {/* 시간 */}
-        <Text style={{ textAlign: 'right', marginRight: '5%' }}>{time}</Text>
+        <Text style={styles.time}>{time}</Text>
         {/* 메세지 박스 */}
         <View style={styles.user_message}>
           <Text>{message}</Text>
@@ -47,5 +46,11 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: '#FFF',
     justifyContent: 'flex-end',
+  },
+  time: {
+    fontSize: 10,
+    textAlign: 'right',
+    marginHorizontal: '3%',
+    alignSelf: 'flex-end',
   },
 });
