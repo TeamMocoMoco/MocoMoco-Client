@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import {
   Button,
@@ -15,7 +15,6 @@ import { Entypo, Ionicons } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker';
 
 import { HeaderBack } from '../../components/header';
-import { SignInput } from '../../components/input';
 import {
   HashtagButton,
   FullButton,
@@ -24,30 +23,34 @@ import {
 import { DatePickModal } from '../../components/modal';
 
 import kind from '../../config/mock/category.json';
-import { postPosts } from '../../config/api/PostAPI';
 
-export default function CreatePost({ navigation }) {
+import { patchPosts } from '../../config/api/PostAPI';
+
+export default function UpdatePost({ navigation, route }) {
+  const post = route.params;
+  console.log(post.personnel);
   const categoryList = kind.category;
 
-  const [onAndOff, setOnAndOff] = useState('');
-  const [title, setTitle] = useState('');
-  const [category, setCategory] = useState('선택');
-  const [personnel, setPersonnel] = useState(0);
-  const [location, setLocation] = useState([36.7, 37.7]);
-  const [startDate, setStartDate] = useState('');
-  const [dueDate, setDueDate] = useState('');
-  const [position, setPosition] = useState('');
-  const [language, setLanguage] = useState('');
-  const [intro, setIntro] = useState('');
-  const [hashtagList, setHashtagList] = useState([]);
+  const [onAndOff, setOnAndOff] = useState(post.meeting);
+  const [title, setTitle] = useState(post.title);
+  const [category, setCategory] = useState(post.category);
+  const [personnel, setPersonnel] = useState(post.personnel);
+  const [location, setLocation] = useState(post.location);
+  const [startDate, setStartDate] = useState(post.startDate);
+  const [dueDate, setDueDate] = useState(post.dueDate);
+  const [position, setPosition] = useState(post.position);
+  const [language, setLanguage] = useState(post.language);
+  const [intro, setIntro] = useState(post.content);
+  const [hashtagList, setHashtagList] = useState(post.hashtag);
   const [hashtag, setHashtag] = useState('');
 
   const [currentModal, setCurrentModal] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
 
-  const upload = async () => {
-    await postPosts(
+  const update = async () => {
+    await patchPosts(
       navigation,
+      post._id,
       onAndOff,
       title,
       category,
@@ -119,7 +122,7 @@ export default function CreatePost({ navigation }) {
         <FullButton
           title={'수정 완료'}
           empty={false}
-          doFunction={() => upload()}
+          doFunction={() => update()}
         />
       );
     }
@@ -169,7 +172,7 @@ export default function CreatePost({ navigation }) {
             해시태그
           </Text>
           <View style={{ flexDirection: 'row' }}>
-            {hashtagList.map((tag, i) => {
+            {post.hashtag.map((tag, i) => {
               return (
                 <HashtagButton
                   feat={'create'}

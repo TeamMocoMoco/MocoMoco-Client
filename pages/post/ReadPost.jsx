@@ -119,6 +119,7 @@ export default function ReadPost({ navigation, route }) {
             navigation={navigation}
             modalOpen={modalOpen}
             setModalOpen={setModalOpen}
+            post={post}
           />
 
           {/* 날짜 */}
