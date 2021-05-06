@@ -161,7 +161,7 @@ export async function patchPosts(
   intro,
   hashtagList
 ) {
-  const token = await SecureStore.getItemAsync('token');
+  const token = await SecureStore.getItemAsync('usertoken');
   try {
     const response = await axios({
       method: 'patch',
@@ -193,7 +193,7 @@ export async function patchPosts(
 }
 
 export async function deletePosts(postId) {
-  const token = await SecureStore.getItemAsync('token');
+  const token = await SecureStore.getItemAsync('usertoken');
   try {
     const response = await axios({
       method: 'delete',
