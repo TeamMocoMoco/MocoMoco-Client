@@ -40,7 +40,7 @@ export default function ChatRoom({ navigation, route }) {
   const [message, setMessage] = useState('');
 
   const submitChatMessage = async () => {
-    ref.current.emit('message', { content: message });
+    ref.current.emit('message', { content: message, roomId: roomId });
     await postChat(roomId, message);
     setMessage('');
     // flatlistRef.current.scrollToEnd({ animating: true });
