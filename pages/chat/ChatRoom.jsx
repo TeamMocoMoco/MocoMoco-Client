@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import {
   ActivityIndicator,
@@ -10,32 +10,62 @@ import {
   FlatList,
 } from 'react-native';
 
+import { io } from 'socket.io-client';
+
 import { ChatHeader } from '../../components/header';
 import { ChatMessage } from '../../components/card';
 
 import { Feather } from '@expo/vector-icons';
 
-import { getChatsByRoom } from '../../config/api/ChatAPI';
+import { getChatsByRoom, postChat } from '../../config/api/ChatAPI';
+import { KeyboardAwareFlatList } from 'react-native-keyboard-aware-scroll-view';
 
 const diviceWidth = Dimensions.get('window').width;
+
+const SOCKET_URL = 'http://3.34.137.188/chat';
 
 export default function ChatRoom({ navigation, route }) {
   const roomId = route.params;
 
+  const ref = useRef();
+  const chat = useRef([]);
+  // const flatlistRef = useRef();
+
   const [ready, setReady] = useState(false);
   const [roomInfo, setRoomInfo] = useState({});
-  const [chat, setChat] = useState([]);
+  // const [chat, setChat] = useState([]);
   const [message, setMessage] = useState('');
 
+  const submitChatMessage = async () => {
+    ref.current.emit('message', { content: message });
+    await postChat(roomId, message);
+    setMessage('');
+    // flatlistRef.current.scrollToEnd({ animating: true });
+  };
+
   useEffect(() => {
-    setTimeout(async () => {
-      const result = await getChatsByRoom(roomId);
-      console.log(result);
-      setRoomInfo(result.roomInfo);
-      setChat(result.chat);
-      setReady(true);
+    // 소켓 연결 (완료)
+    const socket = io(SOCKET_URL);
+    ref.current = socket;
+
+    navigation.addListener('focus', (e) => {
+      setTimeout(async () => {
+        const result = await getChatsByRoom(roomId);
+        setRoomInfo(result.roomInfo);
+        chat.current = result.chat;
+        // flatlistRef.current.scrollToEnd({ animating: true });
+        setReady(true);
+      });
     });
-  }, [navigation]);
+
+    // roomId emit (완료)
+    socket.emit('connectRoom', { roomId: roomId });
+
+    socket.on('chat', (data) => {
+      console.log('메세지 알림');
+      chat.current = [...chat.current, data];
+    });
+  }, []);
 
   const showSendButton = () => {
     if (message == '') {
@@ -46,7 +76,11 @@ export default function ChatRoom({ navigation, route }) {
       );
     } else {
       return (
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            submitChatMessage();
+          }}
+        >
           <Feather name="send" size={24} color="black" />
         </TouchableOpacity>
       );
@@ -61,8 +95,9 @@ export default function ChatRoom({ navigation, route }) {
         navigation={navigation}
       />
       <FlatList
-        style={styles.content}
-        data={chat}
+        // ref={flatlistRef}
+        contentContainerStyle={styles.content}
+        data={chat.current}
         keyExtractor={(item) => item._id}
         renderItem={(chatInfo) => {
           return (
@@ -80,7 +115,7 @@ export default function ChatRoom({ navigation, route }) {
       <View style={styles.bottomBox}>
         <View style={styles.sendBox}>
           <TextInput
-            placeholder={'Write a Messages'}
+            placeholder={'메세지를 입력하세요.'}
             value={message}
             onChangeText={(text) => {
               setMessage(text);
@@ -96,8 +131,11 @@ export default function ChatRoom({ navigation, route }) {
     </View>
   ) : (
     <View style={styles.container}>
-      <ActivityIndicator size="small" color="#0000ff" />
-
+      <ActivityIndicator
+        size="small"
+        color="#0000ff"
+        style={{ alignSelf: 'center' }}
+      />
       <View style={styles.bottomBox}>
         <View style={styles.sendBox}>
           <TextInput
