@@ -114,6 +114,7 @@ export default function CreatePostFourth({ navigation, route }) {
             {hashtagList.map((tag, i) => {
               return (
                 <HashtagButton
+                  feat={'create'}
                   title={tag}
                   index={i}
                   onRemove={onRemove}
