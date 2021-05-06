@@ -85,25 +85,12 @@ export default function CreatePostSecond({ navigation, route }) {
           시작일과 종료일을{'\n'}설정해주세요.
         </Text>
         {/* 시작일 */}
-        <View
-          style={{
-            flexDirection: 'row',
-            marginVertical: '5%',
-            alignItems: 'center',
-          }}
-        >
-          <View style={{ flex: 2, marginEnd: 20 }}>
+        <View style={styles.startBox}>
+          <View style={styles.midBox}>
             <Text style={styles.label}>시작일</Text>
           </View>
           <TouchableOpacity
-            style={{
-              flex: 5,
-              paddingVertical: 10,
-              paddingHorizontal: 20,
-              borderRadius: 30,
-              borderWidth: 2,
-              borderColor: '#CBCBCB',
-            }}
+            style={styles.dateBox}
             onPress={() => {
               setCurrentModal('start');
               setModalOpen(true);
@@ -120,24 +107,12 @@ export default function CreatePostSecond({ navigation, route }) {
         </View>
 
         {/* 종료일 */}
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-          }}
-        >
-          <View style={{ flex: 2, marginEnd: 20 }}>
+        <View style={styles.dueBox}>
+          <View style={styles.midBox}>
             <Text style={styles.label}>종료일</Text>
           </View>
           <TouchableOpacity
-            style={{
-              flex: 5,
-              paddingVertical: 10,
-              paddingHorizontal: 20,
-              borderRadius: 30,
-              borderWidth: 2,
-              borderColor: '#CBCBCB',
-            }}
+            style={styles.dateBox}
             onPress={() => {
               setCurrentModal('due');
               setModalOpen(true);
@@ -182,5 +157,23 @@ const styles = StyleSheet.create({
     paddingVertical: '5%',
     color: 'black',
     marginTop: '5%',
+  },
+  startBox: {
+    flexDirection: 'row',
+    marginVertical: '5%',
+    alignItems: 'center',
+  },
+  midBox: { flex: 2, marginEnd: 20 },
+  dateBox: {
+    flex: 5,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 30,
+    borderWidth: 2,
+    borderColor: '#CBCBCB',
+  },
+  dueBox: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
