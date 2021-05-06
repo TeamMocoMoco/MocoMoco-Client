@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
   label: {
     color: '#263238',
     fontWeight: 'bold',
+    fontSize: 18,
     marginVertical: 10,
   },
   inputBox: {
@@ -43,6 +44,7 @@ const styles = StyleSheet.create({
   },
   hint: {
     opacity: 0.4,
+    fontSize: 18,
   },
   input: {
     opacity: 1,
