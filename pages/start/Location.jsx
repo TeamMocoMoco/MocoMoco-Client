@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 const diviceWidth = Dimensions.get('window').width;
 
-import earth from '../../assets/earth_icon.png';
+import Circles from '../../assets/Circles_icon.png';
 
 export default function Location({ navigation }) {
   return (
@@ -26,10 +26,7 @@ export default function Location({ navigation }) {
           MOCO{'\n'}MOCO
         </Text>
 
-        <Image
-          source={earth}
-          style={{ marginTop: diviceWidth * 0.1, width: diviceWidth * 0.8 }}
-        />
+        <Image source={Circles} style={{ marginTop: diviceWidth * 0.1 }} />
 
         <Text
           style={{

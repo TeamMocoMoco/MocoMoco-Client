@@ -1,5 +1,6 @@
 import { Alert } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
 const host = 'http://3.34.137.188';
@@ -10,7 +11,6 @@ export async function getPosts() {
       method: 'get',
       url: host + '/posts',
     });
-
     return response.data.result;
   } catch (err) {
     const error = err.response.data.err || err.message;
@@ -21,11 +21,11 @@ export async function getPosts() {
 
 export async function getPostsById(postId) {
   try {
+    const myid = await AsyncStorage.getItem('myid');
     const response = await axios({
       method: 'get',
       url: host + '/posts/' + postId,
     });
-
     return response.data.result;
   } catch (err) {
     const error = err.response.data.err || err.message;
@@ -40,7 +40,7 @@ export async function getPostsOnline() {
       method: 'get',
       url: host + '/posts/online',
     });
-    
+
     return response.data.result;
   } catch (err) {
     const error = err.response.data.err || err.message;
@@ -103,7 +103,6 @@ export async function getPostsOfflineByCategory(category) {
 export async function postPosts(
   navigation,
   onAndOff,
-  title,
   category,
   personnel,
   location,
@@ -111,12 +110,11 @@ export async function postPosts(
   dueDate,
   position,
   language,
+  title,
   intro,
   hashtagList
 ) {
-  // const token = await SecureStore.getItemAsync('token');
-  const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MDhmYWI4ODBmYWIxNzMzMzE2ZWVmZjEiLCJpYXQiOjE2MjAwNTkwMTR9.MszJf899rROPdg-cVHYoKG8N-rBKi9ReAeIMOWfRibM';
+  const token = await SecureStore.getItemAsync('usertoken');
   try {
     const response = await axios({
       method: 'post',
@@ -163,7 +161,7 @@ export async function patchPosts(
   intro,
   hashtagList
 ) {
-  const token = await SecureStore.getItemAsync('token');
+  const token = await SecureStore.getItemAsync('usertoken');
   try {
     const response = await axios({
       method: 'patch',
@@ -195,7 +193,7 @@ export async function patchPosts(
 }
 
 export async function deletePosts(postId) {
-  const token = await SecureStore.getItemAsync('token');
+  const token = await SecureStore.getItemAsync('usertoken');
   try {
     const response = await axios({
       method: 'delete',

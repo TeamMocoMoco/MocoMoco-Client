@@ -1,5 +1,6 @@
 import { Alert } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
 const host = 'http://3.34.137.188';
@@ -41,6 +42,8 @@ export async function checkSMS(navigation, phone, code) {
       const token = response.data.result.user.token;
       await SecureStore.setItemAsync('usertoken', token);
 
+      const myid = response.data.result.user._id;
+      await AsyncStorage.setItem('myid', myid);
       navigation.push('TabNavigator');
     }
   } catch (err) {
@@ -76,6 +79,7 @@ export async function register(name, pickRole) {
 export async function login() {
   try {
     const token = await SecureStore.getItemAsync('phonetoken');
+
     const response = await axios({
       method: 'post',
       url: host + '/auth/login',
@@ -85,9 +89,11 @@ export async function login() {
     });
 
     const new_token = response.data.result.user.token;
+    const myid = response.data.result.user._id;
 
     await SecureStore.deleteItemAsync('phonetoken');
     await SecureStore.setItemAsync('usertoken', new_token);
+    await AsyncStorage.setItem('myid', myid);
   } catch (err) {
     const error = err.response.data.err || err.message;
     console.log('login error');

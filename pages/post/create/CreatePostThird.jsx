@@ -61,23 +61,8 @@ export default function CreatePostThird({ navigation, route }) {
         {/* 포지션 / 사용언어 */}
         <View style={styles.column}>
           {/* 작성자 포지션 */}
-          <View
-            style={{
-              width: '100%',
-              paddingVertical: '2%',
-              borderBottomWidth: 1,
-              borderColor: 'black',
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 18,
-                fontWeight: 'bold',
-                paddingVertical: '3%',
-              }}
-            >
-              나의 포지션
-            </Text>
+          <View style={styles.inputBox}>
+            <Text style={styles.label}>나의 포지션</Text>
             <TextInput
               style={{ flex: 3, fontSize: 18 }}
               value={position}
@@ -90,23 +75,8 @@ export default function CreatePostThird({ navigation, route }) {
           </View>
 
           {/* 작성자 사용 언어 */}
-          <View
-            style={{
-              width: '100%',
-              paddingVertical: '2%',
-              borderBottomWidth: 1,
-              borderColor: 'black',
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 18,
-                fontWeight: 'bold',
-                paddingVertical: '3%',
-              }}
-            >
-              사용 언어
-            </Text>
+          <View style={styles.inputBox}>
+            <Text style={styles.label}>사용 언어</Text>
             <TextInput
               style={{ flex: 3, fontSize: 18 }}
               value={language}
@@ -140,5 +110,16 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     paddingVertical: '5%',
     color: 'black',
+  },
+  inputBox: {
+    width: '100%',
+    paddingVertical: '2%',
+    borderBottomWidth: 1,
+    borderColor: 'black',
+  },
+  label: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    paddingVertical: '3%',
   },
 });

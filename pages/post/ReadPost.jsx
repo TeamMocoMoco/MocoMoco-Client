@@ -6,26 +6,39 @@ import {
   StyleSheet,
   Text,
   View,
+  Modal,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { Entypo } from '@expo/vector-icons';
+import { Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { HeaderBack } from '../../components/header';
 import { HashtagButton, RadiusButton } from '../../components/button';
 
 import { getPostsById } from '../../config/api/PostAPI';
 import { createRoom } from '../../config/api/ChatAPI';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+
+import { DotModal } from '../../components/modal';
+import { io } from 'socket.io-client';
+import { set } from 'react-native-reanimated';
 
 export default function ReadPost({ navigation, route }) {
   const postId = route.params.postId;
 
   const [ready, setReady] = useState(false);
   const [post, setPost] = useState({});
+  const [myid, setMyid] = useState('');
+  const [userId, setUserId] = useState('');
+  const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     setTimeout(async () => {
       const result = await getPostsById(postId);
+      const id = await AsyncStorage.getItem('myid');
       setPost(result);
+      setUserId(result.user._id);
+      setMyid(id);
       setReady(true);
     });
   }, [navigation]);
@@ -33,6 +46,16 @@ export default function ReadPost({ navigation, route }) {
   const showApplyButton = () => {
     if (post.status == false) {
       return <RadiusButton title={'모집이 마감되었습니다.'} status={false} />;
+    } else if (myid == userId) {
+      return (
+        <RadiusButton
+          title={'모집 마감하기'}
+          status={true}
+          doFunction={async () => {
+            await createRoom(navigation, post._id, post.user._id);
+          }}
+        />
+      );
     } else {
       return (
         <RadiusButton
@@ -46,6 +69,20 @@ export default function ReadPost({ navigation, route }) {
     }
   };
 
+  const showdotModal = () => {
+    if (myid == userId) {
+      return (
+        <MaterialCommunityIcons
+          name="dots-vertical"
+          size={28}
+          color="black"
+          onPress={() => {
+            setModalOpen(true);
+          }}
+        />
+      );
+    }
+  };
   return ready ? (
     <View style={styles.container}>
       <HeaderBack navigation={navigation} title={''} />
@@ -57,11 +94,21 @@ export default function ReadPost({ navigation, route }) {
               return <HashtagButton feat={'read'} title={title} key={i} />;
             })}
           </View>
+          <View style={styles.arrowRow}>
+            {/* 제목 */}
+            <Text style={styles.title}>
+              {post.meeting} {post.category}
+            </Text>
 
-          {/* 제목 */}
-          <Text style={styles.title}>
-            {post.meeting} {post.category}
-          </Text>
+            {/* 수정/삭제 모달 버튼 (작성자일 때 만) */}
+            {showdotModal()}
+          </View>
+
+          <DotModal
+            navigation={navigation}
+            modalOpen={modalOpen}
+            setModalOpen={setModalOpen}
+          />
 
           {/* 날짜 */}
           <Text style={styles.day}>D-3</Text>
@@ -154,6 +201,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
   },
 
   hashtagRow: {
