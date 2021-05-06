@@ -5,9 +5,7 @@ import axios from 'axios';
 const host = 'http://3.34.137.188';
 
 export async function createRoom(navigation, postId, admin) {
-  // const token = await SecureStore.getItemAsync('token');
-  const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MDhmYWI4ODBmYWIxNzMzMzE2ZWVmZjEiLCJpYXQiOjE2MjAwNTkwMTR9.MszJf899rROPdg-cVHYoKG8N-rBKi9ReAeIMOWfRibM';
+  const token = await SecureStore.getItemAsync('usertoken');
   try {
     const response = await axios({
       method: 'post',
@@ -35,9 +33,7 @@ export async function createRoom(navigation, postId, admin) {
 }
 
 export async function getChatsByRoom(roomId) {
-  // const token = await SecureStore.getItemAsync('token');
-  const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MDhmYWI4ODBmYWIxNzMzMzE2ZWVmZjEiLCJpYXQiOjE2MjAwNTkwMTR9.MszJf899rROPdg-cVHYoKG8N-rBKi9ReAeIMOWfRibM';
+  const token = await SecureStore.getItemAsync('usertoken');
   try {
     const response = await axios({
       method: 'get',
@@ -60,9 +56,7 @@ export async function getChatsByRoom(roomId) {
 }
 
 export async function postChat(roomId, message) {
-  // const token = await SecureStore.getItemAsync('token');
-  const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MDhmYWI4ODBmYWIxNzMzMzE2ZWVmZjEiLCJpYXQiOjE2MjAwNTkwMTR9.MszJf899rROPdg-cVHYoKG8N-rBKi9ReAeIMOWfRibM';
+  const token = await SecureStore.getItemAsync('usertoken');
   try {
     const response = await axios({
       method: 'post',
@@ -88,9 +82,7 @@ export async function postChat(roomId, message) {
 }
 
 export async function getMyRooms() {
-  // const token = await SecureStore.getItemAsync('token');
-  const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MDhmYWI4ODBmYWIxNzMzMzE2ZWVmZjEiLCJpYXQiOjE2MjAwNTkwMTR9.MszJf899rROPdg-cVHYoKG8N-rBKi9ReAeIMOWfRibM';
+  const token = await SecureStore.getItemAsync('usertoken');
   try {
     const response = await axios({
       method: 'get',
