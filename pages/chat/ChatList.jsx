@@ -1,6 +1,8 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { StyleSheet, View, FlatList, ActivityIndicator } from 'react-native';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { HeaderTitle } from '../../components/header';
 import { ChatCard } from '../../components/card';
@@ -8,6 +10,8 @@ import { ChatCard } from '../../components/card';
 import { getMyRooms } from '../../config/api/ChatAPI';
 
 export default function ChatList({ navigation }) {
+  const myid = useRef();
+
   const [ready, setReady] = useState(false);
   const [rooms, setRooms] = useState([]);
   const [chats, setChats] = useState([]);
@@ -17,7 +21,9 @@ export default function ChatList({ navigation }) {
     (room) => (
       <ChatCard
         navigation={navigation}
+        userId={myid.current}
         room={room.item}
+        admin={room.item.admin}
         // chat={chats[i]}
         key={room.item._id}
       />
@@ -26,14 +32,16 @@ export default function ChatList({ navigation }) {
   );
 
   useEffect(() => {
-    setTimeout(async () => {
-      const result = await getMyRooms();
-      setRooms(result.rooms);
-      setChats(result.chats);
-      console.log(chats);
-      setReady(true);
+    navigation.addListener('focus', (e) => {
+      setTimeout(async () => {
+        const result = await getMyRooms();
+        setRooms(result.rooms);
+        setChats(result.chats);
+        myid.current = await AsyncStorage.getItem('myid');
+        setReady(true);
+      });
     });
-  }, [navigation]);
+  }, []);
 
   return ready ? (
     <View style={styles.container}>
