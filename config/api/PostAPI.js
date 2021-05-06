@@ -40,7 +40,7 @@ export async function getPostsOnline() {
       method: 'get',
       url: host + '/posts/online',
     });
-    
+
     return response.data.result;
   } catch (err) {
     const error = err.response.data.err || err.message;
@@ -103,7 +103,6 @@ export async function getPostsOfflineByCategory(category) {
 export async function postPosts(
   navigation,
   onAndOff,
-  title,
   category,
   personnel,
   location,
@@ -111,6 +110,7 @@ export async function postPosts(
   dueDate,
   position,
   language,
+  title,
   intro,
   hashtagList
 ) {
