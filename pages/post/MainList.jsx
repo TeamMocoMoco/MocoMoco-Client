@@ -3,10 +3,10 @@ import { getStatusBarHeight } from 'react-native-status-bar-height';
 import {
   Alert,
   ActivityIndicator,
-  ScrollView,
   StyleSheet,
   TouchableOpacity,
   View,
+  FlatList,
 } from 'react-native';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -27,6 +27,7 @@ export default function MainList({ navigation }) {
   const [ready, setReady] = useState(false);
   const [posts, setPosts] = useState([]);
   const [tab, setTab] = useState('전체보기');
+  const [pageNum, setPageNum] = useState(1);
 
   useEffect(() => {
     navigation.addListener('focus', (e) => {
@@ -53,11 +54,11 @@ export default function MainList({ navigation }) {
     setTab(title);
     let result = [];
     if (title == '전체보기') {
-      result = await getPosts();
+      result = await getPosts(1);
     } else if (title == '온라인') {
-      result = await getPostsOnline();
+      result = await getPostsOnline(1);
     } else if (title == '오프라인') {
-      result = await getPostsOffline();
+      result = await getPostsOffline(1);
     }
     setPosts(result);
   });
@@ -77,13 +78,22 @@ export default function MainList({ navigation }) {
         <TabButton title={'오프라인'} state={tab} download={download} />
       </View>
 
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.content}>
-          {posts.map((post, i) => {
-            return <MainCard navigation={navigation} post={post} key={i} />;
-          })}
-        </View>
-      </ScrollView>
+      <View style={styles.content}>
+        <FlatList
+          // contentContainerStyle={styles.content}
+          data={posts}
+          keyExtractor={(item) => item._id}
+          renderItem={(post) => {
+            return (
+              <MainCard
+                navigation={navigation}
+                post={post.item}
+                key={post.item._id}
+              />
+            );
+          }}
+        />
+      </View>
       <TouchableOpacity
         style={styles.FAB}
         onPress={() => {

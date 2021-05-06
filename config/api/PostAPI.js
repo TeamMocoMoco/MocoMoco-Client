@@ -5,11 +5,14 @@ import axios from 'axios';
 
 const host = 'http://3.34.137.188';
 
-export async function getPosts() {
+export async function getPosts(pageNum) {
   try {
     const response = await axios({
       method: 'get',
       url: host + '/posts',
+      params: {
+        page: pageNum,
+      },
     });
     return response.data.result;
   } catch (err) {
@@ -34,11 +37,14 @@ export async function getPostsById(postId) {
   }
 }
 
-export async function getPostsOnline() {
+export async function getPostsOnline(pageNum) {
   try {
     const response = await axios({
       method: 'get',
       url: host + '/posts/online',
+      params: {
+        page: pageNum,
+      },
     });
 
     return response.data.result;
@@ -67,11 +73,14 @@ export async function getPostsOnlineByCategory(category) {
   }
 }
 
-export async function getPostsOffline() {
+export async function getPostsOffline(pageNum) {
   try {
     const response = await axios({
       method: 'get',
       url: host + '/posts/offline',
+      params: {
+        page: pageNum,
+      },
     });
 
     return response.data.result;
