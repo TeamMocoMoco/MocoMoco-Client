@@ -8,10 +8,20 @@ import {
   Text,
   Touchable,
 } from 'react-native';
-
 const pickerWidth = Dimensions.get('window').width * 0.8;
 
-export default function DotModal({ navigation, modalOpen, setModalOpen }) {
+import { deletePosts } from '../../config/api/PostAPI';
+
+export default function DotModal({
+  navigation,
+  modalOpen,
+  setModalOpen,
+  post,
+}) {
+  const doDelete = async () => {
+    await deletePosts(navigation, post._id);
+  };
+
   return (
     <Modal
       transparent
@@ -53,13 +63,24 @@ export default function DotModal({ navigation, modalOpen, setModalOpen }) {
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={{ margin: 30 }}
+            style={{ margin: 20, borderWidth: 1 }}
             onPress={() => {
-              navigation.push('UpdatePost');
+              navigation.push('UpdatePost', post);
               setModalOpen(false);
             }}
           >
             <Text>수정하기</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={{ margin: 20, borderWidth: 1 }}
+            onPress={() => {
+              {
+                doDelete();
+              }
+            }}
+          >
+            <Text>삭제하기</Text>
           </TouchableOpacity>
         </View>
       </TouchableOpacity>

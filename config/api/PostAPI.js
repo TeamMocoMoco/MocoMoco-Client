@@ -201,7 +201,7 @@ export async function patchPosts(
   }
 }
 
-export async function deletePosts(postId) {
+export async function deletePosts(navigation, postId) {
   const token = await SecureStore.getItemAsync('usertoken');
   try {
     const response = await axios({
@@ -211,6 +211,10 @@ export async function deletePosts(postId) {
         token: token,
       },
     });
+
+    if (response.data.result) {
+      navigation.push('TabNavigator', { postId });
+    }
   } catch (err) {
     const error = err.response.data.err || err.message;
 
