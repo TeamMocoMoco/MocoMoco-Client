@@ -15,12 +15,11 @@ import { Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { HeaderBack } from '../../components/header';
 import { HashtagButton, RadiusButton } from '../../components/button';
+import { DotModal } from '../../components/modal';
 
 import { getPostsById } from '../../config/api/PostAPI';
 import { createRoom } from '../../config/api/ChatAPI';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
-import { DotModal } from '../../components/modal';
 import { io } from 'socket.io-client';
 import { set } from 'react-native-reanimated';
 

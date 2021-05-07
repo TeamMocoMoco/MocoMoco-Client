@@ -7,19 +7,20 @@ import {
   TouchableOpacity,
   Text,
   Touchable,
+  Image,
 } from 'react-native';
 const pickerWidth = Dimensions.get('window').width * 0.8;
 
-import { deletePosts } from '../../config/api/PostAPI';
+import edit from '../../assets/edit.png';
 
-export default function DotModal({
-  navigation,
-  modalOpen,
-  setModalOpen,
-  post,
-}) {
-  const doDelete = async () => {
-    await deletePosts(navigation, post._id);
+import { deletePosts } from '../../config/api/PostAPI';
+import { logout } from '../../config/api/UserAPI';
+
+import { MaterialIcons } from '@expo/vector-icons';
+
+export default function SettingModal({ navigation, modalOpen, setModalOpen }) {
+  const logoutFunc = () => {
+    logout(navigation);
   };
 
   return (
@@ -36,8 +37,8 @@ export default function DotModal({
           flex: 1,
           alignItems: 'flex-end',
           justifyContent: 'flex-start',
-          paddingTop: 140,
-          paddingRight: 40,
+          paddingTop: 50,
+          paddingRight: 25,
         }}
         onPressOut={() => {
           setModalOpen(false);
@@ -55,25 +56,18 @@ export default function DotModal({
           }}
         >
           <TouchableOpacity
-            style={{ padding: 20 }}
+            style={styles.setBox}
             onPress={() => {
-              navigation.push('UpdatePost', post);
               setModalOpen(false);
             }}
           >
-            <Text style={styles.setText}>수정하기</Text>
+            <Image source={edit} style={{ width: 30, height: 30 }} />
+            <Text style={styles.setText}>프로필 수정</Text>
           </TouchableOpacity>
 
-          {/* 삭제하기 (누르면 알러트뜨고 확인누르면 실행으로 고치기) */}
-          <TouchableOpacity
-            style={{ padding: 20 }}
-            onPress={() => {
-              {
-                doDelete();
-              }
-            }}
-          >
-            <Text style={styles.setText}>삭제하기</Text>
+          <TouchableOpacity style={styles.setBox} onPress={logoutFunc}>
+            <MaterialIcons name="logout" size={30} color="black" />
+            <Text style={styles.setText}>로그아웃</Text>
           </TouchableOpacity>
         </View>
       </TouchableOpacity>
@@ -82,5 +76,11 @@ export default function DotModal({
 }
 
 const styles = StyleSheet.create({
-  setText: { fontSize: 15 },
+  setText: { textAlign: 'center', fontSize: 15, marginLeft: 10 },
+  setBox: {
+    padding: 17,
+    flexDirection: 'row',
+    alignContent: 'center',
+    alignItems: 'center',
+  },
 });

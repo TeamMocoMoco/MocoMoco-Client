@@ -100,3 +100,15 @@ export async function login() {
     Alert.alert(error);
   }
 }
+
+export async function logout(navigation) {
+  try {
+    await SecureStore.deleteItemAsync('usertoken');
+    await AsyncStorage.clear();
+    Alert.alert('로그아웃!');
+    navigation.push('Location');
+  } catch (err) {
+    const error = err.response.data.message || err.message;
+    Alert.alert(error);
+  }
+}
