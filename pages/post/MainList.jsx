@@ -9,6 +9,7 @@ import {
   FlatList,
 } from 'react-native';
 
+import * as SecureStore from 'expo-secure-store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { Entypo } from '@expo/vector-icons';
@@ -41,8 +42,8 @@ export default function MainList({ navigation }) {
   }, [navigation]);
 
   const checkLogin = async () => {
-    const id = await AsyncStorage.getItem('myid');
-    if (id != null) {
+    const token = await SecureStore.getItemAsync('usertoken');
+    if (token != null) {
       navigation.push('CreatePostFirst');
     } else {
       Alert.alert('로그인이 필요한 기능입니다.');
