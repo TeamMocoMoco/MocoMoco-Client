@@ -28,8 +28,8 @@ export default function HeaderSetting({ title, modalOpen, setModalOpen }) {
 const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
-    paddingVertical: 15,
-    paddingHorizontal: 15,
+    paddingVertical: 20,
+    paddingHorizontal: 30,
     backgroundColor: 'white',
     alignItems: 'center',
     borderBottomWidth: 1,
