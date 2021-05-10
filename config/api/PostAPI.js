@@ -64,8 +64,6 @@ export async function getPostsOnlineByCategory(category) {
         category: category,
       },
     });
-
-    console.log(response.data.result);
   } catch (err) {
     const error = err.response.data.err || err.message;
 
@@ -100,8 +98,6 @@ export async function getPostsOfflineByCategory(category) {
         category: category,
       },
     });
-
-    console.log(response.data.result);
   } catch (err) {
     const error = err.response.data.err || err.message;
 
@@ -157,6 +153,7 @@ export async function postPosts(
 }
 
 export async function patchPosts(
+  navigation,
   postId,
   onAndOff,
   title,
@@ -170,6 +167,7 @@ export async function patchPosts(
   intro,
   hashtagList
 ) {
+  console.log(postId);
   const token = await SecureStore.getItemAsync('usertoken');
   try {
     const response = await axios({
@@ -186,14 +184,16 @@ export async function patchPosts(
         language: language,
         personnel: personnel,
         hashtag: hashtagList,
-        meeting: onAndOff,
         location: location,
-        startDate: startDate,
-        dueDate: dueDate,
+        meeting: onAndOff,
+        startDate: new Date(startDate).toISOString(),
+        dueDate: new Date(dueDate).toISOString(),
       },
     });
 
-    console.log(response.data.result);
+    if (response.data.result) {
+      navigation.push('ReadPost', { postId });
+    }
   } catch (err) {
     const error = err.response.data.err || err.message;
 
@@ -201,7 +201,7 @@ export async function patchPosts(
   }
 }
 
-export async function deletePosts(postId) {
+export async function deletePosts(navigation, postId) {
   const token = await SecureStore.getItemAsync('usertoken');
   try {
     const response = await axios({
@@ -212,7 +212,9 @@ export async function deletePosts(postId) {
       },
     });
 
-    console.log(response.data.result);
+    if (response.data.result) {
+      navigation.push('TabNavigator', { postId });
+    }
   } catch (err) {
     const error = err.response.data.err || err.message;
 
