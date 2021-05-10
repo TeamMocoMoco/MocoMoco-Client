@@ -8,9 +8,10 @@ import {
   Dimensions,
   TouchableOpacity,
 } from 'react-native';
-const diviceWidth = Dimensions.get('window').width;
 
-import Circles from '../../assets/Circles_icon.png';
+import { Circles } from '../../assets/images';
+
+const diviceWidth = Dimensions.get('window').width;
 
 export default function Location({ navigation }) {
   return (

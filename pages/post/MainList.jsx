@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 
 import * as SecureStore from 'expo-secure-store';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { Entypo } from '@expo/vector-icons';
 
@@ -81,7 +80,6 @@ export default function MainList({ navigation }) {
 
       <View style={styles.content}>
         <FlatList
-          // contentContainerStyle={styles.content}
           data={posts}
           keyExtractor={(item) => item._id}
           renderItem={(post) => {

@@ -33,6 +33,7 @@
     "react-native-status-bar-height": "^2.6.0",
     "react-native-tab-view": "^3.0.1",
     "react-native-web": "~0.13.12",
+    "rn-sliding-up-panel": "^2.4.5",
     "socket.io-client": "^4.0.1"
   },
   "devDependencies": {

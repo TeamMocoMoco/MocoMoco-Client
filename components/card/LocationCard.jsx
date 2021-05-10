@@ -3,13 +3,12 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 
 import { SmallCategoryButton, HashtagButton } from '../button';
 
-export default function MapCard({ navigation, setModalOpen }) {
+export default function LocationCard({ navigation }) {
   return (
     <TouchableOpacity
       style={styles.cardContainer}
       onPress={() => {
-        setModalOpen(false);
-        navigation.push('ReadPost');
+        navigation.goBack();
       }}
     >
       <View style={styles.firstRow}>

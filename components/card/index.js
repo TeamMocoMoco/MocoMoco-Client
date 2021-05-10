@@ -1,13 +1,13 @@
 import MainCard from './MainCard';
-import MapCard from './MapCard';
 import ChatCard from './ChatCard';
+import LocationCard from './LocationCard';
 import PickRoleCard from './PickRoleCard';
 import ChatMessage from './ChatMessage';
 
 module.exports = {
   MainCard,
-  MapCard,
   ChatCard,
+  LocationCard,
   PickRoleCard,
   ChatMessage,
 };

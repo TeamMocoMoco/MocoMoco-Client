@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 const pickerWidth = Dimensions.get('window').width * 0.8;
 
-import edit from '../../assets/edit.png';
+import { Edit } from '../../assets/images';
 
 import { deletePosts } from '../../config/api/PostAPI';
 import { logout } from '../../config/api/UserAPI';
@@ -61,7 +61,7 @@ export default function SettingModal({ navigation, modalOpen, setModalOpen }) {
               setModalOpen(false);
             }}
           >
-            <Image source={edit} style={{ width: 30, height: 30 }} />
+            <Image source={Edit} style={{ width: 30, height: 30 }} />
             <Text style={styles.setText}>프로필 수정</Text>
           </TouchableOpacity>
 
