@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { getColor } from '../../styles/styles';
 
 export default function OnAndOffButton({ title, onAndOff, setOnAndOff }) {
   if (title == onAndOff) {
@@ -26,23 +27,24 @@ export default function OnAndOffButton({ title, onAndOff, setOnAndOff }) {
 
 const styles = StyleSheet.create({
   active: {
-    backgroundColor: '#979797',
+    backgroundColor: getColor('defaultColor'),
     flex: 1,
     padding: 10,
     marginHorizontal: 5,
     borderRadius: 30,
     borderWidth: 2,
-    borderColor: '#979797',
+    borderColor: getColor('defaultColor'),
     alignItems: 'center',
     justifyContent: 'center',
   },
   inactive: {
+    backgroundColor: getColor('inactiveColor'),
     flex: 1,
     padding: 10,
     marginHorizontal: 5,
     borderRadius: 30,
     borderWidth: 2,
-    borderColor: '#CBCBCB',
+    borderColor: getColor('inactiveColor'),
     alignItems: 'center',
     justifyContent: 'center',
   },

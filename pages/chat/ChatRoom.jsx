@@ -15,11 +15,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { io } from 'socket.io-client';
 
-import { ChatHeader } from '../../components/header';
+import { HeaderChat } from '../../components/header';
 import { ChatMessage } from '../../components/card';
 
 import { Feather } from '@expo/vector-icons';
 
+import { getColor } from '../../styles/styles';
 import { getChatsByRoom, postChat } from '../../config/api/ChatAPI';
 import { KeyboardAwareFlatList } from 'react-native-keyboard-aware-scroll-view';
 
@@ -102,11 +103,7 @@ export default function ChatRoom({ navigation, route }) {
 
   return ready ? (
     <View style={styles.container}>
-      <ChatHeader
-        name={userName}
-        // img={item.userImage}
-        navigation={navigation}
-      />
+      <HeaderChat navigation={navigation} name={userName} />
       <FlatList
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -147,14 +144,14 @@ export default function ChatRoom({ navigation, route }) {
   ) : (
     <View style={styles.container}>
       <ActivityIndicator
-        size="small"
-        color="#0000ff"
-        style={{ alignSelf: 'center' }}
+        size="large"
+        color={getColor('defaultColor')}
+        style={{ flex: 1, alignSelf: 'center' }}
       />
       <View style={styles.bottomBox}>
         <View style={styles.sendBox}>
           <TextInput
-            placeholder={'Write a Messages'}
+            placeholder={'메시지를 입력하세요.'}
             value={message}
             onChangeText={(text) => {
               setMessage(text);
@@ -173,17 +170,20 @@ export default function ChatRoom({ navigation, route }) {
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: 'white',
     flex: 1,
     marginTop: getStatusBarHeight(),
   },
   content: {
-    padding: '3%',
+    padding: 10,
   },
   bottomBox: {
-    padding: 10,
+    backgroundColor: 'white',
     width: '100%',
     height: diviceWidth * 0.18,
-    backgroundColor: 'white',
+    padding: 10,
+    borderTopWidth: 1,
+    borderTopColor: '#EFEFF3',
   },
   sendBox: {
     borderWidth: 1,

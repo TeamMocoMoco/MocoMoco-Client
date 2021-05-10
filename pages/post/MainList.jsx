@@ -16,6 +16,7 @@ import { Entypo } from '@expo/vector-icons';
 import { SearchBar } from '../../components/input';
 import { MainCard } from '../../components/card';
 import { TabButton } from '../../components/button';
+import { getColor } from '../../styles/styles';
 
 import {
   getPosts,
@@ -80,6 +81,7 @@ export default function MainList({ navigation }) {
 
       <View style={styles.content}>
         <FlatList
+          showsVerticalScrollIndicator={false}
           data={posts}
           keyExtractor={(item) => item._id}
           renderItem={(post) => {
@@ -127,7 +129,7 @@ export default function MainList({ navigation }) {
         />
       </View>
 
-      <ActivityIndicator size="small" color="#0000ff" />
+      <ActivityIndicator size="small" color="getColor('defaultColor')" />
     </View>
   );
 }

@@ -1,11 +1,12 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { getColor } from '../../styles/styles';
 
 export default function RadiusButton({ title, status, doFunction }) {
   if (status) {
     return (
       <TouchableOpacity
-        style={styles.buttonContainer}
+        style={[styles.buttonContainer, styles.inactive]}
         onPress={() => doFunction()}
       >
         <Text style={styles.buttonText}>{title}</Text>
@@ -15,7 +16,7 @@ export default function RadiusButton({ title, status, doFunction }) {
     return (
       <TouchableOpacity
         disabled
-        style={[styles.buttonContainer, { opacity: 0.4 }]}
+        style={[styles.buttonContainer, styles.active]}
       >
         <Text style={styles.buttonText}>{title}</Text>
       </TouchableOpacity>
@@ -25,10 +26,15 @@ export default function RadiusButton({ title, status, doFunction }) {
 
 const styles = StyleSheet.create({
   buttonContainer: {
-    backgroundColor: '#6A6A6A',
     paddingVertical: 13,
     marginTop: 20,
     borderRadius: 6,
+  },
+  active: {
+    backgroundColor: getColor('defaultColor'),
+  },
+  inactive: {
+    backgroundColor: getColor('inactiveColor'),
   },
   buttonText: {
     textAlign: 'center',

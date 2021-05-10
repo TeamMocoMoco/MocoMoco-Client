@@ -1,11 +1,13 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { Dimensions, FlatList, StyleSheet, Text, View } from 'react-native';
-import SlidingUpPanel from 'rn-sliding-up-panel';
 
 import MapView from 'react-native-maps';
+import SlidingUpPanel from 'rn-sliding-up-panel';
+
 import { MainCard } from '../../components/card';
-import { useEffect } from 'react/cjs/react.development';
+
+import { getColor } from '../../styles/styles';
 import { getPostsByLocation } from '../../config/api/MapAPI';
 
 const dummy = [
@@ -37,6 +39,7 @@ const dummy = [
 
 export default function SearchMap({ navigation }) {
   const mapRef = useRef(null);
+  const pannelRef = useRef(null);
 
   const [ready, setReady] = useState(false);
   const [posts, setPosts] = useState(dummy);
@@ -80,7 +83,7 @@ export default function SearchMap({ navigation }) {
                   longitude: post.location[1],
                 }}
                 onPress={() => {
-                  _panel.show();
+                  pannelRef.current.show();
                 }}
                 key={post._id}
               />
@@ -89,7 +92,7 @@ export default function SearchMap({ navigation }) {
         </MapView>
 
         {/* 슬라이딩 패널 */}
-        <SlidingUpPanel ref={(c) => (_panel = c)}>
+        <SlidingUpPanel ref={(c) => (pannelRef.current = c)}>
           <View style={styles.modalFrame}>
             <View style={styles.modalHeader}>
               <View style={styles.dragHandle}></View>
@@ -158,7 +161,7 @@ const styles = StyleSheet.create({
   },
   modalHeader: {
     alignItems: 'center',
-    backgroundColor: '#435BEF',
+    backgroundColor: getColor('defaultColor'),
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
   },

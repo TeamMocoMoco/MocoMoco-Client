@@ -13,6 +13,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 
 import { PickRoleCard } from '../../components/card';
 import { HeaderBack } from '../../components/header';
+import { getColor } from '../../styles/styles';
 
 import { register } from '../../config/api/UserAPI';
 
@@ -38,7 +39,7 @@ export default function SignUp({ navigation }) {
       return (
         <TouchableOpacity
           disabled
-          style={[styles.buttonContainer, { opacity: 0.4 }]}
+          style={[styles.buttonContainer, styles.inactive]}
         >
           <Text style={styles.buttonText}>선택 완료</Text>
         </TouchableOpacity>
@@ -46,7 +47,7 @@ export default function SignUp({ navigation }) {
     } else {
       return (
         <TouchableOpacity
-          style={styles.buttonContainer}
+          style={[styles.buttonContainer, styles.active]}
           onPress={() => {
             doRegister();
           }}
@@ -125,12 +126,17 @@ const styles = StyleSheet.create({
     borderColor: 'black',
   },
   buttonContainer: {
-    backgroundColor: '#1EA7F8',
     borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
     padding: 10,
+  },
+  active: {
+    backgroundColor: getColor('defaultColor'),
+  },
+  inactive: {
+    backgroundColor: getColor('inactiveColor'),
   },
   buttonText: {
     fontSize: 20,
