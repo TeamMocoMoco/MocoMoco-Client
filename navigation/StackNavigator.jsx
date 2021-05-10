@@ -17,20 +17,26 @@ import {
   CreatePostThird,
   CreatePostFourth,
 } from '../pages/post/create';
+
+import { Profile } from '../pages/user';
 const Stack = createStackNavigator();
 
 const StackNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Location" component={Location} />
-      <Stack.Screen name="TabNavigator" component={TabNavigator} />
-      <Stack.Screen name="Verification" component={Verification} />
+      {/* <Stack.Screen name="Verification" component={Verification} />
       <Stack.Screen
         name="VerificationConfirm"
-        component={VerificationConfirm}
-      />
+        component={VerificationConfirm} 
+      /> */}
+      <Stack.Screen name="Location" component={Location} />
+      <Stack.Screen name="TabNavigator" component={TabNavigator} />
+
       <Stack.Screen name="SignUp" component={SignUp} />
       {/* <Stack.Screen name="Starting" component={Starting} /> */}
+
+      <Stack.Screen name="UpdatePost" component={UpdatePost} />
+      <Stack.Screen name="CreatePost" component={CreatePost} />
 
       <Stack.Screen name="CreatePostFirst" component={CreatePostFirst} />
       <Stack.Screen name="CreatePostSecond" component={CreatePostSecond} />
@@ -38,10 +44,11 @@ const StackNavigator = () => {
       <Stack.Screen name="CreatePostFourth" component={CreatePostFourth} />
 
       <Stack.Screen name="ChatRoom" component={ChatRoom} />
+
       <Stack.Screen name="SubList" component={SubList} />
-      <Stack.Screen name="CreatePost" component={CreatePost} />
       <Stack.Screen name="ReadPost" component={ReadPost} />
-      <Stack.Screen name="UpdatePost" component={UpdatePost} />
+
+      <Stack.Screen name="Profile" component={Profile} />
     </Stack.Navigator>
   );
 };
