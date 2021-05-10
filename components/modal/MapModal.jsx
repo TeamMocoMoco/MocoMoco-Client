@@ -1,9 +1,38 @@
 import React from 'react';
-import { StyleSheet, View, Modal, ScrollView, Text } from 'react-native';
+import { StyleSheet, View, Modal, Text, FlatList } from 'react-native';
+
+import SlidingUpPanel from 'rn-sliding-up-panel';
 
 import { AntDesign } from '@expo/vector-icons';
 
-import MapCard from '../card/MapCard';
+import { MainCard } from '../card';
+
+const posts = [
+  {
+    hashtag: ['javascript', 'nodejs'],
+    location: [],
+    participants: [],
+    status: true,
+    _id: '60923a41333d3505035bbc82',
+    title: '프로그래머스 같이 하실분',
+    category: '알고리즘 스터디',
+    content: '하루에 10개씩 문제 푸실 분들 채팅 주세요',
+    position: '백엔드',
+    language: 'javascript',
+    personnel: 6,
+    meeting: '온라인',
+    startDate: '2021-05-10T14:00:00.000Z',
+    dueDate: '2021-05-13T14:00:00.000Z',
+    user: {
+      _id: '608fab880fab1733316eeff1',
+      name: '이다은',
+      role: '개발자',
+    },
+    createdAt: '2021-05-05T06:25:05.885Z',
+    updatedAt: '2021-05-06T14:59:00.035Z',
+    __v: 0,
+  },
+];
 
 export default function MapModal({
   navigation,
@@ -12,7 +41,7 @@ export default function MapModal({
   where,
 }) {
   return (
-    <Modal transparent visible={modalOpen} animationType="slide">
+    <SlidingUpPanel ref={(c) => (modalOpen = c)}>
       <View style={styles.modalFrame}>
         <View style={styles.modalHeader}>
           <AntDesign
@@ -25,14 +54,21 @@ export default function MapModal({
           <AntDesign name="arrowleft" size={30} color="transparent" />
         </View>
 
-        <ScrollView>
-          <MapCard navigation={navigation} setModalOpen={setModalOpen} />
-          <MapCard navigation={navigation} setModalOpen={setModalOpen} />
-          <MapCard navigation={navigation} setModalOpen={setModalOpen} />
-          <MapCard navigation={navigation} setModalOpen={setModalOpen} />
-        </ScrollView>
+        <FlatList
+          data={posts}
+          keyExtractor={(item) => item._id}
+          renderItem={(post) => {
+            return (
+              <MainCard
+                navigation={navigation}
+                post={post.item}
+                key={post.item._id}
+              />
+            );
+          }}
+        />
       </View>
-    </Modal>
+    </SlidingUpPanel>
   );
 }
 
