@@ -8,7 +8,7 @@ import { SimpleLineIcons } from '@expo/vector-icons';
 export default function HeaderSetting({ title, modalOpen, setModalOpen }) {
   return (
     <View style={styles.header}>
-      <TouchableOpacity disabled>
+      <TouchableOpacity disabled style={styles.settingIcon}>
         <SimpleLineIcons name="settings" size={24} color="transparent" />
       </TouchableOpacity>
 
@@ -18,6 +18,7 @@ export default function HeaderSetting({ title, modalOpen, setModalOpen }) {
         onPress={() => {
           setModalOpen(true);
         }}
+        style={styles.settingIcon}
       >
         <SimpleLineIcons name="settings" size={24} color="black" />
       </TouchableOpacity>
@@ -29,7 +30,7 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     paddingVertical: 20,
-    paddingHorizontal: 30,
+    paddingHorizontal: 15,
     backgroundColor: 'white',
     alignItems: 'center',
     borderBottomWidth: 1,
@@ -42,4 +43,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
   },
+  settingIcon: { paddingHorizontal: 20 },
 });
