@@ -21,6 +21,7 @@ import {
   OnAndOffButton,
 } from '../../components/button';
 import { DatePickModal } from '../../components/modal';
+import { getColor } from '../../styles/styles';
 
 import kind from '../../config/mock/category.json';
 
@@ -84,7 +85,7 @@ export default function UpdatePost({ navigation, route }) {
       return (
         <TouchableOpacity
           disabled
-          style={[styles.buttonContainer, { opacity: 0.4 }]}
+          tyle={[styles.buttonContainer, styles.inactive]}
         >
           <Text style={styles.buttonText}>추가</Text>
         </TouchableOpacity>
@@ -92,7 +93,7 @@ export default function UpdatePost({ navigation, route }) {
     } else {
       return (
         <TouchableOpacity
-          style={styles.buttonContainer}
+          tyle={[styles.buttonContainer, styles.active]}
           onPress={() => {
             setHashtagList([...hashtagList, hashtag]);
             setHashtag('');
@@ -452,7 +453,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 30,
     borderWidth: 2,
-    borderColor: '#CBCBCB',
+    borderColor: getColor('defaultColor'),
   },
   picker: {
     backgroundColor: '#FFF0E0',
@@ -471,7 +472,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   mpButton: {
-    backgroundColor: '#EBEBEB',
+    backgroundColor: 'white',
     width: 30,
     height: 30,
     borderRadius: 30,
@@ -490,7 +491,7 @@ const styles = StyleSheet.create({
     width: '100%',
     marginBottom: 20,
     borderBottomWidth: 1,
-    borderColor: 'black',
+    borderColor: getColor('defaultColor'),
   },
   tag: {
     fontSize: 18,
@@ -501,7 +502,7 @@ const styles = StyleSheet.create({
   textInputBox: {
     padding: 10,
     borderWidth: 1,
-    borderColor: '#999',
+    borderColor: getColor('defaultColor'),
     borderRadius: 4,
   },
   textarea: {
@@ -511,15 +512,20 @@ const styles = StyleSheet.create({
   hashtagBox: {
     width: '80%',
     borderBottomWidth: 2,
-    borderColor: '#777',
+    borderColor: getColor('defaultColor'),
   },
   buttonContainer: {
     flex: 1,
-    backgroundColor: '#777',
     padding: 8,
     borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  active: {
+    backgroundColor: getColor('defaultColor'),
+  },
+  inactive: {
+    backgroundColor: getColor('inactiveColor'),
   },
   buttonText: {
     color: 'white',

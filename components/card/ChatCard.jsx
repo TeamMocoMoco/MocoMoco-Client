@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,9 +8,11 @@ import {
   Dimensions,
 } from 'react-native';
 
+import { getColor } from '../../styles/styles';
+
 const diviceWidth = Dimensions.get('window').width;
 
-export default function ChatCard({ navigation, userId, room, chat, index }) {
+export default function ChatCard({ navigation, userId, room }) {
   const showName = () => {
     if (userId == room.admin._id) {
       return room.participant.name;
@@ -19,9 +21,18 @@ export default function ChatCard({ navigation, userId, room, chat, index }) {
     }
   };
 
+  const showImg = () => {
+    if (userId == room.admin._id) {
+      return room.participant.userImg;
+    } else {
+      return 'https://image.news1.kr/system/photos/2020/5/29/4215665/article.jpg/dims/optimize';
+    }
+  };
+
   if (room.admin != null) {
     return (
       <TouchableOpacity
+        style={styles.container}
         onPress={() => {
           navigation.push('ChatRoom', {
             roomId: room._id,
@@ -29,32 +40,25 @@ export default function ChatCard({ navigation, userId, room, chat, index }) {
           });
         }}
       >
-        <View style={styles.cardFrame}>
-          {/* 프로필사진 */}
-          <Image
-            source={{
-              uri:
-                'https://image.news1.kr/system/photos/2020/5/29/4215665/article.jpg/dims/optimize',
-            }}
-            style={styles.img}
-          />
+        {/* 프로필사진 */}
+        <Image source={{ uri: showImg() }} style={styles.img} />
 
-          <View style={{ margin: 10, flex: 1 }}>
-            {/* 이름, 채팅온시간 */}
-            <View style={styles.textCard}>
-              <Text
-                style={{
-                  fontSize: 20,
-                  fontWeight: 'bold',
-                }}
-              >
-                {showName()}
-              </Text>
-              <Text>{room.createdAt.substr(11, 5)}</Text>
-            </View>
+        <View style={styles.textContainer}>
+          {/* 이름, 채팅온시간 */}
+          <View style={styles.header}>
+            <Text style={styles.name}>{showName()}</Text>
+            <Text style={styles.time}>{room.createdAt.substr(11, 5)}</Text>
+          </View>
 
+          <View style={styles.body}>
             {/* 마지막온 채팅 보이기 */}
-            <Text numberOfLines={1}>{chat}</Text>
+            {room.lastChat.map((chat) => {
+              return (
+                <Text numberOfLines={1} key={chat._id}>
+                  {chat.content}
+                </Text>
+              );
+            })}
           </View>
         </View>
       </TouchableOpacity>
@@ -65,24 +69,36 @@ export default function ChatCard({ navigation, userId, room, chat, index }) {
 }
 
 const styles = StyleSheet.create({
-  cardFrame: {
+  container: {
     flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    margin: 10,
+    paddingHorizontal: 25,
+    paddingVertical: 12,
     borderBottomWidth: 0.5,
-    paddingBottom: 10,
+    borderBottomColor: getColor('ChatBorderColor'),
+    alignItems: 'center',
   },
   img: {
     resizeMode: 'cover',
-    height: diviceWidth * 0.2,
-    width: diviceWidth * 0.2,
+    height: diviceWidth * 0.15,
+    width: diviceWidth * 0.15,
     borderRadius: 100,
   },
-  textCard: {
+  textContainer: {
     flex: 1,
+    height: diviceWidth * 0.15,
+    marginStart: 10,
+    justifyContent: 'space-around',
+  },
+  header: {
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+  },
+  name: {
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  time: {
+    color: 'grey',
+    fontSize: 14,
+    marginStart: 8,
   },
 });

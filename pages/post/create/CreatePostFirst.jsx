@@ -8,6 +8,7 @@ import { ProgressBar, Colors } from 'react-native-paper';
 
 import { HeaderBack } from '../../../components/header';
 import { FullButton, OnAndOffButton } from '../../../components/button';
+import { getColor } from '../../../styles/styles';
 
 import kind from '../../../config/mock/category.json';
 

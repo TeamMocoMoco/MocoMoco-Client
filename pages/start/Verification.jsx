@@ -9,12 +9,15 @@ import {
   TextInput,
   Alert,
 } from 'react-native';
-const diviceWidth = Dimensions.get('window').width;
-
-import { HeaderBack } from '../../components/header';
-import { sendSMS } from '../../config/api/UserAPI';
 
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+
+import { HeaderBack } from '../../components/header';
+
+import { getColor } from '../../styles/styles';
+import { sendSMS } from '../../config/api/UserAPI';
+
+const diviceWidth = Dimensions.get('window').width;
 
 export default function Verification({ navigation }) {
   const [phone, setPhone] = useState('');
@@ -33,7 +36,7 @@ export default function Verification({ navigation }) {
       return (
         <TouchableOpacity
           disabled
-          style={[styles.buttonContainer, { opacity: 0.4 }]}
+          style={[styles.buttonContainer, styles.inactive]}
         >
           <Text style={styles.buttonText}>인증 요청</Text>
         </TouchableOpacity>
@@ -41,7 +44,7 @@ export default function Verification({ navigation }) {
     } else {
       return (
         <TouchableOpacity
-          style={[styles.buttonContainer, { opacity: 1 }]}
+          style={[styles.buttonContainer, styles.active]}
           onPress={() => send()}
         >
           <Text style={styles.buttonText}>인증 요청</Text>
@@ -54,48 +57,26 @@ export default function Verification({ navigation }) {
     <View style={styles.container}>
       <HeaderBack navigation={navigation} title={''} />
       <View style={styles.content}>
-        <View style={styles.headTextBox}>
-          <Text style={styles.headText}>
-            스터디 신청을 위해{'\n'}전화번호 인증이 필요합니다
-          </Text>
-        </View>
+        {/* 타이틀 */}
+        <Text style={styles.title}>
+          스터디 신청을 위해{'\n'}전화번호 인증이 필요합니다
+        </Text>
 
-        {/* 전화번호 입력 */}
+        {/* 전화번호 입력란 */}
         <KeyboardAwareScrollView>
-          <View
-            style={{
-              width: '100%',
-              paddingBottom: 20,
-              paddingTop: diviceWidth * 0.25,
-            }}
-          >
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
+          <View style={styles.inputContainer}>
+            <TextInput
+              maxLength={11}
+              placeholder={'01020021004'}
+              value={phone}
+              onChangeText={(text) => {
+                setPhone(text);
               }}
-            >
-              <View
-                style={{
-                  width: '100%',
-                  padding: 10,
-                  borderBottomWidth: 1,
-                  borderColor: 'black',
-                }}
-              >
-                <TextInput
-                  maxLength={11}
-                  placeholder={'010-0000-0000 (-없이 번호만 입력)'}
-                  value={phone}
-                  onChangeText={(text) => {
-                    setPhone(text);
-                  }}
-                  style={{ fontSize: 15 }}
-                  keyboardType="number-pad"
-                />
-              </View>
-            </View>
+              style={{ fontSize: 20 }}
+              keyboardType="number-pad"
+            />
           </View>
+          <Text style={styles.comment}>( - 없이 번호만 입력)</Text>
         </KeyboardAwareScrollView>
       </View>
       {/* 인증번호 발송버튼 */}
@@ -114,22 +95,36 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
     padding: 20,
   },
-  headTextBox: { backgroundColor: 'white' },
-  headText: {
-    fontSize: 23,
+  title: {
+    fontSize: 20,
     fontWeight: 'bold',
   },
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  inputContainer: {
+    width: '100%',
+    padding: 10,
+    marginTop: diviceWidth * 0.25,
+    borderBottomWidth: 1,
+    borderColor: 'black',
+  },
+  comment: {
+    color: 'grey',
+    fontSize: 14,
+    marginTop: 10,
+    marginEnd: 5,
+    alignSelf: 'flex-end',
   },
   buttonContainer: {
-    backgroundColor: '#1EA7F8',
     borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
     padding: 10,
+  },
+  active: {
+    backgroundColor: getColor('defaultColor'),
+  },
+  inactive: {
+    backgroundColor: getColor('inactiveColor'),
   },
   buttonText: {
     fontSize: 20,
