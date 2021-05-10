@@ -24,14 +24,7 @@ export default function SettingModal({ navigation, modalOpen, setModalOpen }) {
   };
 
   return (
-    <Modal
-      transparent
-      visible={modalOpen}
-      animationType={'fade'}
-      //   onRequestClose={() => {
-      //     setModalOpen(false);
-      //   }}
-    >
+    <Modal transparent visible={modalOpen} animationType={'fade'}>
       <TouchableOpacity
         style={{
           flex: 1,
@@ -58,6 +51,7 @@ export default function SettingModal({ navigation, modalOpen, setModalOpen }) {
           <TouchableOpacity
             style={styles.setBox}
             onPress={() => {
+              navigation.push('Profile');
               setModalOpen(false);
             }}
           >

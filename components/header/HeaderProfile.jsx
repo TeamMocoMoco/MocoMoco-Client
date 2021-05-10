@@ -1,25 +1,24 @@
 import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 
-import { SettingModal } from '../../components/modal';
-
-import { SimpleLineIcons } from '@expo/vector-icons';
-
-export default function HeaderSetting({ title, modalOpen, setModalOpen }) {
+export default function HeaderProfile({ navigation, title }) {
+  const Modify = () => {
+    navigation.goBack();
+  };
   return (
     <View style={styles.header}>
       <TouchableOpacity disabled>
-        <SimpleLineIcons name="settings" size={24} color="transparent" />
+        <Text style={{ color: 'white', fontSize: 16 }}>완료</Text>
       </TouchableOpacity>
 
       <Text style={styles.headerText}>{title}</Text>
 
       <TouchableOpacity
         onPress={() => {
-          setModalOpen(true);
+          Modify();
         }}
       >
-        <SimpleLineIcons name="settings" size={24} color="black" />
+        <Text style={styles.confirmText}>완료</Text>
       </TouchableOpacity>
     </View>
   );
@@ -42,4 +41,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
   },
+  confirmText: { fontSize: 16 },
 });

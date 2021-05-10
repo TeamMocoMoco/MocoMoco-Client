@@ -9,21 +9,16 @@ import {
   ScrollView,
 } from 'react-native';
 
-import { HeaderSetting } from '../../components/header';
+import { HeaderProfile } from '../../components/header';
 import { SettingModal } from '../../components/modal';
 
-import Recruit from '../../assets/Recruit.png';
-
-export default function MyPage({ navigation }) {
+export default function Profile({ navigation }) {
   const [modalOpen, setModalOpen] = useState(false);
 
+  const imageUpload = () => {};
   return (
     <View style={styles.container}>
-      <HeaderSetting
-        title={'마이페이지'}
-        modalOpen={modalOpen}
-        setModalOpen={setModalOpen}
-      />
+      <HeaderProfile title={'프로필 수정'} navigation={navigation} />
       <SettingModal
         navigation={navigation}
         modalOpen={modalOpen}
@@ -32,7 +27,7 @@ export default function MyPage({ navigation }) {
 
       <View style={styles.content}>
         {/* 프로필 */}
-        <TouchableOpacity style={styles.profile}>
+        <TouchableOpacity style={styles.profileBox}>
           <View style={styles.imgFrame}>
             <Image
               style={styles.img}
@@ -48,31 +43,20 @@ export default function MyPage({ navigation }) {
           </View>
         </TouchableOpacity>
 
-        <View style={styles.studyAll}>
-          <TouchableOpacity style={styles.studyBox}>
-            <Image source={Recruit} />
-            <View style={styles.textBox}>
-              <Text style={styles.cateText}>모집</Text>
-              <Text style={styles.studyText}> 스터디</Text>
-            </View>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.studyBox}>
-            <Image source={Recruit} />
-            <View style={styles.textBox}>
-              <Text style={styles.cateText}>신청</Text>
-              <Text style={styles.studyText}> 스터디</Text>
-            </View>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.studyBox}>
-            <Image source={Recruit} />
-            <View style={styles.textBox}>
-              <Text style={styles.cateText}>저장</Text>
-              <Text style={styles.studyText}> 스터디</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity onPress={imageUpload} style={{ alignSelf: 'center' }}>
+          <View
+            style={{
+              width: 100,
+              height: 50,
+              borderWidth: 1,
+              borderRadius: 10,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Text>사진업로드</Text>
+          </View>
+        </TouchableOpacity>
 
         <ScrollView style={styles.myBox}>
           <Text>hi</Text>
@@ -89,11 +73,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   content: { padding: 10 },
-  profile: {
+  profileBox: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 20,
-    marginBottom: 10,
   },
   imgFrame: {
     width: 80,
@@ -112,15 +95,7 @@ const styles = StyleSheet.create({
   nameBox: { flexDirection: 'row', marginLeft: 20, alignItems: 'center' },
   nameText: { fontSize: 23, fontWeight: 'bold' },
   roleText: { fontSize: 15, color: 'grey', marginLeft: 5 },
-  studyAll: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    paddingHorizontal: 10,
-  },
-  studyBox: { alignItems: 'center' },
-  textBox: { flexDirection: 'row', paddingTop: 20 },
-  cateText: { fontWeight: 'bold' },
-  studyText: { color: 'grey' },
+
   myBox: {
     borderWidth: 1,
     borderColor: 'lightgrey',
