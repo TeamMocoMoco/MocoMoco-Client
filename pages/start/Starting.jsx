@@ -8,13 +8,15 @@ import {
   Dimensions,
   TouchableOpacity,
 } from 'react-native';
-const diviceWidth = Dimensions.get('window').width;
 
-import goal from '../../assets/goal_icon.png';
+import { Goal } from '../../assets/images';
+
+const diviceWidth = Dimensions.get('window').width;
 
 export default function Starting({ navigation, route }) {
   const pickRole = route.params.pickRole;
   const name = route.params.name;
+
   return (
     <View style={styles.container}>
       <View style={styles.content}>
@@ -29,7 +31,7 @@ export default function Starting({ navigation, route }) {
         </Text>
 
         <Image
-          source={goal}
+          source={Goal}
           style={{ marginTop: diviceWidth * 0.1, width: diviceWidth * 0.8 }}
         />
         <View
