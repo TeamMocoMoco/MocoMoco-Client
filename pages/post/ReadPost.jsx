@@ -20,9 +20,6 @@ import { DotModal } from '../../components/modal';
 import { getPostsById } from '../../config/api/PostAPI';
 import { createRoom } from '../../config/api/ChatAPI';
 
-import { io } from 'socket.io-client';
-import { set } from 'react-native-reanimated';
-
 export default function ReadPost({ navigation, route }) {
   const postId = route.params.postId;
 
@@ -91,8 +88,11 @@ export default function ReadPost({ navigation, route }) {
           }}
         />
       );
+    } else {
+      return <></>;
     }
   };
+
   return ready ? (
     <View style={styles.container}>
       <HeaderBack navigation={navigation} title={''} />
@@ -157,7 +157,7 @@ export default function ReadPost({ navigation, route }) {
           <View style={styles.row}>
             <Text style={styles.label}>참가자</Text>
             <View style={styles.arrowRow}>
-              <Text style={styles.tag}>{post.participants.length}명</Text>
+              {/* <Text style={styles.tag}>{post.participants.length}명</Text> */}
               <Entypo name="chevron-right" size={22} color="black" />
             </View>
           </View>
@@ -183,8 +183,10 @@ export default function ReadPost({ navigation, route }) {
     </View>
   ) : (
     <View style={styles.container}>
-      <HeaderBack navigation={navigation} title={'모집글 상세'} />
-      <ActivityIndicator size="small" color="#0000ff" />
+      <HeaderBack navigation={navigation} title={''} />
+      <View style={styles.content}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
     </View>
   );
 }
@@ -197,10 +199,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
     flex: 1,
     marginTop: getStatusBarHeight(),
-    justifyContent: 'center',
   },
   content: {
     flex: 1,
+    justifyContent: 'center',
   },
   divider: {
     borderBottomWidth: 1,
