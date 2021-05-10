@@ -1,13 +1,13 @@
 import HeaderTitle from './HeaderTitle';
 import HeaderBack from './HeaderBack';
-import ChatHeader from './ChatHeader';
+import HeaderChat from './HeaderChat';
 import HeaderSetting from './HeaderSetting';
 import HeaderProfile from './HeaderProfile';
 
 module.exports = {
   HeaderTitle,
   HeaderBack,
-  ChatHeader,
+  HeaderChat,
   HeaderSetting,
   HeaderProfile,
 };

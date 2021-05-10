@@ -8,12 +8,15 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
-const diviceWidth = Dimensions.get('window').width;
-
-import { HeaderBack } from '../../components/header';
-import { checkSMS } from '../../config/api/UserAPI';
 
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+
+import { HeaderBack } from '../../components/header';
+
+import { getColor } from '../../styles/styles';
+import { checkSMS } from '../../config/api/UserAPI';
+
+const diviceWidth = Dimensions.get('window').width;
 
 export default function VerificationConfirm({ navigation, route }) {
   let phone = route.params;
@@ -28,7 +31,7 @@ export default function VerificationConfirm({ navigation, route }) {
       return (
         <TouchableOpacity
           disabled
-          style={[styles.buttonContainer, { opacity: 0.4 }]}
+          style={[styles.buttonContainer, styles.inactive]}
         >
           <Text style={styles.buttonText}>확인</Text>
         </TouchableOpacity>
@@ -36,7 +39,7 @@ export default function VerificationConfirm({ navigation, route }) {
     } else {
       return (
         <TouchableOpacity
-          style={[styles.buttonContainer, { opacity: 1 }]}
+          style={[styles.buttonContainer, styles.active]}
           onPress={() => {
             doCheck();
           }}
@@ -51,78 +54,34 @@ export default function VerificationConfirm({ navigation, route }) {
     <View style={styles.container}>
       <HeaderBack navigation={navigation} title={''} />
       <View style={styles.content}>
-        <View style={styles.headTextBox}>
-          <Text style={styles.headText}>
-            스터디 신청을 위해{'\n'}전화번호 인증이 필요합니다
-          </Text>
+        {/* 타이틀 */}
+        <Text style={styles.title}>
+          스터디 신청을 위해{'\n'}전화번호 인증이 필요합니다
+        </Text>
+
+        {/* 전화번호 표시란 */}
+        <View
+          style={[styles.inputContainer, { marginTop: diviceWidth * 0.25 }]}
+        >
+          <Text style={{ fontSize: 20, fontWeight: 'bold' }}>{phone}</Text>
         </View>
 
-        {/* 전화번호 입력 + 인증번호 발송버튼 */}
-        <View>
-          <View
-            style={{
-              width: '100%',
-              paddingBottom: 20,
-              paddingTop: diviceWidth * 0.25,
-            }}
-          >
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-              }}
-            >
-              <View
-                style={{
-                  width: '100%',
-                  padding: 10,
-                  borderBottomWidth: 1,
-                  borderColor: 'black',
-                }}
-              >
-                <Text style={{ fontSize: 15 }}>{phone}</Text>
-              </View>
-            </View>
-          </View>
-        </View>
-
-        {/* 인증번호 입력 */}
+        {/* 인증번호 입력란 */}
         <KeyboardAwareScrollView>
-          <View
-            style={{
-              width: '100%',
-              paddingBottom: 20,
-              paddingTop: diviceWidth * 0.05,
-            }}
-          >
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
+          <View style={styles.inputContainer}>
+            <TextInput
+              placeholder={'인증번호 6자리'}
+              value={code}
+              onChangeText={(text) => {
+                setCode(text);
               }}
-            >
-              <View
-                style={{
-                  width: '100%',
-                  padding: 10,
-                  borderBottomWidth: 1,
-                  borderColor: 'black',
-                }}
-              >
-                <TextInput
-                  placeholder={'인증번호 6자리'}
-                  value={code}
-                  onChangeText={(text) => {
-                    setCode(text);
-                  }}
-                  style={{ fontSize: 15 }}
-                  keyboardType="number-pad"
-                />
-              </View>
-            </View>
+              style={{ fontSize: 20, fontWeight: 'bold' }}
+              keyboardType="number-pad"
+            />
           </View>
         </KeyboardAwareScrollView>
       </View>
+
       {/* 인증번호 발송버튼 */}
       <View>{showConfirmButton()}</View>
     </View>
@@ -139,22 +98,33 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
     padding: 20,
   },
-  headTextBox: { backgroundColor: 'white' },
-  headText: {
-    fontSize: 23,
+  title: {
+    fontSize: 20,
     fontWeight: 'bold',
+  },
+  inputContainer: {
+    width: '100%',
+    padding: 10,
+    marginVertical: 10,
+    borderBottomWidth: 1,
+    borderColor: 'black',
   },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
   buttonContainer: {
-    backgroundColor: '#1EA7F8',
     borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
     padding: 10,
+  },
+  active: {
+    backgroundColor: getColor('defaultColor'),
+  },
+  inactive: {
+    backgroundColor: getColor('inactiveColor'),
   },
   buttonText: {
     fontSize: 20,

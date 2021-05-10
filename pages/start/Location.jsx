@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 
 import { Circles } from '../../assets/images';
+import { getColor } from '../../styles/styles';
 
 const diviceWidth = Dimensions.get('window').width;
 
@@ -54,7 +55,7 @@ export default function Location({ navigation }) {
             height: '8%',
             justifyContent: 'center',
             borderRadius: 8,
-            backgroundColor: 'grey',
+            backgroundColor: getColor('defaultColor'),
             marginTop: diviceWidth * 0.08,
           }}
         >

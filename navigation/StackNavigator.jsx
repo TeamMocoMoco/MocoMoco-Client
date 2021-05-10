@@ -24,14 +24,14 @@ const Stack = createStackNavigator();
 const StackNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      {/* <Stack.Screen name="Verification" component={Verification} />
-      <Stack.Screen
-        name="VerificationConfirm"
-        component={VerificationConfirm} 
-      /> */}
       <Stack.Screen name="Location" component={Location} />
       <Stack.Screen name="TabNavigator" component={TabNavigator} />
 
+      <Stack.Screen name="Verification" component={Verification} />
+      <Stack.Screen
+        name="VerificationConfirm"
+        component={VerificationConfirm}
+      />
       <Stack.Screen name="SignUp" component={SignUp} />
       {/* <Stack.Screen name="Starting" component={Starting} /> */}
 

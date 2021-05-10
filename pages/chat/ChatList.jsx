@@ -7,6 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { HeaderTitle } from '../../components/header';
 import { ChatCard } from '../../components/card';
 
+import { getColor } from '../../styles/styles';
 import { getMyRooms } from '../../config/api/ChatAPI';
 
 export default function ChatList({ navigation }) {
@@ -14,7 +15,6 @@ export default function ChatList({ navigation }) {
 
   const [ready, setReady] = useState(false);
   const [rooms, setRooms] = useState([]);
-  const [chats, setChats] = useState([]);
 
   const keyExtractor = useCallback((item) => item._id, []);
   const renderItem = useCallback(
@@ -24,7 +24,6 @@ export default function ChatList({ navigation }) {
         userId={myid.current}
         room={room.item}
         admin={room.item.admin}
-        // chat={chats[i]}
         key={room.item._id}
       />
     ),
@@ -36,7 +35,6 @@ export default function ChatList({ navigation }) {
       setTimeout(async () => {
         const result = await getMyRooms();
         setRooms(result.rooms);
-        setChats(result.chats);
         myid.current = await AsyncStorage.getItem('myid');
         setReady(true);
       });
@@ -55,13 +53,14 @@ export default function ChatList({ navigation }) {
   ) : (
     <View style={styles.container}>
       <HeaderTitle title={'채팅'} />
-      <ActivityIndicator size="small" color="#0000ff" />
+      <ActivityIndicator size="small" color={getColor('defaultColor')} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: '#FFF',
     flex: 1,
     marginTop: getStatusBarHeight(),
   },

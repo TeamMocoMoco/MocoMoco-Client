@@ -1,6 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
+import { getColor } from '../../styles/styles';
+
 export default function ChatMessage({ receiver, sender, message, createdAt }) {
   const time = createdAt;
 
@@ -8,8 +10,8 @@ export default function ChatMessage({ receiver, sender, message, createdAt }) {
     return (
       <View style={styles.row}>
         {/* 메세지 박스 */}
-        <View style={styles.leader_message}>
-          <Text style={{ color: '#FFF' }}>{message}</Text>
+        <View style={[styles.messageContainer, styles.leader_message]}>
+          <Text style={[styles.message, { color: '#000' }]}>{message}</Text>
         </View>
         {/* 시간 */}
         <Text style={styles.time}>{time}</Text>
@@ -21,8 +23,8 @@ export default function ChatMessage({ receiver, sender, message, createdAt }) {
         {/* 시간 */}
         <Text style={styles.time}>{time}</Text>
         {/* 메세지 박스 */}
-        <View style={styles.user_message}>
-          <Text>{message}</Text>
+        <View style={[styles.messageContainer, styles.user_message]}>
+          <Text style={[styles.message, { color: '#FFF' }]}>{message}</Text>
         </View>
       </View>
     );
@@ -34,23 +36,26 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginVertical: 7,
   },
-  leader_message: {
+  messageContainer: {
     maxWidth: '70%',
-    padding: '3%',
-    borderRadius: 5,
-    backgroundColor: '#007AFF',
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    borderRadius: 20,
+  },
+  leader_message: {
+    backgroundColor: '#EFEFF3',
   },
   user_message: {
-    maxWidth: '70%',
-    padding: '3%',
-    borderRadius: 5,
-    backgroundColor: '#FFF',
+    backgroundColor: getColor('defaultColor'),
     justifyContent: 'flex-end',
   },
+  message: {
+    fontSize: 16,
+  },
   time: {
-    fontSize: 10,
-    textAlign: 'right',
-    marginHorizontal: '3%',
+    color: 'grey',
+    fontSize: 12,
+    marginHorizontal: 10,
     alignSelf: 'flex-end',
   },
 });

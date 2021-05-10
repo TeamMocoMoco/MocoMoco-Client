@@ -11,6 +11,7 @@ import {
 import { HeaderBack } from '../../../components/header';
 import { HashtagButton, FullButton } from '../../../components/button';
 
+import { getColor } from '../../../styles/styles';
 import { postPosts } from '../../../config/api/PostAPI';
 
 import { ProgressBar, Colors } from 'react-native-paper';
@@ -53,7 +54,7 @@ export default function CreatePostFourth({ navigation, route }) {
       return (
         <TouchableOpacity
           disabled
-          style={[styles.buttonContainer, { opacity: 0.4 }]}
+          style={[styles.buttonContainer, styles.inactive]}
         >
           <Text style={styles.buttonText}>추가</Text>
         </TouchableOpacity>
@@ -61,7 +62,7 @@ export default function CreatePostFourth({ navigation, route }) {
     } else {
       return (
         <TouchableOpacity
-          style={styles.buttonContainer}
+          style={[styles.buttonContainer, styles.active]}
           onPress={() => {
             setHashtagList([...hashtagList, hashtag]);
             setHashtag('');
@@ -265,11 +266,16 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flex: 1,
-    backgroundColor: '#777',
     padding: 8,
     borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  active: {
+    backgroundColor: getColor('defaultColor'),
+  },
+  inactive: {
+    backgroundColor: getColor('inactiveColor'),
   },
   buttonText: {
     color: 'white',
