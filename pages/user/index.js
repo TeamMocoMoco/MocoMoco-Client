@@ -1,7 +1,7 @@
 import MyPage from './MyPage';
-import Profile from './Profile';
+import UpdateProfile from './UpdateProfile';
 
 module.exports = {
   MyPage,
-  Profile,
+  UpdateProfile,
 };

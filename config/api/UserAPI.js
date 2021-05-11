@@ -112,3 +112,43 @@ export async function logout(navigation) {
     Alert.alert(error);
   }
 }
+
+export async function getUserInfo() {
+  const token = await SecureStore.getItemAsync('usertoken');
+  try {
+    const response = await axios({
+      method: 'get',
+      url: host + '/auth',
+      headers: {
+        token: token,
+      },
+    });
+    return response.data.result;
+  } catch (err) {
+    const error = err.response.data.err || err.message;
+    console.log('err');
+    Alert.alert(error);
+  }
+}
+
+export async function patchUserInfo(navigation, name, introduce) {
+  const token = await SecureStore.getItemAsync('usertoken');
+  try {
+    const response = await axios({
+      method: 'patch',
+      url: host + '/auth',
+      data: {
+        name: name,
+        introduce: introduce,
+      },
+      headers: {
+        token: token,
+      },
+    });
+    navigation.goBack();
+  } catch (err) {
+    const error = err.response.data.err || err.message;
+    console.log('err');
+    Alert.alert(error);
+  }
+}
