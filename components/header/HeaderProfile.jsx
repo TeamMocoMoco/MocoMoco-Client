@@ -1,10 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 
-export default function HeaderProfile({ navigation, title }) {
-  const Modify = () => {
-    navigation.goBack();
-  };
+export default function HeaderProfile({ navigation, title, update }) {
   return (
     <View style={styles.header}>
       <TouchableOpacity disabled>
@@ -15,7 +12,7 @@ export default function HeaderProfile({ navigation, title }) {
 
       <TouchableOpacity
         onPress={() => {
-          Modify();
+          update();
         }}
       >
         <Text style={styles.confirmText}>완료</Text>

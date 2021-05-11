@@ -18,7 +18,7 @@ import {
   CreatePostFourth,
 } from '../pages/post/create';
 
-import { Profile } from '../pages/user';
+import { UpdateProfile } from '../pages/user';
 const Stack = createStackNavigator();
 
 const StackNavigator = () => {
@@ -48,7 +48,7 @@ const StackNavigator = () => {
       <Stack.Screen name="SubList" component={SubList} />
       <Stack.Screen name="ReadPost" component={ReadPost} />
 
-      <Stack.Screen name="Profile" component={Profile} />
+      <Stack.Screen name="UpdateProfile" component={UpdateProfile} />
     </Stack.Navigator>
   );
 };

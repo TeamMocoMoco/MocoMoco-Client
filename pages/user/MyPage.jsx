@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import {
   StyleSheet,
@@ -7,17 +7,53 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
+  Alert,
+  ActivityIndicator,
 } from 'react-native';
 
-import { HeaderSetting } from '../../components/header';
+import * as SecureStore from 'expo-secure-store';
+
+import { HeaderSetting, HeaderBack } from '../../components/header';
 import { SettingModal } from '../../components/modal';
 
+import { getUserInfo } from '../../config/api/UserAPI';
+
+import { getColor } from '../../styles/styles';
 import Recruit from '../../assets/Recruit.png';
 
 export default function MyPage({ navigation }) {
+  const [ready, setReady] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const [user, setUser] = useState({});
+  console.log(user);
+  useEffect(() => {
+    navigation.addListener('focus', (e) => {
+      setTimeout(async () => {
+        setReady(false);
+        const token = await SecureStore.getItemAsync('usertoken');
+        if (token == null) {
+          Alert.alert('가입이 필요한 기능입니다.', '가입하시겠습니까?', [
+            {
+              text: '네',
+              onPress: () => navigation.push('Verification'),
+              style: 'default',
+            },
+            {
+              text: '아니오',
+              onPress: () => navigation.goBack(),
+              style: 'cancel',
+            },
+          ]);
+        } else {
+          const result = await getUserInfo();
+          setUser(result);
+          setReady(true);
+        }
+      });
+    });
+  }, []);
 
-  return (
+  return ready ? (
     <View style={styles.container}>
       <HeaderSetting
         title={'마이페이지'}
@@ -37,14 +73,13 @@ export default function MyPage({ navigation }) {
             <Image
               style={styles.img}
               source={{
-                uri:
-                  'https://image.news1.kr/system/photos/2020/5/29/4215665/article.jpg/dims/optimize',
+                uri: user.userImg,
               }}
             />
           </View>
           <View style={styles.nameBox}>
-            <Text style={styles.nameText}>이지은</Text>
-            <Text style={styles.roleText}>개발자</Text>
+            <Text style={styles.nameText}>{user.name} </Text>
+            <Text style={styles.roleText}>{user.role}</Text>
           </View>
         </TouchableOpacity>
 
@@ -75,9 +110,22 @@ export default function MyPage({ navigation }) {
         </View>
 
         <ScrollView style={styles.myBox}>
-          <Text>hi</Text>
+          <Text>{user.introduce} </Text>
         </ScrollView>
       </View>
+    </View>
+  ) : (
+    <View style={styles.container}>
+      <HeaderSetting
+        title={'마이페이지'}
+        modalOpen={modalOpen}
+        setModalOpen={setModalOpen}
+      />
+      <ActivityIndicator
+        size="large"
+        color={getColor('defaultColor')}
+        style={{ flex: 1, alignSelf: 'center' }}
+      />
     </View>
   );
 }
@@ -109,13 +157,12 @@ const styles = StyleSheet.create({
     height: '100%',
     borderRadius: 100,
   },
-  nameBox: { flexDirection: 'row', marginLeft: 20, alignItems: 'center' },
-  nameText: { fontSize: 23, fontWeight: 'bold' },
+  nameBox: { flexDirection: 'column', marginLeft: 20 },
+  nameText: { fontSize: 20, fontWeight: 'bold' },
   roleText: { fontSize: 15, color: 'grey', marginLeft: 5 },
   studyAll: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    paddingHorizontal: 10,
   },
   studyBox: { alignItems: 'center' },
   textBox: { flexDirection: 'row', paddingTop: 20 },
