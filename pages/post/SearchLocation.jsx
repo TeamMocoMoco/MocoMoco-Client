@@ -1,74 +1,59 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
-import {
-  Alert,
-  ActivityIndicator,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-  FlatList,
-} from 'react-native';
-
-import { Entypo } from '@expo/vector-icons';
+import { ActivityIndicator, StyleSheet, View, FlatList } from 'react-native';
 
 import { SearchBar } from '../../components/input';
+import { LocationCard } from '../../components/card';
 
-import { getLocation } from '../../config/api/MapAPI';
+import { getLocations } from '../../config/api/MapAPI';
+import { getColor } from '../../styles/styles';
 
-export default function MainList({ navigation }) {
-  const [ready, setReady] = useState(false);
+export default function SearchLocation({ navigation, route }) {
+  const info = route.params.info;
+
+  const [ready, setReady] = useState(true);
   const [results, setResults] = useState([]);
 
-  useEffect(() => {
-    navigation.addListener('focus', (e) => {
-      setTimeout(() => {
-        download();
-        setReady(true);
-      });
-    });
-  }, [navigation]);
-
-  const download = useCallback(async () => {
-    setTab(title);
-    let result = [];
-    result = await getLocations();
-    setPosts(result);
+  const download = useCallback(async (address) => {
+    setReady(false);
+    const result = await getLocations(address);
+    // await getLocations(address);
+    setResults(result);
+    setReady(true);
   });
 
   return ready ? (
     <View style={styles.container}>
       {/* 검색창 */}
-      <SearchBar />
+      <SearchBar doFunction={download} />
 
       {/* 검색한 주소 목록 */}
       <View style={styles.content}>
         <FlatList
-          data={posts}
+          data={results}
+          showsVerticalScrollIndicator={false}
           keyExtractor={(item) => item._id}
-          renderItem={(post) => {
+          renderItem={(location) => {
             return (
-              <MainCard
+              <LocationCard
                 navigation={navigation}
-                post={post.item}
-                key={post.item._id}
+                location={location.item}
+                info={info}
+                key={location.item.place_id}
               />
             );
           }}
         />
       </View>
-      <TouchableOpacity
-        style={styles.FAB}
-        onPress={() => {
-          checkLogin();
-        }}
-      >
-        <Entypo name="plus" size={24} color="white" />
-      </TouchableOpacity>
     </View>
   ) : (
     <View style={styles.container}>
-      <SearchBar />
-      <ActivityIndicator size="small" color="#0000ff" />
+      <SearchBar doFunction={download} />
+      <ActivityIndicator
+        size="large"
+        color={getColor('defaultColor')}
+        style={{ flex: 1, alignSelf: 'center' }}
+      />
     </View>
   );
 }

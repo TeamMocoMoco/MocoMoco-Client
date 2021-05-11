@@ -9,7 +9,13 @@ import {
   Starting,
 } from '../pages/start';
 import TabNavigator from './TabNavigator';
-import { SubList, CreatePost, ReadPost, UpdatePost } from '../pages/post';
+import {
+  SubList,
+  CreatePost,
+  ReadPost,
+  UpdatePost,
+  SearchLocation,
+} from '../pages/post';
 import { ChatRoom } from '../pages/chat';
 import {
   CreatePostFirst,
@@ -37,6 +43,8 @@ const StackNavigator = () => {
 
       <Stack.Screen name="UpdatePost" component={UpdatePost} />
       <Stack.Screen name="CreatePost" component={CreatePost} />
+
+      <Stack.Screen name="SearchLocation" component={SearchLocation} />
 
       <Stack.Screen name="CreatePostFirst" component={CreatePostFirst} />
       <Stack.Screen name="CreatePostSecond" component={CreatePostSecond} />

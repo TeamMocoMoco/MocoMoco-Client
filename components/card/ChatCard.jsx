@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   StyleSheet,
   Text,
@@ -25,11 +25,11 @@ export default function ChatCard({ navigation, userId, room }) {
     if (userId == room.admin._id) {
       return room.participant.userImg;
     } else {
-      return 'https://image.news1.kr/system/photos/2020/5/29/4215665/article.jpg/dims/optimize';
+      return room.admin.userImg;
     }
   };
 
-  if (room.admin != null) {
+  if (room.admin != null && room.participant != null) {
     return (
       <TouchableOpacity
         style={styles.container}

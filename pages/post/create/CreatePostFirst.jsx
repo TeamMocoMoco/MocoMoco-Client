@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
@@ -8,17 +8,26 @@ import { ProgressBar, Colors } from 'react-native-paper';
 
 import { HeaderBack } from '../../../components/header';
 import { FullButton, OnAndOffButton } from '../../../components/button';
-import { getColor } from '../../../styles/styles';
 
 import kind from '../../../config/mock/category.json';
 
 export default function CreatePostFirst({ navigation }) {
   const categoryList = kind.category;
 
+  const locationInfo = useRef();
+
   const [onAndOff, setOnAndOff] = useState('');
   const [category, setCategory] = useState('선택');
   const [personnel, setPersonnel] = useState(0);
   const [location, setLocation] = useState([]);
+
+  useEffect(() => {
+    navigation.addListener('focus', (e) => {
+      if (locationInfo.current != null) {
+        setLocation(locationInfo.current.geometry.location);
+      }
+    });
+  });
 
   const showSubmitButton = () => {
     if (category == '선택' || personnel == '') {
@@ -46,8 +55,17 @@ export default function CreatePostFirst({ navigation }) {
       return (
         <View>
           <Text style={styles.serviceComment}>주소</Text>
-          <TouchableOpacity style={styles.adressBox}>
-            <Text>예) 대전시 유성구 노은동</Text>
+          <TouchableOpacity
+            style={styles.adressBox}
+            onPress={() => {
+              navigation.push('SearchLocation', { info: locationInfo });
+            }}
+          >
+            {locationInfo.current != null ? (
+              <Text>{locationInfo.current.name}</Text>
+            ) : (
+              <Text>예) 스타벅스 강남</Text>
+            )}
             <Ionicons name="md-search-outline" size={24} color="black" />
           </TouchableOpacity>
         </View>
@@ -77,6 +95,7 @@ export default function CreatePostFirst({ navigation }) {
                   title={title}
                   onAndOff={onAndOff}
                   setOnAndOff={setOnAndOff}
+                  setLocation={setLocation}
                   key={i}
                 />
               );
@@ -110,6 +129,7 @@ export default function CreatePostFirst({ navigation }) {
           </View>
         </View>
 
+        {/* 모집 인원 */}
         <View style={styles.catepersonBox}>
           <View style={{ flex: 2, marginEnd: 20 }}>
             <Text style={styles.label}>모집 인원</Text>
@@ -127,7 +147,7 @@ export default function CreatePostFirst({ navigation }) {
               <Entypo name="minus" size={12} color="#777" />
             </TouchableOpacity>
 
-            {/* 모집인원 */}
+            {/* 인원 */}
             <Text style={styles.numberText}>{personnel}</Text>
 
             {/* 플러스 버튼 */}
