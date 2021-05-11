@@ -19,13 +19,12 @@ import { SettingModal } from '../../components/modal';
 import { getUserInfo } from '../../config/api/UserAPI';
 
 import { getColor } from '../../styles/styles';
-import Recruit from '../../assets/Recruit.png';
+import { Recruit, Save, Application } from '../../assets/images';
 
 export default function MyPage({ navigation }) {
   const [ready, setReady] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [user, setUser] = useState({});
-  console.log(user);
   useEffect(() => {
     navigation.addListener('focus', (e) => {
       setTimeout(async () => {
@@ -64,6 +63,7 @@ export default function MyPage({ navigation }) {
         navigation={navigation}
         modalOpen={modalOpen}
         setModalOpen={setModalOpen}
+        user={user}
       />
 
       <View style={styles.content}>
@@ -93,7 +93,7 @@ export default function MyPage({ navigation }) {
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.studyBox}>
-            <Image source={Recruit} />
+            <Image source={Application} />
             <View style={styles.textBox}>
               <Text style={styles.cateText}>신청</Text>
               <Text style={styles.studyText}> 스터디</Text>
@@ -101,7 +101,7 @@ export default function MyPage({ navigation }) {
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.studyBox}>
-            <Image source={Recruit} />
+            <Image source={Save} />
             <View style={styles.textBox}>
               <Text style={styles.cateText}>저장</Text>
               <Text style={styles.studyText}> 스터디</Text>
@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
     height: '100%',
     borderRadius: 100,
   },
-  nameBox: { flexDirection: 'column', marginLeft: 20 },
+  nameBox: { flexDirection: 'row', marginLeft: 20, alignItems: 'center' },
   nameText: { fontSize: 20, fontWeight: 'bold' },
   roleText: { fontSize: 15, color: 'grey', marginLeft: 5 },
   studyAll: {
