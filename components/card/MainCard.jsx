@@ -1,10 +1,33 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { HashtagButton } from '../button';
 
 export default function MainCard({ navigation, post }) {
   const startDate = post.startDate.substr(0, 10);
+
+  const getDays = () => {
+    const today = new Date();
+    const d_day = new Date(startDate);
+
+    const days = Math.floor(
+      ((d_day.getTime() - today.getTime()) / 1000 / 60 / 60 + 9) / 24
+    );
+
+    if (days >= 7) {
+      return `${days / 7}주일 뒤 시작`;
+    } else if (days > 1) {
+      return `${days}일 뒤 시작`;
+    } else if (days == 1) {
+      return `내일부터 시작`;
+    } else if (days == 0) {
+      return `오늘 마감`;
+    } else if (days > -7) {
+      return `${-days}일 지남`;
+    } else if (days <= -7) {
+      return `${-days / 7}주일 지남`;
+    }
+  };
 
   return (
     <TouchableOpacity
@@ -14,7 +37,7 @@ export default function MainCard({ navigation, post }) {
         navigation.push('ReadPost', { postId });
       }}
     >
-      <Text style={styles.date}>{startDate}</Text>
+      <Text style={styles.date}>{getDays()}</Text>
       <View style={{ marginVertical: 10 }}>
         <Text style={styles.title}>
           {post.meeting} {post.category}
@@ -43,6 +66,7 @@ const styles = StyleSheet.create({
   date: {
     color: '#8E9297',
     fontSize: 15,
+    fontWeight: 'bold',
   },
   title: {
     color: '#212121',
