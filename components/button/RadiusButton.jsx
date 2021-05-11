@@ -6,7 +6,7 @@ export default function RadiusButton({ title, status, doFunction }) {
   if (status) {
     return (
       <TouchableOpacity
-        style={[styles.buttonContainer, styles.inactive]}
+        style={[styles.buttonContainer, styles.active]}
         onPress={() => doFunction()}
       >
         <Text style={styles.buttonText}>{title}</Text>
@@ -16,7 +16,7 @@ export default function RadiusButton({ title, status, doFunction }) {
     return (
       <TouchableOpacity
         disabled
-        style={[styles.buttonContainer, styles.active]}
+        style={[styles.buttonContainer, styles.inactive]}
       >
         <Text style={styles.buttonText}>{title}</Text>
       </TouchableOpacity>
