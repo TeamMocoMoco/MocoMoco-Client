@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import {
   Alert,
@@ -18,23 +18,20 @@ import { MainCard } from '../../components/card';
 import { TabButton } from '../../components/button';
 import { getColor } from '../../styles/styles';
 
-import {
-  getPosts,
-  getPostsOnline,
-  getPostsOffline,
-} from '../../config/api/PostAPI';
+import { getPosts, getPostsByMeeting } from '../../config/api/PostAPI';
 
 export default function MainList({ navigation }) {
+  const pageNum = useRef(1);
+  const flatListRef = useRef();
+
   const [ready, setReady] = useState(false);
   const [posts, setPosts] = useState([]);
   const [tab, setTab] = useState('전체보기');
-  const [pageNum, setPageNum] = useState(1);
 
   useEffect(() => {
     navigation.addListener('focus', (e) => {
       setTimeout(() => {
         setReady(false);
-        setTab('전체보기');
         download(tab);
         setReady(true);
       });
@@ -52,35 +49,42 @@ export default function MainList({ navigation }) {
   };
 
   const download = useCallback(async (title) => {
+    pageNum.current = 1;
     setTab(title);
     let result = [];
     if (title == '전체보기') {
-      result = await getPosts(1);
-    } else if (title == '온라인') {
-      result = await getPostsOnline(1);
-    } else if (title == '오프라인') {
-      result = await getPostsOffline(1);
+      result = await getPosts(pageNum.current);
+    } else {
+      result = await getPostsByMeeting(title, pageNum.current);
     }
     setPosts(result);
   });
+
+  const scrollToTop = () => {
+    flatListRef.current.scrollToOffset({ animated: true, y: 0 });
+  };
 
   return ready ? (
     <View style={styles.container}>
       <SearchBar />
 
       <View style={{ flexDirection: 'row', marginVertical: 10 }}>
-        <TabButton
-          title={'전체보기'}
-          state={tab}
-          setState={setTab}
-          download={download}
-        />
-        <TabButton title={'온라인'} state={tab} download={download} />
-        <TabButton title={'오프라인'} state={tab} download={download} />
+        {['전체보기', '온라인', '오프라인'].map((title, i) => {
+          return (
+            <TabButton
+              title={title}
+              state={tab}
+              download={download}
+              scroll={scrollToTop}
+              key={i}
+            />
+          );
+        })}
       </View>
 
       <View style={styles.content}>
         <FlatList
+          ref={(ref) => (flatListRef.current = ref)}
           showsVerticalScrollIndicator={false}
           data={posts}
           keyExtractor={(item) => item._id}
@@ -92,6 +96,20 @@ export default function MainList({ navigation }) {
                 key={post.item._id}
               />
             );
+          }}
+          onEndReachedThreshold={0.1}
+          onEndReached={async () => {
+            let nextPosts = [];
+            if (tab == '전체보기') {
+              nextPosts = await getPosts(pageNum.current + 1);
+            } else {
+              nextPosts = await getPostsByMeeting(tab, pageNum.current + 1);
+            }
+            if (nextPosts.length != 0) {
+              pageNum.current += 1;
+              let allPosts = [...posts, ...nextPosts];
+              setPosts(allPosts);
+            }
           }}
         />
       </View>
@@ -129,7 +147,11 @@ export default function MainList({ navigation }) {
         />
       </View>
 
-      <ActivityIndicator size="small" color="getColor('defaultColor')" />
+      <ActivityIndicator
+        size="large"
+        color={getColor('defaultColor')}
+        style={{ flex: 1, alignSelf: 'center' }}
+      />
     </View>
   );
 }
@@ -147,7 +169,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   FAB: {
-    backgroundColor: '#0E4DA4',
+    backgroundColor: getColor('defaultColor'),
     position: 'absolute',
     bottom: 20,
     right: 20,
