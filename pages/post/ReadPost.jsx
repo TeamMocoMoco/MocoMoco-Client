@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import {
   ActivityIndicator,
+  Alert,
   ScrollView,
   StyleSheet,
   Text,
   View,
-  Modal,
 } from 'react-native';
 
+import * as SecureStore from 'expo-secure-store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
@@ -40,6 +41,36 @@ export default function ReadPost({ navigation, route }) {
     });
   }, [navigation]);
 
+  const checkLogin = async () => {
+    const token = await SecureStore.getItemAsync('usertoken');
+    if (token == null) {
+      Alert.alert('가입이 필요한 기능입니다.', '가입하시겠습니까?', [
+        {
+          text: '네',
+          onPress: () => navigation.push('Verification'),
+          style: 'default',
+        },
+        {
+          text: '아니오',
+          style: 'cancel',
+        },
+      ]);
+    } else {
+      await createRoom(navigation, post._id, post.user._id, post.user.name);
+    }
+  };
+
+  const showLocation = () => {
+    if (post.meeting == '오프라인') {
+      return (
+        <View style={styles.locationBox}>
+          <Text style={styles.location}>서울특별시 용산구 이태원동</Text>
+          <Entypo name="chevron-right" size={22} color="black" />
+        </View>
+      );
+    }
+  };
+
   const showApplyButton = () => {
     if (post.status == false) {
       return <RadiusButton title={'모집이 마감되었습니다.'} status={false} />;
@@ -63,13 +94,8 @@ export default function ReadPost({ navigation, route }) {
         <RadiusButton
           title={'채팅으로 신청하기'}
           status={true}
-          doFunction={async () => {
-            await createRoom(
-              navigation,
-              post._id,
-              post.user._id,
-              post.user.name
-            );
+          doFunction={() => {
+            checkLogin();
           }}
         />
       );
@@ -90,6 +116,23 @@ export default function ReadPost({ navigation, route }) {
       );
     } else {
       return <></>;
+    }
+  };
+
+  const getDday = () => {
+    const today = new Date();
+    const d_day = new Date(post.startDate);
+
+    const days = Math.floor(
+      ((d_day.getTime() - today.getTime()) / 1000 / 60 / 60 + 9) / 24
+    );
+
+    if (days > 0) {
+      return `D-${days}`;
+    } else if (days == 0) {
+      return `D-Day`;
+    } else {
+      return `D+${-days}`;
     }
   };
 
@@ -122,29 +165,30 @@ export default function ReadPost({ navigation, route }) {
           />
 
           {/* 날짜 */}
-          <Text style={styles.day}>D-3</Text>
-          <Text style={styles.date}>
-            {post.startDate.substr(0, 16).replace('T', ' ')} ~{' '}
-            {post.dueDate.substr(0, 16).replace('T', ' ')}
-          </Text>
+          <View style={{ marginVertical: 10 }}>
+            <Text style={styles.day}>{getDday()}</Text>
+            <Text style={styles.date}>
+              {post.startDate.substr(0, 16).replace('T', ' ')} ~{' '}
+              {post.dueDate.substr(0, 16).replace('T', ' ')}
+            </Text>
+          </View>
         </View>
 
         {/* 위치 */}
-        <View style={styles.locationBox}>
-          <Text style={styles.location}>서울특별시 용산구 이태원동</Text>
-          <Entypo name="chevron-right" size={22} color="black" />
-        </View>
+        {showLocation()}
 
         <View style={styles.m_h_25}>
           <View style={styles.divider}></View>
 
           {/* 주최자 */}
-          <View style={styles.row}>
+          <View style={[styles.row, { alignItems: 'flex-start' }]}>
             <Text style={styles.label}>주최자</Text>
-            <Text style={styles.tag}>{post.user.name}</Text>
-            <Text style={styles.position}>
-              {post.position} / {post.language}
-            </Text>
+            <View>
+              <Text style={styles.tag}>{post.user.name}</Text>
+              <Text style={styles.position}>
+                {post.position} / {post.language}
+              </Text>
+            </View>
           </View>
 
           {/* 모집 인원 */}
@@ -157,7 +201,7 @@ export default function ReadPost({ navigation, route }) {
           <View style={styles.row}>
             <Text style={styles.label}>참가자</Text>
             <View style={styles.arrowRow}>
-              {/* <Text style={styles.tag}>{post.participants.length}명</Text> */}
+              <Text style={styles.tag}>{post.participants.length}명</Text>
               <Entypo name="chevron-right" size={22} color="black" />
             </View>
           </View>
@@ -243,7 +287,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F8F9FB',
     paddingVertical: 15,
     paddingHorizontal: 25,
-    marginVertical: 10,
+    marginVertical: 5,
     alignItems: 'center',
     justifyContent: 'space-between',
   },
@@ -274,7 +318,7 @@ const styles = StyleSheet.create({
   },
   position: {
     color: '#8E9297',
-    marginStart: 15,
+    marginTop: 5,
   },
 
   descBox: {
