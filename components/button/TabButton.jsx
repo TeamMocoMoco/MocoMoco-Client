@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-export default function TabButton({ title, state, download }) {
+export default function TabButton({ title, state, download, scroll }) {
   if (title == state) {
     return (
       <View style={[styles.container, { borderBottomWidth: 2 }]}>
@@ -14,6 +14,7 @@ export default function TabButton({ title, state, download }) {
         style={styles.container}
         onPress={() => {
           download(title);
+          scroll();
         }}
       >
         <Text style={[styles.title, { color: '#DADADA' }]}>{title}</Text>

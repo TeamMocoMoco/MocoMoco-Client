@@ -1,10 +1,10 @@
 import { Alert } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
 const host = 'http://3.34.137.188';
 
+// 모집글 전체보기 (페이징)
 export async function getPosts(pageNum) {
   try {
     const response = await axios({
@@ -22,13 +22,18 @@ export async function getPosts(pageNum) {
   }
 }
 
-export async function getPostsById(postId) {
+// 온/오프라인 모집글 전체보기 (페이징)
+export async function getPostsByMeeting(meeting, pageNum) {
   try {
-    const myid = await AsyncStorage.getItem('myid');
     const response = await axios({
       method: 'get',
-      url: host + '/posts/' + postId,
+      url: host + '/posts',
+      params: {
+        meeting: meeting,
+        page: pageNum,
+      },
     });
+
     return response.data.result;
   } catch (err) {
     const error = err.response.data.err || err.message;
@@ -37,16 +42,13 @@ export async function getPostsById(postId) {
   }
 }
 
-export async function getPostsOnline(pageNum) {
+// 모집글 상세보기
+export async function getPostsById(postId) {
   try {
     const response = await axios({
       method: 'get',
-      url: host + '/posts/online',
-      params: {
-        page: pageNum,
-      },
+      url: host + '/posts/' + postId,
     });
-
     return response.data.result;
   } catch (err) {
     const error = err.response.data.err || err.message;

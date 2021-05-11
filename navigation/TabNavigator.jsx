@@ -4,10 +4,11 @@ import Platform, { StyleSheet, Text, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { SimpleLineIcons, Ionicons } from '@expo/vector-icons';
 
-import TabTopNavigator from './TabTopNavigator';
 import { MainList, SearchMap } from '../pages/post';
 import { ChatList } from '../pages/chat';
 import { MyPage } from '../pages/user';
+
+import { getColor } from '../styles/styles';
 
 const Tabs = createBottomTabNavigator();
 
@@ -21,7 +22,7 @@ const TabNavigator = () => {
           let iconLabel = '';
 
           if (route.name === 'MainList') {
-            iconKind = 'SimpleLineIcons ';
+            iconKind = 'SimpleLineIcons';
             iconName = 'compass';
             iconLabel = '탐색';
           } else if (route.name === 'SearchMap') {
@@ -38,18 +39,20 @@ const TabNavigator = () => {
             iconLabel = '마이페이지';
           }
 
-          if (iconKind === 'SimpleLineIcons ') {
+          if (iconKind === 'SimpleLineIcons') {
             return (
               <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                 <SimpleLineIcons
                   name={iconName}
-                  color={focused ? '#000' : '#CBCBCB'}
+                  color={focused ? getColor('defaultColor') : '#CBCBCB'}
                   size={28}
                 />
                 <Text
                   style={[
                     styles.label,
-                    focused ? { color: '#000' } : { color: '#CBCBCB' },
+                    focused
+                      ? { color: getColor('defaultColor') }
+                      : { color: '#CBCBCB' },
                   ]}
                 >
                   {iconLabel}
@@ -61,13 +64,15 @@ const TabNavigator = () => {
               <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                 <Ionicons
                   name={iconName}
-                  color={focused ? '#000' : '#CBCBCB'}
+                  color={focused ? getColor('defaultColor') : '#CBCBCB'}
                   size={24}
                 />
                 <Text
                   style={[
                     styles.label,
-                    focused ? { color: '#000' } : { color: '#CBCBCB' },
+                    focused
+                      ? { color: getColor('defaultColor') }
+                      : { color: '#CBCBCB' },
                   ]}
                 >
                   {iconLabel}
