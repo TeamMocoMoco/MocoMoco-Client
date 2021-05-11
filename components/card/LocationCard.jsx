@@ -1,28 +1,23 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import { SmallCategoryButton, HashtagButton } from '../button';
+import { getColor } from '../../styles/styles';
 
-export default function LocationCard({ navigation }) {
+export default function LocationCard({ navigation, location, info }) {
   return (
     <TouchableOpacity
       style={styles.cardContainer}
       onPress={() => {
+        info.current = location;
         navigation.goBack();
       }}
     >
-      <View style={styles.firstRow}>
-        <Text style={styles.nickname}>닉네임</Text>
-        <Text style={styles.date}>• 4월 24일 14:00 ~ 20:00</Text>
-      </View>
-      <Text style={styles.title}>파이썬 알고리즘 스터디 하실 분 모아요~</Text>
-      <Text style={styles.people}>• 모집인원 : 6명</Text>
-      <View style={styles.categoryRow}>
-        <SmallCategoryButton title={'온라인'} />
-        <SmallCategoryButton title={'알고리즘 스터디'} />
-      </View>
-      <View style={styles.hashtagRow}>
-        <HashtagButton title={'Python'} />
+      <Text style={styles.name}>{location.name}</Text>
+      <View style={styles.row}>
+        <View style={styles.badge}>
+          <Text style={styles.badgeText}>주소</Text>
+        </View>
+        <Text style={styles.vicinity}>{location.vicinity}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -30,37 +25,35 @@ export default function LocationCard({ navigation }) {
 
 const styles = StyleSheet.create({
   cardContainer: {
-    backgroundColor: '#FFF',
     flex: 1,
-    padding: 20,
-    margin: 10,
+    padding: 10,
     borderBottomWidth: 0.5,
+    borderBottomColor: '#DADADA',
   },
-  firstRow: {
+  row: {
     flexDirection: 'row',
-    justifyContent: 'center',
+    alignItems: 'center',
   },
-  nickname: {
-    width: '30%',
+  name: {
+    color: '#000',
     fontSize: 15,
     fontWeight: 'bold',
+    marginBottom: 8,
   },
-  date: {
-    width: '70%',
+  badge: {
+    backgroundColor: getColor('defaultColor'),
+    paddingHorizontal: 5,
+    paddingVertical: 3,
+    marginEnd: 5,
+    borderRadius: 3,
   },
-  title: {
-    fontSize: 18,
+  badgeText: {
+    color: '#FFF',
+    fontSize: 12,
     fontWeight: 'bold',
-    marginVertical: 10,
   },
-  people: {
-    color: '#555',
-  },
-  categoryRow: {
-    flexDirection: 'row',
-    marginVertical: 15,
-  },
-  hashtagRow: {
-    flexDirection: 'row',
+  vicinity: {
+    color: '#777E8E',
+    fontSize: 14,
   },
 });

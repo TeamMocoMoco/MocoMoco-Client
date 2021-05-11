@@ -1,15 +1,9 @@
 import React, { useState } from 'react';
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableHighlight,
-  View,
-} from 'react-native';
+import { StyleSheet, TextInput, TouchableHighlight, View } from 'react-native';
 
 import { Ionicons } from '@expo/vector-icons';
 
-export default function SearchBar() {
+export default function SearchBar({ doFunction }) {
   const [value, setValue] = useState('');
 
   return (
@@ -25,6 +19,9 @@ export default function SearchBar() {
           placeholderTextColor="#777"
           onChangeText={(text) => {
             setValue(text);
+          }}
+          onEndEditing={() => {
+            doFunction(value);
           }}
         />
       </View>
