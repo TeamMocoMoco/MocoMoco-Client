@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
   StyleSheet,
   View,
@@ -6,19 +6,22 @@ import {
   Dimensions,
   TouchableOpacity,
   Text,
-  Touchable,
   Image,
 } from 'react-native';
 const pickerWidth = Dimensions.get('window').width * 0.8;
 
 import { Edit } from '../../assets/images';
 
-import { deletePosts } from '../../config/api/PostAPI';
 import { logout } from '../../config/api/UserAPI';
 
 import { MaterialIcons } from '@expo/vector-icons';
 
-export default function SettingModal({ navigation, modalOpen, setModalOpen }) {
+export default function SettingModal({
+  navigation,
+  modalOpen,
+  setModalOpen,
+  user,
+}) {
   const logoutFunc = () => {
     logout(navigation);
   };
@@ -51,7 +54,7 @@ export default function SettingModal({ navigation, modalOpen, setModalOpen }) {
           <TouchableOpacity
             style={styles.setBox}
             onPress={() => {
-              navigation.push('Profile');
+              navigation.push('UpdateProfile', { user });
               setModalOpen(false);
             }}
           >

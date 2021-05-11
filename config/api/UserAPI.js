@@ -131,24 +131,22 @@ export async function getUserInfo() {
   }
 }
 
-export async function patchUserInfo(navigation, name, introduce) {
+export async function patchUserInfo(navigation, formData) {
   const token = await SecureStore.getItemAsync('usertoken');
   try {
     const response = await axios({
       method: 'patch',
       url: host + '/auth',
-      data: {
-        name: name,
-        introduce: introduce,
-      },
+      data: formData,
       headers: {
         token: token,
+        'Content-Type': 'multipart/form-data',
       },
     });
-    navigation.goBack();
+    if (response.data.result) {
+      navigation.goBack();
+    }
   } catch (err) {
-    const error = err.response.data.err || err.message;
-    console.log('err');
-    Alert.alert(error);
+    console.log(err);
   }
 }
