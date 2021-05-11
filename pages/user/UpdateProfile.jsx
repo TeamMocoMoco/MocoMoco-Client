@@ -7,6 +7,8 @@ import {
   TouchableOpacity,
   Image,
   TextInput,
+  Alert,
+  ActivityIndicator,
 } from 'react-native';
 
 import { HeaderProfile } from '../../components/header';
@@ -16,9 +18,11 @@ import { patchUserInfo } from '../../config/api/UserAPI';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 
-export default function UpdateProfile({ navigation }) {
-  const [name, setName] = useState('');
-  const [introduce, setIntroduce] = useState('');
+export default function UpdateProfile({ navigation, route }) {
+  const userinfo = route.params.user;
+
+  const [name, setName] = useState(userinfo.name);
+  const [introduce, setIntroduce] = useState(userinfo.introduce);
 
   const update = async () => {
     await patchUserInfo(navigation, name, introduce);
@@ -35,7 +39,7 @@ export default function UpdateProfile({ navigation }) {
   //   }
   // };
 
-  const imageUpload = () => {};
+  // const imageUpload = () => {};
 
   // useEffect(() => {
   //   askPermission();
@@ -70,7 +74,7 @@ export default function UpdateProfile({ navigation }) {
             <Text style={styles.label}>이름</Text>
             <TextInput
               style={{ fontSize: 18 }}
-              placeholder={'주형인'}
+              placeholder={'이지은'}
               value={name}
               onChangeText={(text) => {
                 setName(text);
@@ -99,7 +103,7 @@ export default function UpdateProfile({ navigation }) {
             <TextInput
               style={[styles.textarea, introduce == '' ? { opacity: 0.6 } : {}]}
               placeholder={
-                'ex)\n👋안녕하세요 저는 개발자 주형인 입니다.\n🌎현재 저는 서울에 거주중이에요!\n👨‍💻클라이언트 개발자로 열심히 성장중입니다.\n⌨Python, JavaScript를 주로 사용해요.\nReact Native를 사용해서 앱을 만들고있습니다.\n깃허브가 궁금하시면 아래를 참고해주세요!\nhttps://github.com/hyeonginju'
+                'ex)\n👋안녕하세요 저는 개발자 이지은 입니다.\n🌎현재 저는 서울에 거주중이에요!\n👨‍💻클라이언트 개발자로 열심히 성장중입니다.\n⌨Python, JavaScript를 주로 사용해요.\nReact Native를 사용해서 앱을 만들고있습니다.\n깃허브가 궁금하시면 아래를 참고해주세요!\nhttps://github.com/hyeonginju'
               }
               placeholderTextColor={'#111'}
               value={introduce}
