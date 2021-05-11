@@ -84,7 +84,7 @@ export default function SignUp({ navigation }) {
           {/* 이름 입력 */}
           <View style={styles.inputContainer}>
             <TextInput
-              placeholder={'홍모코'}
+              placeholder={'김정훈'}
               value={name}
               onChangeText={(text) => {
                 setName(text);
