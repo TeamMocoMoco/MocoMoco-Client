@@ -2,7 +2,12 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { getColor } from '../../styles/styles';
 
-export default function OnAndOffButton({ title, onAndOff, setOnAndOff }) {
+export default function OnAndOffButton({
+  title,
+  onAndOff,
+  setOnAndOff,
+  setLocation,
+}) {
   if (title == onAndOff) {
     return (
       <TouchableOpacity disabled style={styles.active}>
@@ -17,6 +22,7 @@ export default function OnAndOffButton({ title, onAndOff, setOnAndOff }) {
         style={styles.inactive}
         onPress={() => {
           setOnAndOff(title);
+          setLocation([]);
         }}
       >
         <Text style={{ color: '#8E8E8E', fontSize: 14 }}>{title}</Text>
