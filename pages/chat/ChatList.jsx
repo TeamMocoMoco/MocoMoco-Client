@@ -1,7 +1,14 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
-import { StyleSheet, View, FlatList, ActivityIndicator } from 'react-native';
+import {
+  Alert,
+  StyleSheet,
+  View,
+  FlatList,
+  ActivityIndicator,
+} from 'react-native';
 
+import * as SecureStore from 'expo-secure-store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { HeaderTitle } from '../../components/header';
@@ -33,10 +40,26 @@ export default function ChatList({ navigation }) {
   useEffect(() => {
     navigation.addListener('focus', (e) => {
       setTimeout(async () => {
-        const result = await getMyRooms();
-        setRooms(result.rooms);
-        myid.current = await AsyncStorage.getItem('myid');
-        setReady(true);
+        const token = await SecureStore.getItemAsync('usertoken');
+        if (token == null) {
+          Alert.alert('가입이 필요한 기능입니다.', '가입하시겠습니까?', [
+            {
+              text: '네',
+              onPress: () => navigation.push('Verification'),
+              style: 'default',
+            },
+            {
+              text: '아니오',
+              onPress: () => navigation.goBack(),
+              style: 'cancel',
+            },
+          ]);
+        } else {
+          const result = await getMyRooms();
+          setRooms(result.rooms);
+          myid.current = await AsyncStorage.getItem('myid');
+          setReady(true);
+        }
       });
     });
   }, []);
@@ -53,7 +76,11 @@ export default function ChatList({ navigation }) {
   ) : (
     <View style={styles.container}>
       <HeaderTitle title={'채팅'} />
-      <ActivityIndicator size="small" color={getColor('defaultColor')} />
+      <ActivityIndicator
+        size="large"
+        color={getColor('defaultColor')}
+        style={{ flex: 1, alignSelf: 'center' }}
+      />
     </View>
   );
 }
