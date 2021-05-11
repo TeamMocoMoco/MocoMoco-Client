@@ -7,8 +7,6 @@ import {
   TouchableOpacity,
   Image,
   TextInput,
-  Alert,
-  ActivityIndicator,
 } from 'react-native';
 
 import { HeaderProfile } from '../../components/header';
@@ -16,34 +14,55 @@ import { HeaderProfile } from '../../components/header';
 import { patchUserInfo } from '../../config/api/UserAPI';
 
 import * as ImagePicker from 'expo-image-picker';
-import * as Permissions from 'expo-permissions';
 
 export default function UpdateProfile({ navigation, route }) {
   const userinfo = route.params.user;
 
   const [name, setName] = useState(userinfo.name);
   const [introduce, setIntroduce] = useState(userinfo.introduce);
+  const [imgUri, setImgUri] = useState(userinfo.userImg);
 
   const update = async () => {
-    await patchUserInfo(navigation, name, introduce);
+    await patchUserInfo(navigation, formData);
   };
 
-  // const askPermission = async () => {
+  // 이상태로 사진편집을 했을 때 퍼미션이 뜬다면 이주석을 미련없이 보내겠나이다.
+  // useEffect(() => {
+  //   getPermission();
+  // }, []);
+
+  // const getPermission = async () => {
   //   if (Platform.OS !== 'web') {
   //     const {
   //       status,
   //     } = await ImagePicker.requestMediaLibraryPermissionsAsync();
   //     if (status !== 'granted') {
-  //       alert('사진을 업로드하려면 사진첩 권한이 필요합니다.');
+  //       alert('게시글을 업로드하려면 사진첩 권한이 필요합니다.');
   //     }
   //   }
   // };
 
-  // const imageUpload = () => {};
+  const pickImage = async () => {
+    console.log('이미지 선택');
+    let imageData = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 4],
+      quality: 1,
+    });
 
-  // useEffect(() => {
-  //   askPermission();
-  // }, []);
+    setImgUri(imageData.uri);
+  };
+
+  const formData = new FormData();
+  formData.append('img', {
+    uri: imgUri,
+    name: 'image.jpg',
+    type: 'multipart/form-data',
+  });
+  formData.append('name', name);
+  formData.append('introduce', introduce);
+  console.log(formData);
 
   return (
     <View style={styles.container}>
@@ -55,13 +74,12 @@ export default function UpdateProfile({ navigation, route }) {
 
       <View style={styles.content}>
         {/* 프로필 */}
-        <TouchableOpacity style={styles.imageBox}>
+        <TouchableOpacity onPress={() => pickImage()} style={styles.imageBox}>
           <View style={styles.imgFrame}>
             <Image
               style={styles.img}
               source={{
-                uri:
-                  'https://image.news1.kr/system/photos/2020/5/29/4215665/article.jpg/dims/optimize',
+                uri: userinfo.userImg,
               }}
             />
           </View>
