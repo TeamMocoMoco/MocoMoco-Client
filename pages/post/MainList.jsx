@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import {
-  Alert,
   ActivityIndicator,
+  Alert,
   StyleSheet,
   TouchableOpacity,
   View,
@@ -40,11 +40,20 @@ export default function MainList({ navigation }) {
 
   const checkLogin = async () => {
     const token = await SecureStore.getItemAsync('usertoken');
-    if (token != null) {
-      navigation.push('CreatePostFirst');
+    if (token == null) {
+      Alert.alert('가입이 필요한 기능입니다.', '가입하시겠습니까?', [
+        {
+          text: '네',
+          onPress: () => navigation.push('Verification'),
+          style: 'default',
+        },
+        {
+          text: '아니오',
+          style: 'cancel',
+        },
+      ]);
     } else {
-      Alert.alert('로그인이 필요한 기능입니다.');
-      navigation.push('Verification');
+      navigation.push('CreatePostFirst');
     }
   };
 
