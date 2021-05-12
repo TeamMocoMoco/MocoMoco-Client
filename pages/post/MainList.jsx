@@ -75,7 +75,11 @@ export default function MainList({ navigation }) {
 
   return ready ? (
     <View style={styles.container}>
-      <SearchBar />
+      <SearchBar
+        doFunction={(value) => {
+          navigation.push('SubList', { value, tab });
+        }}
+      />
 
       <View style={{ flexDirection: 'row', marginVertical: 10 }}>
         {['전체보기', '온라인', '오프라인'].map((title, i) => {
