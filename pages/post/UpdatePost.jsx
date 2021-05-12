@@ -421,7 +421,7 @@ const styles = StyleSheet.create({
   label: {
     color: '#263238',
     fontWeight: 'bold',
-    fontSize: 18,
+    fontSize: 14,
     marginVertical: 10,
   },
   onoffBox: { width: '100%', marginBottom: 20 },
@@ -435,7 +435,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    borderWidth: 1,
+    borderWidth: 0.5,
     borderRadius: 30,
     padding: '3%',
     marginBottom: 30,
@@ -452,7 +452,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 30,
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: getColor('defaultColor'),
   },
   picker: {
@@ -494,7 +494,7 @@ const styles = StyleSheet.create({
     borderColor: getColor('defaultColor'),
   },
   tag: {
-    fontSize: 18,
+    fontSize: 14,
     fontWeight: 'bold',
     paddingVertical: '3%',
     color: 'black',

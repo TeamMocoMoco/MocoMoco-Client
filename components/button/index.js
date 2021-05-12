@@ -5,6 +5,7 @@ import SmallCategoryButton from './SmallCategoryButton';
 import HashtagButton from './HashtagButton';
 import OnAndOffButton from './OnAndOffButton';
 import TabButton from './TabButton';
+import TodayButton from './TodayButton';
 
 module.exports = {
   FullButton,
@@ -13,5 +14,6 @@ module.exports = {
   SmallCategoryButton,
   HashtagButton,
   OnAndOffButton,
-  TabButton
+  TabButton,
+  TodayButton,
 };

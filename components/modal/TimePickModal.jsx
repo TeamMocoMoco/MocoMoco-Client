@@ -6,22 +6,21 @@ import moment from 'moment';
 
 const pickerWidth = Dimensions.get('window').width * 0.8;
 
-export default function DatePickModal({
+export default function TimePickModal({
   modalOpen,
   setModalOpen,
   setDateTime,
 }) {
-  let currentDate = moment().format('YYYY-MM-DD');
-
+  let currentDate = moment().format('YYYY/MM/DD');
   return (
     <Modal transparent visible={modalOpen}>
       <View style={styles.modalFrame}>
         <View style={styles.modalContent}>
           <DatePicker
-            style={styles.datePicker}
-            minimumDate={currentDate}
-            onDateChange={(date) => {
-              setDateTime(date + ' ' + '00:00');
+            mode="time"
+            minuteInterval={3}
+            onTimeChange={(time) => {
+              setDateTime(currentDate + ' ' + time);
               setModalOpen(false);
             }}
           />

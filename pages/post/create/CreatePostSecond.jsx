@@ -11,15 +11,14 @@ import {
 import { ProgressBar, Colors } from 'react-native-paper';
 
 import { HeaderBack } from '../../../components/header';
-
-import { FullButton } from '../../../components/button';
-import DatePickModal from '../../../components/modal/DatePickModal';
+import { FullButton, TodayButton } from '../../../components/button';
+import { DatePickModal, TimePickModal } from '../../../components/modal/';
 
 export default function CreatePostSecond({ navigation, route }) {
   const [startDate, setStartDate] = useState('');
   const [dueDate, setDueDate] = useState('');
-
   const [currentModal, setCurrentModal] = useState('');
+  const [today, setToday] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
 
   let onAndOff = route.params.onAndOff;
@@ -50,7 +49,7 @@ export default function CreatePostSecond({ navigation, route }) {
     }
   };
 
-  const showModal = () => {
+  const showDateModal = () => {
     if (currentModal == 'start') {
       return (
         <DatePickModal
@@ -70,6 +69,34 @@ export default function CreatePostSecond({ navigation, route }) {
     }
   };
 
+  const showTimeModal = () => {
+    if (currentModal == 'start') {
+      return (
+        <TimePickModal
+          modalOpen={modalOpen}
+          setModalOpen={setModalOpen}
+          setDateTime={setStartDate}
+        />
+      );
+    } else {
+      return (
+        <TimePickModal
+          modalOpen={modalOpen}
+          setModalOpen={setModalOpen}
+          setDateTime={setDueDate}
+        />
+      );
+    }
+  };
+
+  const showPicker = () => {
+    if (today == '기간스터디') {
+      return showDateModal();
+    } else if (today == '당일스터디') {
+      return showTimeModal();
+    }
+  };
+
   return (
     <View style={styles.container}>
       <HeaderBack navigation={navigation} title={'시간까지 설정하는 센스!'} />
@@ -82,8 +109,24 @@ export default function CreatePostSecond({ navigation, route }) {
 
       <View style={styles.content}>
         <Text style={styles.serviceComment}>
-          시작일과 종료일을{'\n'}설정해주세요.
+          스터디 종류와{'\n'}시작일 / 종료일을 설정해주세요.
         </Text>
+
+        {/* 당일스터디 / 기간스터디 */}
+        <View style={{ width: '100%', marginBottom: 20 }}>
+          <View style={styles.row}>
+            {['당일스터디', '기간스터디'].map((title, i) => {
+              return (
+                <TodayButton
+                  title={title}
+                  today={today}
+                  setToday={setToday}
+                  key={i}
+                />
+              );
+            })}
+          </View>
+        </View>
         {/* 시작일 */}
         <View style={styles.startBox}>
           <View style={styles.midBox}>
@@ -128,7 +171,7 @@ export default function CreatePostSecond({ navigation, route }) {
           </TouchableOpacity>
         </View>
 
-        {showModal()}
+        {showPicker()}
       </View>
       {showSubmitButton()}
     </View>
@@ -144,6 +187,9 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     paddingHorizontal: 20,
+  },
+  row: {
+    flexDirection: 'row',
   },
   label: {
     color: '#263238',
