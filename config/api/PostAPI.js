@@ -4,7 +4,7 @@ import axios from 'axios';
 
 const host = 'http://3.34.137.188';
 
-// 모집글 전체보기 (페이징)
+// 전체 모집글 보기 (페이징) - 완료
 export async function getPosts(pageNum) {
   try {
     const response = await axios({
@@ -14,6 +14,7 @@ export async function getPosts(pageNum) {
         page: pageNum,
       },
     });
+
     return response.data.result;
   } catch (err) {
     const error = err.response.data.err || err.message;
@@ -22,7 +23,49 @@ export async function getPosts(pageNum) {
   }
 }
 
-// 온/오프라인 모집글 전체보기 (페이징)
+// 전체 모집글 검색 (페이징)
+export async function getPostsByKeyword(keyword, pageNum) {
+  try {
+    const response = await axios({
+      method: 'get',
+      url: host + '/posts',
+      params: {
+        keyword: keyword,
+        page: pageNum,
+      },
+    });
+
+    // console.log(response.data.result);
+    return response.data.result;
+  } catch (err) {
+    const error = err.response.data.err || err.message;
+
+    Alert.alert(error);
+  }
+}
+
+// 전체 모집글 카테고리별로 보기 (페이징)
+export async function getPostsByCategory(category, pageNum) {
+  try {
+    const response = await axios({
+      method: 'get',
+      url: host + '/posts/online',
+      params: {
+        category: category,
+        page: pageNum,
+      },
+    });
+
+    console.log(response.data.result);
+    // return response.data.result;
+  } catch (err) {
+    const error = err.response.data.err || err.message;
+
+    Alert.alert(error);
+  }
+}
+
+// 온/오프라인 모집글 전체보기 (페이징) - 완료
 export async function getPostsByMeeting(meeting, pageNum) {
   try {
     const response = await axios({
@@ -42,46 +85,57 @@ export async function getPostsByMeeting(meeting, pageNum) {
   }
 }
 
-// 모집글 상세보기
+// 온/오프라인 모집글 검색 (페이징)
+export async function getPostsByMeetingByKeyword(meeting, keyword, pageNum) {
+  try {
+    const response = await axios({
+      method: 'get',
+      url: host + '/posts',
+      params: {
+        meeting: meeting,
+        keyword: keyword,
+        page: pageNum,
+      },
+    });
+
+    // console.log(response.data.result);
+    return response.data.result;
+  } catch (err) {
+    const error = err.response.data.err || err.message;
+
+    Alert.alert(error);
+  }
+}
+
+// 온/오프라인 모집글 카테고리별로 보기 (페이징)
+export async function getPostsByMeetingByCategory(meeting, category, pageNum) {
+  try {
+    const response = await axios({
+      method: 'get',
+      url: host + '/posts/online',
+      params: {
+        meeting: meeting,
+        category: category,
+        page: pageNum,
+      },
+    });
+
+    console.log(response.data.result);
+    // return response.data.result;
+  } catch (err) {
+    const error = err.response.data.err || err.message;
+
+    Alert.alert(error);
+  }
+}
+
+// 모집글 상세보기 - 완료
 export async function getPostsById(postId) {
   try {
     const response = await axios({
       method: 'get',
       url: host + '/posts/' + postId,
     });
-    return response.data.result;
-  } catch (err) {
-    const error = err.response.data.err || err.message;
-
-    Alert.alert(error);
-  }
-}
-
-export async function getPostsOnlineByCategory(category) {
-  try {
-    const response = await axios({
-      method: 'get',
-      url: host + '/posts/online',
-      params: {
-        category: category,
-      },
-    });
-  } catch (err) {
-    const error = err.response.data.err || err.message;
-
-    Alert.alert(error);
-  }
-}
-
-export async function getPostsOffline(pageNum) {
-  try {
-    const response = await axios({
-      method: 'get',
-      url: host + '/posts/offline',
-      params: {
-        page: pageNum,
-      },
-    });
 
     return response.data.result;
   } catch (err) {
@@ -91,22 +145,7 @@ export async function getPostsOffline(pageNum) {
   }
 }
 
-export async function getPostsOfflineByCategory(category) {
-  try {
-    const response = await axios({
-      method: 'get',
-      url: host + '/posts/offline',
-      params: {
-        category: category,
-      },
-    });
-  } catch (err) {
-    const error = err.response.data.err || err.message;
-
-    Alert.alert(error);
-  }
-}
-
+// 모집글 올리기 - 날짜 관련 수정중
 export async function postPosts(
   navigation,
   onAndOff,
@@ -139,8 +178,8 @@ export async function postPosts(
         hashtag: hashtagList,
         location: location,
         meeting: onAndOff,
-        startDate: new Date(startDate).toISOString(),
-        dueDate: new Date(dueDate).toISOString(),
+        startDate: startDate.toISOString(),
+        dueDate: dueDate.toISOString(),
       },
     });
 
@@ -154,6 +193,7 @@ export async function postPosts(
   }
 }
 
+// 모집글 수정하기 - 완료
 export async function patchPosts(
   navigation,
   postId,
@@ -203,6 +243,7 @@ export async function patchPosts(
   }
 }
 
+// 모집글 삭제하기 - 완료
 export async function deletePosts(navigation, postId) {
   const token = await SecureStore.getItemAsync('usertoken');
   try {
