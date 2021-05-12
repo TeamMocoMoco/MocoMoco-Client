@@ -24,7 +24,12 @@ import {
   CreatePostFourth,
 } from '../pages/post/create';
 
-import { UpdateProfile } from '../pages/user';
+import {
+  UpdateProfile,
+  RecruitStudy,
+  ApplicationStudy,
+  SaveStudy,
+} from '../pages/user';
 const Stack = createStackNavigator();
 
 const StackNavigator = () => {
@@ -57,6 +62,9 @@ const StackNavigator = () => {
       <Stack.Screen name="ReadPost" component={ReadPost} />
 
       <Stack.Screen name="UpdateProfile" component={UpdateProfile} />
+      <Stack.Screen name="RecruitStudy" component={RecruitStudy} />
+      <Stack.Screen name="ApplicationStudy" component={ApplicationStudy} />
+      <Stack.Screen name="SaveStudy" component={SaveStudy} />
     </Stack.Navigator>
   );
 };

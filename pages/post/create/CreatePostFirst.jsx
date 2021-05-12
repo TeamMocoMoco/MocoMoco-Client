@@ -235,8 +235,8 @@ const styles = StyleSheet.create({
   },
   mpButton: {
     backgroundColor: getColor('defaultColor'),
-    width: 40,
-    height: 40,
+    width: 30,
+    height: 30,
     borderRadius: 30,
     alignItems: 'center',
     justifyContent: 'center',

@@ -6,6 +6,7 @@ import HashtagButton from './HashtagButton';
 import OnAndOffButton from './OnAndOffButton';
 import TabButton from './TabButton';
 import TodayButton from './TodayButton';
+import StudyTabButton from './StudyTabButton';
 
 module.exports = {
   FullButton,
@@ -16,4 +17,5 @@ module.exports = {
   OnAndOffButton,
   TabButton,
   TodayButton,
+  StudyTabButton,
 };

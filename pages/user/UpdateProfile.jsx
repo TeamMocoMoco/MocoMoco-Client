@@ -9,6 +9,7 @@ import {
   TextInput,
   Platform,
   Alert,
+  ScrollView,
 } from 'react-native';
 
 import { HeaderProfile } from '../../components/header';
@@ -76,7 +77,7 @@ export default function UpdateProfile({ navigation, route }) {
         update={update}
       />
 
-      <View style={styles.content}>
+      <ScrollView style={styles.content}>
         {/* 프로필 */}
         <TouchableOpacity onPress={() => pickImage()} style={styles.imageBox}>
           <View style={styles.imgFrame}>
@@ -115,9 +116,9 @@ export default function UpdateProfile({ navigation, route }) {
         >
           <View
             style={{
-              padding: 10,
+              padding: 20,
               borderWidth: 1,
-              borderColor: '#999',
+              borderColor: 'lightgrey',
               borderRadius: 4,
               width: '90%',
             }}
@@ -138,7 +139,7 @@ export default function UpdateProfile({ navigation, route }) {
             />
           </View>
         </View>
-      </View>
+      </ScrollView>
     </View>
   );
 }
@@ -162,7 +163,7 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
     borderBottomWidth: 1,
     borderColor: 'black',
-    marginBottom: 40,
+    marginBottom: 20,
   },
   label: {
     fontSize: 18,
@@ -185,7 +186,7 @@ const styles = StyleSheet.create({
   },
   textarea: {
     fontSize: 15,
-    height: 180,
+    height: 250,
   },
   nameBox: { flexDirection: 'row', marginLeft: 20, alignItems: 'center' },
   nameText: { fontSize: 23, fontWeight: 'bold' },
