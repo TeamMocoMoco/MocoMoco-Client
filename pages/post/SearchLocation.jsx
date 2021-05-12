@@ -17,7 +17,6 @@ export default function SearchLocation({ navigation, route }) {
   const download = useCallback(async (address) => {
     setReady(false);
     const result = await getLocations(address);
-    // await getLocations(address);
     setResults(result);
     setReady(true);
   });
@@ -32,7 +31,7 @@ export default function SearchLocation({ navigation, route }) {
         <FlatList
           data={results}
           showsVerticalScrollIndicator={false}
-          keyExtractor={(item) => item._id}
+          keyExtractor={(item) => item.place_id}
           renderItem={(location) => {
             return (
               <LocationCard
