@@ -36,9 +36,9 @@ export default function CreatePostFourth({ navigation, route }) {
     await postPosts(
       navigation,
       onAndOff,
+      location,
       category,
       personnel,
-      location,
       startDate,
       dueDate,
       position,
@@ -88,30 +88,33 @@ export default function CreatePostFourth({ navigation, route }) {
     }
   };
 
-  const deleteHashtag = useCallback(async (index) => {
+  const onRemove = (index) => {
     let list = hashtagList;
-    list.slice(index, 1);
-    setHashtagList(hashtagList);
-  });
-
-  const onRemove = (idex) => (e) => {
-    setHashtagList(hashtagList.filter((hashtag) => hashtag.idex !== idex));
+    list.splice(index, 1);
+    setHashtagList(list);
   };
 
   const showSelectedHashtag = () => {
     if (hashtagList.length > 0) {
       return (
-        <View style={{ marginBottom: 10 }}>
+        <View>
           <Text
             style={{
               color: '#263238',
+              fontSize: 14,
               fontWeight: 'bold',
               marginVertical: 10,
             }}
           >
             해시태그
           </Text>
-          <View style={{ flexDirection: 'row' }}>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+            }}
+          >
             {hashtagList.map((tag, i) => {
               return (
                 <HashtagButton
@@ -143,26 +146,27 @@ export default function CreatePostFourth({ navigation, route }) {
       />
       <KeyboardAwareScrollView style={styles.content}>
         <Text style={styles.serviceComment}>
-          소개글과 설명,{'\n'}해시태그를 입력해주세요.
+          대표하는 문구와 설명,{'\n'}해시태그를 입력해주세요.
         </Text>
 
-        {/* 소개글 */}
+        {/* 대표 문구 */}
         <View
           style={{
             width: '100%',
             paddingVertical: '2%',
+            marginBottom: 15,
             borderBottomWidth: 1,
             borderColor: 'black',
           }}
         >
           <Text
             style={{
-              fontSize: 18,
               paddingVertical: '3%',
+              fontSize: 14,
               fontWeight: 'bold',
             }}
           >
-            소개글
+            대표 문구
           </Text>
           <TextInput
             style={{ flex: 3, fontSize: 18 }}
@@ -181,7 +185,7 @@ export default function CreatePostFourth({ navigation, route }) {
           <Text
             style={{
               color: '#263238',
-              fontSize: 18,
+              fontSize: 14,
               fontWeight: 'bold',
               marginVertical: 10,
             }}
@@ -214,7 +218,7 @@ export default function CreatePostFourth({ navigation, route }) {
         {/* 선택된 해시태그 */}
         {showSelectedHashtag()}
 
-        {/* 해시태그 */}
+        {/* 해시태그 입력란 */}
         <View style={styles.row}>
           <View style={{ width: '100%', paddingBottom: 20 }}>
             <View
