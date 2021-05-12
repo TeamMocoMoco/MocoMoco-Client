@@ -103,22 +103,26 @@ export default function VerificationConfirm({ navigation, route }) {
               onChangeText={(text) => {
                 setCode(text);
               }}
-              style={{ fontSize: 20, fontWeight: 'bold' }}
+              style={{
+                fontSize: 20,
+                fontWeight: 'bold',
+                width: 250,
+              }}
               keyboardType="number-pad"
             />
-          </View>
-
-          <View style={styles.resendBox}>
             <View>
               <Text>
                 {minutes}:{seconds < 10 ? `0${seconds}` : seconds}
               </Text>
             </View>
+          </View>
+
+          <View style={styles.resendBox}>
             <TouchableOpacity
               style={styles.resendButton}
               onPress={() => reSend()}
             >
-              <Text style={styles.resendText}>인증번호 재전송</Text>
+              <Text style={styles.resendText}>인증번호가 오지 않았어요!</Text>
             </TouchableOpacity>
           </View>
         </KeyboardAwareScrollView>
@@ -145,9 +149,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   inputContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     width: '100%',
     padding: 10,
-    marginVertical: 10,
+    marginTop: 10,
     borderBottomWidth: 1,
     borderColor: 'black',
   },
@@ -173,9 +179,8 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 50,
     alignItems: 'center',
-    justifyContent: 'space-between',
-    marginTop: 5,
+    justifyContent: 'flex-end',
   },
-  resendButton: { padding: 10 },
-  resendText: { fontSize: 15, color: 'grey' },
+  resendButton: { padding: 5 },
+  resendText: { fontSize: 15, color: 'lightgrey', fontWeight: 'bold' },
 });
