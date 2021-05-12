@@ -117,10 +117,11 @@ export default function MyPage({ navigation }) {
             </View>
           </TouchableOpacity>
         </View>
-
-        <ScrollView style={styles.myBox}>
-          <Text>{user.introduce} </Text>
-        </ScrollView>
+        <View style={styles.myBox}>
+          <ScrollView>
+            <Text>{user.introduce} </Text>
+          </ScrollView>
+        </View>
       </View>
     </View>
   ) : (
@@ -182,8 +183,8 @@ const styles = StyleSheet.create({
     borderColor: 'lightgrey',
     borderRadius: 5,
     margin: 20,
-    marginTop: 30,
+    marginTop: 50,
     padding: 20,
-    height: '40%',
+    height: 300,
   },
 });
