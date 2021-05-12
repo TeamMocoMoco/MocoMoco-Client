@@ -6,7 +6,7 @@ import {
   Dimensions,
   TouchableOpacity,
   Text,
-  Touchable,
+  Alert,
 } from 'react-native';
 const pickerWidth = Dimensions.get('window').width * 0.8;
 
@@ -18,19 +18,22 @@ export default function DotModal({
   setModalOpen,
   post,
 }) {
-  const doDelete = async () => {
-    await deletePosts(navigation, post._id);
+  const doDelete = () => {
+    Alert.alert('게시글을 삭제하시겠습니까?', '', [
+      {
+        text: '네',
+        onPress: () => deletePosts(navigation, post._id),
+        style: 'default',
+      },
+      {
+        text: '아니오',
+        style: 'cancel',
+      },
+    ]);
   };
 
   return (
-    <Modal
-      transparent
-      visible={modalOpen}
-      animationType={'fade'}
-      //   onRequestClose={() => {
-      //     setModalOpen(false);
-      //   }}
-    >
+    <Modal transparent visible={modalOpen} animationType={'fade'}>
       <TouchableOpacity
         style={{
           flex: 1,
