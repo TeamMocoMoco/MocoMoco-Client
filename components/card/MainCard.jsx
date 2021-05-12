@@ -81,6 +81,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   hashtagList: {
+    flex: 1,
     flexDirection: 'row',
+    flexWrap: 'wrap',
   },
 });
