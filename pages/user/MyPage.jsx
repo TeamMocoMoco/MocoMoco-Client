@@ -13,7 +13,7 @@ import {
 
 import * as SecureStore from 'expo-secure-store';
 
-import { HeaderSetting, HeaderBack } from '../../components/header';
+import { HeaderSetting } from '../../components/header';
 import { SettingModal } from '../../components/modal';
 
 import { getUserInfo } from '../../config/api/UserAPI';
@@ -84,7 +84,10 @@ export default function MyPage({ navigation }) {
         </TouchableOpacity>
 
         <View style={styles.studyAll}>
-          <TouchableOpacity style={styles.studyBox}>
+          <TouchableOpacity
+            style={styles.studyBox}
+            onPress={() => navigation.push('RecruitStudy')}
+          >
             <Image source={Recruit} />
             <View style={styles.textBox}>
               <Text style={styles.cateText}>모집</Text>
@@ -92,7 +95,10 @@ export default function MyPage({ navigation }) {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.studyBox}>
+          <TouchableOpacity
+            style={styles.studyBox}
+            onPress={() => navigation.push('ApplicationStudy')}
+          >
             <Image source={Application} />
             <View style={styles.textBox}>
               <Text style={styles.cateText}>신청</Text>
@@ -100,7 +106,10 @@ export default function MyPage({ navigation }) {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.studyBox}>
+          <TouchableOpacity
+            style={styles.studyBox}
+            onPress={() => navigation.push('SaveStudy')}
+          >
             <Image source={Save} />
             <View style={styles.textBox}>
               <Text style={styles.cateText}>저장</Text>
