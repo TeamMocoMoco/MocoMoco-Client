@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, TextInput, TouchableHighlight, View } from 'react-native';
+import { StyleSheet, TextInput, View } from 'react-native';
 
 import { Ionicons } from '@expo/vector-icons';
 
@@ -9,9 +9,12 @@ export default function SearchBar({ doFunction }) {
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
-        <TouchableHighlight style={styles.buttonContainer}>
-          <Ionicons name="md-search-outline" size={25} color="#8E8E8E" />
-        </TouchableHighlight>
+        <Ionicons
+          style={styles.search}
+          name="md-search-outline"
+          size={25}
+          color="#8E8E8E"
+        />
         <TextInput
           style={styles.input}
           value={value}
@@ -50,9 +53,8 @@ const styles = StyleSheet.create({
     fontSize: 14,
     flex: 1,
   },
-  buttonContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
+  search: {
+    alignSelf: 'center',
     marginLeft: '5%',
   },
 });
