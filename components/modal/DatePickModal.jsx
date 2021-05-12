@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { StyleSheet, View, Modal, Dimensions } from 'react-native';
 
 import DatePicker from 'react-native-modern-datepicker';
+import moment from 'moment';
 
 const pickerWidth = Dimensions.get('window').width * 0.8;
 
@@ -10,10 +11,7 @@ export default function DatePickModal({
   setModalOpen,
   setDateTime,
 }) {
-  const [date, setDate] = useState('');
-  const [time, setTime] = useState('');
-
-  useEffect;
+  let currentDate = moment().format('YYYY-MM-DD');
 
   return (
     <Modal transparent visible={modalOpen}>
@@ -21,10 +19,9 @@ export default function DatePickModal({
         <View style={styles.modalContent}>
           <DatePicker
             style={styles.datePicker}
-            onDateChange={(d) => setDate(d)}
-            onTimeChange={(t) => {
-              setTime(t);
-              setDateTime(date + ' ' + time);
+            minimumDate={currentDate}
+            onDateChange={(date) => {
+              setDateTime(date + ' ' + '00:00');
               setModalOpen(false);
             }}
           />
