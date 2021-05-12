@@ -124,7 +124,7 @@ export default function CreatePostFirst({ navigation }) {
                 }
               }}
             >
-              <Entypo name="minus" size={12} color="#777" />
+              <Entypo name="minus" size={18} color="white" />
             </TouchableOpacity>
 
             {/* 모집인원 */}
@@ -137,7 +137,7 @@ export default function CreatePostFirst({ navigation }) {
                 setPersonnel(personnel + 1);
               }}
             >
-              <Entypo name="plus" size={12} color="#777" />
+              <Entypo name="plus" size={18} color="white" />
             </TouchableOpacity>
           </View>
         </View>
@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   mpButton: {
-    backgroundColor: '#EBEBEB',
+    backgroundColor: getColor('defaultColor'),
     width: 40,
     height: 40,
     borderRadius: 30,
