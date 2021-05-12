@@ -10,6 +10,7 @@ import { HeaderBack } from '../../../components/header';
 import { FullButton, OnAndOffButton } from '../../../components/button';
 
 import kind from '../../../config/mock/category.json';
+import { getColor } from '../../../styles/styles';
 
 export default function CreatePostFirst({ navigation }) {
   const categoryList = kind.category;
