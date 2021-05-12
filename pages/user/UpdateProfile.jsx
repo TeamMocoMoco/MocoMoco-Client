@@ -7,12 +7,15 @@ import {
   TouchableOpacity,
   Image,
   TextInput,
+  Platform,
+  Alert,
 } from 'react-native';
 
 import { HeaderProfile } from '../../components/header';
 
 import { patchUserInfo } from '../../config/api/UserAPI';
 
+import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
 
 export default function UpdateProfile({ navigation, route }) {
@@ -22,47 +25,48 @@ export default function UpdateProfile({ navigation, route }) {
   const [introduce, setIntroduce] = useState(userinfo.introduce);
   const [imgUri, setImgUri] = useState(userinfo.userImg);
 
-  const update = async () => {
-    await patchUserInfo(navigation, formData);
+  const getPermission = async () => {
+    if (Platform.OS !== 'web') {
+      const { status } = await Permissions.getAsync(Permissions.MEDIA_LIBRARY);
+      if (status !== 'granted') {
+        Alert.alert('카메라, 저장공간에 접근할 수 없습니다.');
+        return false;
+      } else {
+        return true;
+      }
+    }
   };
-
-  // 이상태로 사진편집을 했을 때 퍼미션이 뜬다면 이주석을 미련없이 보내겠나이다.
-  // useEffect(() => {
-  //   getPermission();
-  // }, []);
-
-  // const getPermission = async () => {
-  //   if (Platform.OS !== 'web') {
-  //     const {
-  //       status,
-  //     } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-  //     if (status !== 'granted') {
-  //       alert('게시글을 업로드하려면 사진첩 권한이 필요합니다.');
-  //     }
-  //   }
-  // };
 
   const pickImage = async () => {
-    console.log('이미지 선택');
-    let imageData = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 4],
-      quality: 1,
-    });
+    const status = getPermission();
+    if (status) {
+      let imageData = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 4],
+        quality: 1,
+      });
 
-    setImgUri(imageData.uri);
+      setImgUri(imageData.uri);
+    }
   };
 
-  const formData = new FormData();
-  formData.append('img', {
-    uri: imgUri,
-    name: 'image.jpg',
-    type: 'multipart/form-data',
-  });
-  formData.append('name', name);
-  formData.append('introduce', introduce);
-  console.log(formData);
+  const update = async () => {
+    if (name == '') {
+      Alert.alert('이름을 입력해 주세요!');
+      return;
+    }
+    const formData = new FormData();
+    formData.append('img', {
+      uri: imgUri,
+      name: 'image.jpg',
+      type: 'multipart/form-data',
+    });
+    formData.append('name', name);
+    formData.append('introduce', introduce);
+
+    await patchUserInfo(navigation, formData);
+  };
 
   return (
     <View style={styles.container}>
@@ -79,7 +83,7 @@ export default function UpdateProfile({ navigation, route }) {
             <Image
               style={styles.img}
               source={{
-                uri: userinfo.userImg,
+                uri: imgUri,
               }}
             />
           </View>
