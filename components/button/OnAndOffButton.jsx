@@ -11,7 +11,7 @@ export default function OnAndOffButton({
   if (title == onAndOff) {
     return (
       <TouchableOpacity disabled style={styles.active}>
-        <Text style={{ color: '#FFF', fontSize: 14, fontWeight: 'bold' }}>
+        <Text style={{ color: 'white', fontSize: 14, fontWeight: 'bold' }}>
           {title}
         </Text>
       </TouchableOpacity>
@@ -25,7 +25,7 @@ export default function OnAndOffButton({
           setLocation([]);
         }}
       >
-        <Text style={{ color: '#8E8E8E', fontSize: 14 }}>{title}</Text>
+        <Text style={{ color: 'black', fontSize: 14 }}>{title}</Text>
       </TouchableOpacity>
     );
   }
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   inactive: {
-    backgroundColor: getColor('inactiveColor'),
+    backgroundColor: 'white',
     flex: 1,
     padding: 10,
     marginHorizontal: 5,

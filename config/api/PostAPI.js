@@ -1,5 +1,6 @@
 import { Alert } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
 const host = 'http://3.34.137.188';
@@ -142,6 +143,86 @@ export async function getPostsById(postId) {
     const error = err.response.data.err || err.message;
 
     Alert.alert(error);
+  }
+}
+
+//MyPage-모집스터디-모집중
+export async function getMyOpenPosts(pageNum) {
+  const id = await AsyncStorage.getItem('myid');
+  try {
+    const response = await axios({
+      method: 'get',
+      url: host + '/auth/admin/' + id,
+      params: {
+        status: true,
+        // page: pageNum,
+      },
+    });
+    return response.data.result;
+  } catch (err) {
+    console.log(err);
+    console.log('no');
+    // Alert.alert(error);
+  }
+}
+
+//MyPage-모집스터디-모집완료
+export async function getMyClosedPosts(pageNum) {
+  const id = await AsyncStorage.getItem('myid');
+  try {
+    const response = await axios({
+      method: 'get',
+      url: host + '/auth/admin/' + id,
+      params: {
+        status: false,
+        // page: pageNum,
+      },
+    });
+    return response.data.result;
+  } catch (err) {
+    console.log(err);
+    console.log('no');
+    // Alert.alert(error);
+  }
+}
+
+//MyPage-신청스터디-모집중
+export async function getJoiningPosts(pageNum) {
+  const id = await AsyncStorage.getItem('myid');
+  try {
+    const response = await axios({
+      method: 'get',
+      url: host + '/auth/participant/' + id,
+      params: {
+        status: true,
+        // page: pageNum,
+      },
+    });
+    return response.data.result;
+  } catch (err) {
+    console.log(err);
+    console.log('no');
+    // Alert.alert(error);
+  }
+}
+
+//MyPage-신청스터디-모집완료
+export async function getJoinedPosts(pageNum) {
+  const id = await AsyncStorage.getItem('myid');
+  try {
+    const response = await axios({
+      method: 'get',
+      url: host + '/auth/participant/' + id,
+      params: {
+        status: false,
+        // page: pageNum,
+      },
+    });
+    return response.data.result;
+  } catch (err) {
+    console.log(err);
+    console.log('no');
+    // Alert.alert(error);
   }
 }
 

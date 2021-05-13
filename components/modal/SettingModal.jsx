@@ -10,11 +10,9 @@ import {
 } from 'react-native';
 const pickerWidth = Dimensions.get('window').width * 0.8;
 
-import { Edit } from '../../assets/images';
-
 import { logout } from '../../config/api/UserAPI';
 
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons, FontAwesome } from '@expo/vector-icons';
 
 export default function SettingModal({
   navigation,
@@ -34,7 +32,7 @@ export default function SettingModal({
           alignItems: 'flex-end',
           justifyContent: 'flex-start',
           paddingTop: 50,
-          paddingRight: 25,
+          paddingRight: 45,
         }}
         onPressOut={() => {
           setModalOpen(false);
@@ -58,7 +56,7 @@ export default function SettingModal({
               setModalOpen(false);
             }}
           >
-            <Image source={Edit} style={{ width: 30, height: 30 }} />
+            <FontAwesome name="pencil-square-o" size={30} color="black" />
             <Text style={styles.setText}>프로필 수정</Text>
           </TouchableOpacity>
 
