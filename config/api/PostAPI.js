@@ -155,7 +155,7 @@ export async function getMyOpenPosts(pageNum) {
       url: host + '/auth/admin/' + id,
       params: {
         status: true,
-        // page: pageNum,
+        page: pageNum,
       },
     });
     return response.data.result;
@@ -175,7 +175,7 @@ export async function getMyClosedPosts(pageNum) {
       url: host + '/auth/admin/' + id,
       params: {
         status: false,
-        // page: pageNum,
+        page: pageNum,
       },
     });
     return response.data.result;
@@ -195,7 +195,7 @@ export async function getJoiningPosts(pageNum) {
       url: host + '/auth/participant/' + id,
       params: {
         status: true,
-        // page: pageNum,
+        page: pageNum,
       },
     });
     return response.data.result;
@@ -215,7 +215,7 @@ export async function getJoinedPosts(pageNum) {
       url: host + '/auth/participant/' + id,
       params: {
         status: false,
-        // page: pageNum,
+        page: pageNum,
       },
     });
     return response.data.result;
@@ -342,6 +342,28 @@ export async function deletePosts(navigation, postId) {
   } catch (err) {
     const error = err.response.data.err || err.message;
 
+    Alert.alert(error);
+  }
+}
+
+// 모집글 마감하기
+export async function closePost(navigation, postId) {
+  const token = await SecureStore.getItemAsync('usertoken');
+  try {
+    const response = await axios({
+      method: 'patch',
+      url: host + '/posts/' + postId + '/status/',
+      headers: {
+        token: token,
+      },
+    });
+
+    if (response.data.result) {
+      Alert.alert('모집이 마감되었습니다.');
+      // navigation.navigate('ReadPost', { postId });
+    }
+  } catch (err) {
+    const error = err.response.data.err || err.message;
     Alert.alert(error);
   }
 }
