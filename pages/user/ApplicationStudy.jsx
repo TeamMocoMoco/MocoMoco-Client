@@ -34,7 +34,7 @@ export default function ApplicationStudy({ navigation }) {
     if (title == '모집중') {
       result = await getJoiningPosts(pageNum.current);
     } else {
-      result = await getJoinedPosts(title, pageNum.current);
+      result = await getJoinedPosts(pageNum.current);
     }
     setPosts(result);
   });
@@ -85,7 +85,7 @@ export default function ApplicationStudy({ navigation }) {
             if (tab == '모집중') {
               nextPosts = await getJoiningPosts(pageNum.current + 1);
             } else {
-              nextPosts = await getJoinedPosts(tab, pageNum.current + 1);
+              nextPosts = await getJoinedPosts(pageNum.current + 1);
             }
             if (nextPosts.length != 0) {
               pageNum.current += 1;

@@ -5,6 +5,7 @@ import Goal from './goal_icon.png';
 import Application from './Application.png';
 import Recruit from './Recruit.png';
 import Save from './Save.png';
+import man from './man.png';
 
 module.exports = {
   Circles,
@@ -14,4 +15,5 @@ module.exports = {
   Application,
   Recruit,
   Save,
+  man,
 };

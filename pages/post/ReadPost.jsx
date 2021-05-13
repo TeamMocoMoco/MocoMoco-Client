@@ -18,7 +18,7 @@ import { HeaderBack } from '../../components/header';
 import { HashtagButton, RadiusButton } from '../../components/button';
 import { DotModal } from '../../components/modal';
 
-import { getPostsById } from '../../config/api/PostAPI';
+import { getPostsById, closePost } from '../../config/api/PostAPI';
 import { createRoom } from '../../config/api/ChatAPI';
 
 export default function ReadPost({ navigation, route }) {
@@ -29,6 +29,7 @@ export default function ReadPost({ navigation, route }) {
   const [myid, setMyid] = useState('');
   const [userId, setUserId] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
+  const [status, setStatus] = useState(post.status);
 
   useEffect(() => {
     setTimeout(async () => {
@@ -71,21 +72,30 @@ export default function ReadPost({ navigation, route }) {
     }
   };
 
+  const closeStudy = () => {
+    closePost(navigation, post._id), setStatus(false);
+  };
+
   const showApplyButton = () => {
-    if (post.status == false) {
-      return <RadiusButton title={'모집이 마감되었습니다.'} status={false} />;
+    if (status == false) {
+      return <RadiusButton title={'모집이 마감되었습니다.'} status={status} />;
     } else if (myid == userId) {
       return (
         <RadiusButton
           title={'모집 마감하기'}
           status={true}
           doFunction={async () => {
-            await createRoom(
-              navigation,
-              post._id,
-              post.user._id,
-              post.user.name
-            );
+            Alert.alert('모집을 마감하시겠습니까?', '', [
+              {
+                text: '네',
+                onPress: () => closeStudy(),
+                style: 'default',
+              },
+              {
+                text: '아니오',
+                style: 'cancel',
+              },
+            ]);
           }}
         />
       );
