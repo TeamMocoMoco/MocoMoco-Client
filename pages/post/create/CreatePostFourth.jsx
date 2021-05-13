@@ -28,6 +28,7 @@ export default function CreatePostFourth({ navigation, route }) {
   let personnel = route.params.personnel;
   let location = route.params.location;
   let address = route.params.address;
+  let name = route.params.name;
   let startDate = route.params.startDate;
   let dueDate = route.params.dueDate;
   let position = route.params.position;
@@ -39,6 +40,7 @@ export default function CreatePostFourth({ navigation, route }) {
       onAndOff,
       location,
       address,
+      name,
       category,
       personnel,
       startDate,
