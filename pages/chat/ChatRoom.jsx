@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   FlatList,
   RefreshControl,
+  Text,
 } from 'react-native';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -22,6 +23,7 @@ import { Feather } from '@expo/vector-icons';
 
 import { getColor } from '../../styles/styles';
 import { getChatsByRoom, postChat } from '../../config/api/ChatAPI';
+import { postParticipants } from '../../config/api/PostAPI';
 import { KeyboardAwareFlatList } from 'react-native-keyboard-aware-scroll-view';
 
 const diviceWidth = Dimensions.get('window').width;
@@ -34,7 +36,7 @@ const wait = (timeout) => {
 
 export default function ChatRoom({ navigation, route }) {
   // let flatListRef;
-  const roomId = route.params.roomId;
+  const room = route.params.room;
   const userName = route.params.userName;
 
   const ref = useRef();
@@ -54,15 +56,15 @@ export default function ChatRoom({ navigation, route }) {
 
     navigation.addListener('focus', (e) => {
       setTimeout(async () => {
-        const result = await getChatsByRoom(roomId);
+        const result = await getChatsByRoom(room._id);
         chat.current = result.chat;
         myid.current = await AsyncStorage.getItem('myid');
         setReady(true);
       });
     });
 
-    // roomId emit (완료)
-    socket.emit('connectRoom', { roomId: roomId });
+    // room._id emit (완료)
+    socket.emit('connectRoom', { roomId: room._id });
 
     socket.on('chat', async (data) => {
       setSocketState(true);
@@ -77,7 +79,7 @@ export default function ChatRoom({ navigation, route }) {
   }, []);
 
   const submitChatMessage = async () => {
-    await postChat(roomId, message);
+    await postChat(room._id, message);
     setMessage('');
   };
 
@@ -124,6 +126,21 @@ export default function ChatRoom({ navigation, route }) {
         }}
       />
 
+      {/* 버튼 */}
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => postParticipants(room, postId, room.participant._id)}
+        >
+          <Text style={{ color: getColor('defaultColor'), fontSize: 12 }}>
+            확정하기 ⭕
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button}>
+          <Text style={{ color: '#999', fontSize: 12 }}>신고 🚨</Text>
+        </TouchableOpacity>
+      </View>
+
       <View style={styles.bottomBox}>
         <View style={styles.sendBox}>
           <TextInput
@@ -132,13 +149,10 @@ export default function ChatRoom({ navigation, route }) {
             onChangeText={(text) => {
               setMessage(text);
             }}
-            style={{
-              fontSize: 15,
-              width: '85%',
-            }}
+            style={styles.input}
           />
-          <View>{showSendButton()}</View>
         </View>
+        <View>{showSendButton()}</View>
       </View>
     </View>
   ) : (
@@ -156,13 +170,10 @@ export default function ChatRoom({ navigation, route }) {
             onChangeText={(text) => {
               setMessage(text);
             }}
-            style={{
-              fontSize: 15,
-              width: '85%',
-            }}
+            style={styles.input}
           />
-          <View>{showSendButton()}</View>
         </View>
+        <View>{showSendButton()}</View>
       </View>
     </View>
   );
@@ -178,22 +189,38 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   bottomBox: {
-    backgroundColor: 'white',
+    flexDirection: 'row',
+    backgroundColor: '#EFEFF3',
     width: '100%',
     height: diviceWidth * 0.18,
     padding: 10,
     borderTopWidth: 1,
     borderTopColor: '#EFEFF3',
+    alignItems: 'center',
+    justifyContent: 'space-around',
   },
   sendBox: {
-    borderWidth: 1,
-    borderColor: 'lightgrey',
-    borderRadius: 30,
-    paddingHorizontal: '5%',
+    backgroundColor: '#FFF',
+    width: '85%',
     height: '90%',
-    width: '100%',
+    paddingHorizontal: '5%',
+    borderColor: '#E6EAFD',
+    borderWidth: 1,
+    borderRadius: 30,
+    justifyContent: 'center',
+  },
+  input: {
+    fontSize: 15,
+  },
+  buttonContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
+    marginBottom: 10,
+  },
+  button: {
+    backgroundColor: '#E5E5E5',
+    borderRadius: 30,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
   },
 });

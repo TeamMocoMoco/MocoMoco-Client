@@ -369,3 +369,25 @@ export async function closePost(navigation, postId) {
     Alert.alert(error);
   }
 }
+
+// 참가자 추가하기
+export async function postParticipants(postId, participantId) {
+  const token = await SecureStore.getItemAsync('usertoken');
+  try {
+    const response = await axios({
+      method: 'post',
+      url: host + '/posts/' + postId + '/participants',
+      headers: {
+        token: token,
+      },
+      date: {
+        participantId: participantId,
+      },
+    });
+
+    console.log(response.data.result);
+  } catch (err) {
+    const error = err.response.data.err || err.message;
+    Alert.alert(error);
+  }
+}
