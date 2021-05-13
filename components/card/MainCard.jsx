@@ -10,12 +10,10 @@ export default function MainCard({ navigation, post }) {
     const today = new Date();
     const d_day = new Date(startDate);
 
-    const days = Math.floor(
-      ((d_day.getTime() - today.getTime()) / 1000 / 60 / 60 + 9) / 24
-    );
+    const days = d_day.getDate() - today.getDate();
 
     if (days >= 7) {
-      return `${days / 7}주일 뒤 시작`;
+      return `${Math.floor(days / 7)}주일 뒤 시작`;
     } else if (days > 1) {
       return `${days}일 뒤 시작`;
     } else if (days == 1) {
@@ -25,7 +23,7 @@ export default function MainCard({ navigation, post }) {
     } else if (days > -7) {
       return `${-days}일 지남`;
     } else if (days <= -7) {
-      return `${-days / 7}주일 지남`;
+      return `${Math.floor(-days / 7)}주일 지남`;
     }
   };
 
