@@ -100,16 +100,6 @@ export default function CreatePostFourth({ navigation, route }) {
     if (hashtagList.length > 0) {
       return (
         <View>
-          <Text
-            style={{
-              color: '#263238',
-              fontSize: 14,
-              fontWeight: 'bold',
-              marginVertical: 10,
-            }}
-          >
-            해시태그
-          </Text>
           <View
             style={{
               flex: 1,
@@ -157,8 +147,8 @@ export default function CreatePostFourth({ navigation, route }) {
             width: '100%',
             paddingVertical: '2%',
             marginBottom: 15,
-            borderBottomWidth: 1,
-            borderColor: 'black',
+            borderBottomWidth: 2,
+            borderColor: getColor('inactiveBorderColor'),
           }}
         >
           <Text
@@ -171,10 +161,11 @@ export default function CreatePostFourth({ navigation, route }) {
             대표 문구
           </Text>
           <TextInput
-            style={{ flex: 3, fontSize: 18 }}
+            style={{ flex: 3, fontSize: 22, fontWeight: 'bold' }}
             value={title}
             type={'title'}
             placeholder={'최대 30글자 작성 가능'}
+            placeholderTextColor={getColor('inactiveBorderColor')}
             maxLength={30}
             onChangeText={(text) => {
               setTitle(text);
@@ -197,15 +188,15 @@ export default function CreatePostFourth({ navigation, route }) {
           <View
             style={{
               padding: 10,
-              borderWidth: 1,
-              borderColor: '#999',
+              borderWidth: 2,
+              borderColor: getColor('inactiveBorderColor'),
               borderRadius: 4,
             }}
           >
             <TextInput
-              style={[styles.textarea, intro == '' ? { opacity: 0.4 } : {}]}
+              style={styles.textarea}
               placeholder={'설명을 입력하세요.'}
-              placeholderTextColor={'#111'}
+              placeholderTextColor={getColor('inactiveBorderColor')}
               value={intro}
               textAlignVertical="top"
               onChangeText={(text) => {
@@ -218,6 +209,16 @@ export default function CreatePostFourth({ navigation, route }) {
         </View>
 
         {/* 선택된 해시태그 */}
+        <Text
+          style={{
+            color: '#263238',
+            fontSize: 14,
+            fontWeight: 'bold',
+            marginVertical: 10,
+          }}
+        >
+          해시태그
+        </Text>
         {showSelectedHashtag()}
 
         {/* 해시태그 입력란 */}
@@ -227,13 +228,14 @@ export default function CreatePostFourth({ navigation, route }) {
               style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
+                marginTop: 5,
               }}
             >
               <View
                 style={{
                   width: '80%',
                   borderBottomWidth: 2,
-                  borderColor: '#777',
+                  borderColor: getColor('inactiveBorderColor'),
                 }}
               >
                 <TextInput
@@ -269,6 +271,7 @@ const styles = StyleSheet.create({
     height: 80,
     width: '90%',
     fontSize: 15,
+    fontWeight: 'bold',
   },
   buttonContainer: {
     flex: 1,
@@ -292,5 +295,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     paddingVertical: '5%',
     color: 'black',
+    lineHeight: 28,
   },
 });

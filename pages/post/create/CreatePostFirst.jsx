@@ -8,9 +8,9 @@ import { ProgressBar, Colors } from 'react-native-paper';
 
 import { HeaderBack } from '../../../components/header';
 import { FullButton, OnAndOffButton } from '../../../components/button';
+import { getColor } from '../../../styles/styles';
 
 import kind from '../../../config/mock/category.json';
-import { getColor } from '../../../styles/styles';
 
 export default function CreatePostFirst({ navigation }) {
   const categoryList = kind.category;
@@ -76,7 +76,7 @@ export default function CreatePostFirst({ navigation }) {
             {name == '' ? (
               <Text style={{ color: '#AAA' }}>예) 스타벅스 강남</Text>
             ) : (
-              <Text>{name}</Text>
+              <Text style={{ color: 'black' }}>{name}</Text>
             )}
             <Ionicons name="md-search-outline" size={24} color="black" />
           </TouchableOpacity>
@@ -125,7 +125,7 @@ export default function CreatePostFirst({ navigation }) {
 
         {/* 모집분류 */}
         <Text style={styles.serviceComment}>
-          모집분류와 모집인원을{'\n'}선택해주세요.
+          어떤 모임인지와{'\n'}참여가능 인원을 알려주세요.
         </Text>
         <View style={styles.catepersonBox}>
           <View style={{ flex: 2, marginEnd: 20 }}>
@@ -205,6 +205,7 @@ const styles = StyleSheet.create({
   },
 
   serviceComment: {
+    lineHeight: 28,
     fontSize: 20,
     fontWeight: 'bold',
     paddingVertical: '5%',
@@ -214,8 +215,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    borderWidth: 1,
+    borderWidth: 2,
     borderRadius: 30,
+    borderColor: getColor('inactiveBorderColor'),
     padding: '3%',
     marginBottom: '5%',
     paddingHorizontal: 20,
