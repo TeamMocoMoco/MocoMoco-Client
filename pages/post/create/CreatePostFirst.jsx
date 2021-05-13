@@ -22,6 +22,7 @@ export default function CreatePostFirst({ navigation }) {
   const [personnel, setPersonnel] = useState(0);
   const [location, setLocation] = useState([]);
   const [address, setAddress] = useState('');
+  const [name, setName] = useState('');
 
   useEffect(() => {
     navigation.addListener('focus', (e) => {
@@ -32,6 +33,7 @@ export default function CreatePostFirst({ navigation }) {
         let array = locationInfo.current.vicinity.split(' ');
         array.pop();
         setAddress(array.join(' '));
+        setName(locationInfo.current.name);
       }
     });
   });
@@ -71,10 +73,10 @@ export default function CreatePostFirst({ navigation }) {
               navigation.push('SearchLocation', { info: locationInfo });
             }}
           >
-            {locationInfo.current != null ? (
-              <Text>{locationInfo.current.name}</Text>
+            {name == '' ? (
+              <Text style={{ color: '#AAA' }}>예) 스타벅스 강남</Text>
             ) : (
-              <Text>예) 스타벅스 강남</Text>
+              <Text>{name}</Text>
             )}
             <Ionicons name="md-search-outline" size={24} color="black" />
           </TouchableOpacity>
@@ -108,6 +110,8 @@ export default function CreatePostFirst({ navigation }) {
                     setOnAndOff(value);
                     setLocation([]);
                     setAddress('');
+                    setName('');
+                    locationInfo.current == null;
                   }}
                   key={i}
                 />
