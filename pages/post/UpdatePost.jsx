@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useCallback, useState, useEffect, useRef } from 'react';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import {
   Button,
@@ -29,38 +29,60 @@ import { patchPosts } from '../../config/api/PostAPI';
 
 export default function UpdatePost({ navigation, route }) {
   const post = route.params;
-  console.log(post.personnel);
   const categoryList = kind.category;
 
   const [onAndOff, setOnAndOff] = useState(post.meeting);
   const [title, setTitle] = useState(post.title);
   const [category, setCategory] = useState(post.category);
   const [personnel, setPersonnel] = useState(post.personnel);
-  const [location, setLocation] = useState(post.location);
-  const [startDate, setStartDate] = useState(post.startDate);
-  const [dueDate, setDueDate] = useState(post.dueDate);
+  const [startDate, setStartDate] = useState(
+    post.startDate.substr(0, 16).replace('T', ' ')
+  );
+  const [dueDate, setDueDate] = useState(
+    post.dueDate.substr(0, 16).replace('T', ' ')
+  );
   const [position, setPosition] = useState(post.position);
   const [language, setLanguage] = useState(post.language);
   const [intro, setIntro] = useState(post.content);
   const [hashtagList, setHashtagList] = useState(post.hashtag);
   const [hashtag, setHashtag] = useState('');
+  const [location, setLocation] = useState(post.location);
+  const [address, setAddress] = useState(post.address);
+  const [name, setName] = useState(post.address);
+
+  const locationInfo = useRef();
 
   const [currentModal, setCurrentModal] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
+
+  useEffect(() => {
+    navigation.addListener('focus', (e) => {
+      if (locationInfo.current != null) {
+        const lat = locationInfo.current.geometry.location.lat;
+        const lng = locationInfo.current.geometry.location.lng;
+        setLocation([lat, lng]);
+        let array = locationInfo.current.vicinity.split(' ');
+        array.pop();
+        setAddress(array.join(' '));
+        setName(locationInfo.current.name);
+      }
+    });
+  });
 
   const update = async () => {
     await patchPosts(
       navigation,
       post._id,
       onAndOff,
-      title,
+      location,
+      address,
       category,
       personnel,
-      location,
       startDate,
       dueDate,
       position,
       language,
+      title,
       intro,
       hashtagList
     );
@@ -71,8 +93,17 @@ export default function UpdatePost({ navigation, route }) {
       return (
         <View>
           <Text style={styles.serviceComment}>주소</Text>
-          <TouchableOpacity style={styles.adressBox}>
-            <Text>예) 대전시 유성구 노은동</Text>
+          <TouchableOpacity
+            style={styles.adressBox}
+            onPress={() => {
+              navigation.push('SearchLocation', { info: locationInfo });
+            }}
+          >
+            {name == '' ? (
+              <Text style={{ color: '#AAA' }}>예) 스타벅스 강남</Text>
+            ) : (
+              <Text style={{ color: 'black' }}>{name}</Text>
+            )}
             <Ionicons name="md-search-outline" size={24} color="black" />
           </TouchableOpacity>
         </View>
@@ -85,7 +116,7 @@ export default function UpdatePost({ navigation, route }) {
       return (
         <TouchableOpacity
           disabled
-          tyle={[styles.buttonContainer, styles.inactive]}
+          style={[styles.buttonContainer, styles.inactive]}
         >
           <Text style={styles.buttonText}>추가</Text>
         </TouchableOpacity>
@@ -93,7 +124,7 @@ export default function UpdatePost({ navigation, route }) {
     } else {
       return (
         <TouchableOpacity
-          tyle={[styles.buttonContainer, styles.active]}
+          style={[styles.buttonContainer, styles.active]}
           onPress={() => {
             setHashtagList([...hashtagList, hashtag]);
             setHashtag('');
@@ -173,7 +204,7 @@ export default function UpdatePost({ navigation, route }) {
             해시태그
           </Text>
           <View style={{ flexDirection: 'row' }}>
-            {post.hashtag.map((tag, i) => {
+            {hashtagList.map((tag, i) => {
               return (
                 <HashtagButton
                   feat={'create'}
@@ -204,7 +235,13 @@ export default function UpdatePost({ navigation, route }) {
                   <OnAndOffButton
                     title={title}
                     onAndOff={onAndOff}
-                    setOnAndOff={setOnAndOff}
+                    doFunction={(value) => {
+                      setOnAndOff(value);
+                      setLocation([]);
+                      setAddress(address);
+                      setName('');
+                      locationInfo.current == null;
+                    }}
                     key={i}
                   />
                 );
@@ -435,7 +472,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    borderWidth: 0.5,
+    borderWidth: 2,
+    borderColor: getColor('inactiveBorderColor'),
     borderRadius: 30,
     padding: '3%',
     marginBottom: 30,
@@ -452,8 +490,8 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 30,
-    borderWidth: 1,
-    borderColor: getColor('defaultColor'),
+    borderWidth: 2,
+    borderColor: getColor('inactiveBorderColor'),
   },
   picker: {
     backgroundColor: '#FFF0E0',
@@ -490,8 +528,8 @@ const styles = StyleSheet.create({
   inputBox: {
     width: '100%',
     marginBottom: 20,
-    borderBottomWidth: 1,
-    borderColor: getColor('defaultColor'),
+    borderBottomWidth: 2,
+    borderColor: getColor('inactiveBorderColor'),
   },
   tag: {
     fontSize: 14,
@@ -501,8 +539,8 @@ const styles = StyleSheet.create({
   },
   textInputBox: {
     padding: 10,
-    borderWidth: 1,
-    borderColor: getColor('defaultColor'),
+    borderWidth: 2,
+    borderColor: getColor('inactiveBorderColor'),
     borderRadius: 4,
   },
   textarea: {
@@ -512,7 +550,7 @@ const styles = StyleSheet.create({
   hashtagBox: {
     width: '80%',
     borderBottomWidth: 2,
-    borderColor: getColor('defaultColor'),
+    borderColor: getColor('inactiveBorderColor'),
   },
   buttonContainer: {
     flex: 1,
