@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import { Circles } from '../../assets/images';
+import { man } from '../../assets/images';
 import { getColor } from '../../styles/styles';
 
 const diviceWidth = Dimensions.get('window').width;
@@ -28,7 +28,14 @@ export default function Location({ navigation }) {
           MOCO{'\n'}MOCO
         </Text>
 
-        <Image source={Circles} style={{ marginTop: diviceWidth * 0.1 }} />
+        <Image
+          source={man}
+          style={{
+            marginTop: diviceWidth * 0.05,
+            width: 430,
+            height: 350,
+          }}
+        />
 
         <Text
           style={{
@@ -67,7 +74,7 @@ export default function Location({ navigation }) {
               color: 'white',
             }}
           >
-            위치 등록하고 스터디 구경하기
+            로그인 없이 스터디 구경하기
           </Text>
         </TouchableOpacity>
       </View>
