@@ -7,6 +7,7 @@ export const colors = {
   inactiveColor: '#DADBDD',
   HeaderBorderColor: '#CBCBCB',
   ChatBorderColor: '#DADADA',
+  inactiveBorderColor: '#CBCBCB',
 };
 
 export function getColor(colorName) {
@@ -27,5 +28,7 @@ export function getColor(colorName) {
       return colors.HeaderBorderColor;
     case 'ChatBorderColor':
       return colors.ChatBorderColor;
+    case 'inactiveBorderColor':
+      return colors.inactiveBorderColor;
   }
 }
