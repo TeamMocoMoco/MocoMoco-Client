@@ -21,6 +21,7 @@ export default function CreatePostFirst({ navigation }) {
   const [category, setCategory] = useState('선택');
   const [personnel, setPersonnel] = useState(0);
   const [location, setLocation] = useState([]);
+  const [address, setAddress] = useState('');
 
   useEffect(() => {
     navigation.addListener('focus', (e) => {
@@ -28,12 +29,17 @@ export default function CreatePostFirst({ navigation }) {
         const lat = locationInfo.current.geometry.location.lat;
         const lng = locationInfo.current.geometry.location.lng;
         setLocation([lat, lng]);
+        let array = locationInfo.current.vicinity.split(' ');
+        array.pop();
+        setAddress(array.join(' '));
       }
     });
   });
 
   const showSubmitButton = () => {
-    if (category == '선택' || personnel == '') {
+    if (onAndOff == '' || category == '선택' || personnel == '') {
+      return <FullButton title={'저장하고 다음으로'} empty={true} />;
+    } else if (onAndOff == '오프라인' && address == '') {
       return <FullButton title={'저장하고 다음으로'} empty={true} />;
     } else {
       return (
@@ -46,6 +52,7 @@ export default function CreatePostFirst({ navigation }) {
               category,
               personnel,
               location,
+              address,
             })
           }
         />
@@ -97,8 +104,11 @@ export default function CreatePostFirst({ navigation }) {
                 <OnAndOffButton
                   title={title}
                   onAndOff={onAndOff}
-                  setOnAndOff={setOnAndOff}
-                  setLocation={setLocation}
+                  doFunction={(value) => {
+                    setOnAndOff(value);
+                    setLocation([]);
+                    setAddress('');
+                  }}
                   key={i}
                 />
               );

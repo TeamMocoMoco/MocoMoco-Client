@@ -64,7 +64,7 @@ export default function ReadPost({ navigation, route }) {
     if (post.meeting == '오프라인') {
       return (
         <View style={styles.locationBox}>
-          <Text style={styles.location}>서울특별시 용산구 이태원동</Text>
+          <Text style={styles.location}>{post.address}</Text>
           <Entypo name="chevron-right" size={22} color="black" />
         </View>
       );
@@ -123,10 +123,7 @@ export default function ReadPost({ navigation, route }) {
     const today = new Date();
     const d_day = new Date(post.startDate);
 
-    const days = Math.floor(
-      ((d_day.getTime() - today.getTime()) / 1000 / 60 / 60 + 9) / 24
-    );
-
+    const days = d_day.getDate() - today.getDate();
     if (days > 0) {
       return `D-${days}`;
     } else if (days == 0) {
@@ -142,11 +139,13 @@ export default function ReadPost({ navigation, route }) {
       <ScrollView>
         <View style={styles.m_h_25}>
           {/* 해시태그 */}
-          <View style={styles.hashtagRow}>
-            {post.hashtag.map((title, i) => {
-              return <HashtagButton feat={'read'} title={title} key={i} />;
-            })}
-          </View>
+          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+            <View style={styles.hashtagRow}>
+              {post.hashtag.map((title, i) => {
+                return <HashtagButton feat={'read'} title={title} key={i} />;
+              })}
+            </View>
+          </ScrollView>
           <View style={styles.arrowRow}>
             {/* 제목 */}
             <Text style={styles.title}>
