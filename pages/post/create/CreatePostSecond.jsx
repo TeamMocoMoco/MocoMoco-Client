@@ -27,7 +27,11 @@ export default function CreatePostSecond({ navigation, route }) {
   let location = route.params.location;
 
   const showSubmitButton = () => {
-    if (dueDate == '') {
+    if (
+      dueDate == '' ||
+      startDate == '' ||
+      new Date(dueDate).getTime() - new Date(startDate).getTime() < 0
+    ) {
       return <FullButton title={'저장하고 다음으로'} empty={true} />;
     } else {
       return (
@@ -112,7 +116,7 @@ export default function CreatePostSecond({ navigation, route }) {
           스터디 종류와{'\n'}시작일 / 종료일을 설정해주세요.
         </Text>
 
-        {/* 당일스터디 / 기간스터디 */}
+        {/* 당일스터디 / 기간스터디
         <View style={{ width: '100%', marginBottom: 20 }}>
           <View style={styles.row}>
             {['당일스터디', '기간스터디'].map((title, i) => {
@@ -120,13 +124,18 @@ export default function CreatePostSecond({ navigation, route }) {
                 <TodayButton
                   title={title}
                   today={today}
-                  setToday={setToday}
+                  doFunction={(value) => {
+                    setToday(value);
+                    setStartDate('');
+                    setDueDate('');
+                  }}
                   key={i}
                 />
               );
             })}
           </View>
-        </View>
+        </View> */}
+
         {/* 시작일 */}
         <View style={styles.startBox}>
           <View style={styles.midBox}>
@@ -171,7 +180,8 @@ export default function CreatePostSecond({ navigation, route }) {
           </TouchableOpacity>
         </View>
 
-        {showPicker()}
+        {showDateModal()}
+        {/* {showPicker()} */}
       </View>
       {showSubmitButton()}
     </View>

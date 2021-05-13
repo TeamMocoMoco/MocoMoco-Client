@@ -25,7 +25,9 @@ export default function CreatePostFirst({ navigation }) {
   useEffect(() => {
     navigation.addListener('focus', (e) => {
       if (locationInfo.current != null) {
-        setLocation(locationInfo.current.geometry.location);
+        const lat = locationInfo.current.geometry.location.lat;
+        const lng = locationInfo.current.geometry.location.lng;
+        setLocation([lat, lng]);
       }
     });
   });

@@ -1,65 +1,64 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
-import { Dimensions, FlatList, StyleSheet, Text, View } from 'react-native';
+import {
+  Dimensions,
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
-import MapView from 'react-native-maps';
+// import * as Permissions from 'expo-permissions';
+
+import MapView, { Marker } from 'react-native-maps';
 import SlidingUpPanel from 'rn-sliding-up-panel';
+
+import { Feather } from '@expo/vector-icons';
 
 import { MainCard } from '../../components/card';
 
 import { getColor } from '../../styles/styles';
 import { getPostsByLocation } from '../../config/api/MapAPI';
 
-const dummy = [
-  {
-    hashtag: ['javascript', 'nodejs'],
-    location: [37.50508186031737, 127.05248533166306],
-    participants: [],
-    status: true,
-    _id: '60923a41333d3505035bbc82',
-    title: '프로그래머스 같이 하실분',
-    category: '알고리즘 스터디',
-    content: '하루에 10개씩 문제 푸실 분들 채팅 주세요',
-    position: '백엔드',
-    language: 'javascript',
-    personnel: 6,
-    meeting: '온라인',
-    startDate: '2021-05-10T14:00:00.000Z',
-    dueDate: '2021-05-13T14:00:00.000Z',
-    user: {
-      _id: '608fab880fab1733316eeff1',
-      name: '이다은',
-      role: '개발자',
-    },
-    createdAt: '2021-05-05T06:25:05.885Z',
-    updatedAt: '2021-05-06T14:59:00.035Z',
-    __v: 0,
-  },
-];
+const screenHeight = Dimensions.get('screen').height;
+const windowHeight = Dimensions.get('window').height;
 
 export default function SearchMap({ navigation }) {
   const mapRef = useRef(null);
   const pannelRef = useRef(null);
 
   const [ready, setReady] = useState(false);
-  const [posts, setPosts] = useState(dummy);
+  const [mapCenter, setMapCenter] = useState([
+    37.49799799400392,
+    127.02754613036706,
+  ]);
+  const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    setTimeout(async () => {
-      try {
-        const {
-          northEast,
-          southhWest,
-        } = await mapRef.current.getMapBoundaries();
-        console.log(northEast, southhWest);
-      } catch (e) {
-        console.warn(e);
-      }
-      // const result = await getPostsByLocation('5,6', '50,50');
-      // setPosts(result);
-      setReady(true);
+    navigation.addListener('focus', (e) => {
+      setTimeout(async () => {
+        const result = await getPostsByLocation(mapCenter[0], mapCenter[1]);
+        // result.map((post) => {
+        //   console.log(post._id);
+        //   console.log(post.location);
+        // });
+        setPosts(result);
+        setReady(true);
+      });
     });
   }, []);
+
+  // const getCurrentLocation = async () => {
+  //   const { status, permissions } = await Permissions.askAsync(
+  //     Permissions.LOCATION_FOREGROUND
+  //   );
+  //   if (status === 'granted') {
+  //     return Location.getCurrentPositionAsync({ enableHighAccuracy: true });
+  //   } else {
+  //     throw new Error('위치 정보를 가져올 수 없습니다.');
+  //   }
+  // };
 
   return ready ? (
     <View style={styles.container}>
@@ -69,15 +68,15 @@ export default function SearchMap({ navigation }) {
           ref={mapRef}
           style={styles.map}
           initialRegion={{
-            latitude: 37.497961,
-            longitude: 127.027574,
+            latitude: mapCenter[0],
+            longitude: mapCenter[1],
+            latitudeDelta: 0.001,
+            longitudeDelta: 0.001,
           }}
-          minZoomLevel={0}
-          minZoomLevel={0}
         >
           {posts.map((post) => {
             return (
-              <MapView.Marker
+              <Marker
                 coordinate={{
                   latitude: post.location[0],
                   longitude: post.location[1],
@@ -93,35 +92,48 @@ export default function SearchMap({ navigation }) {
 
         {/* 슬라이딩 패널 */}
         <SlidingUpPanel ref={(c) => (pannelRef.current = c)}>
-          <View style={styles.modalFrame}>
-            <View style={styles.modalHeader}>
-              <View style={styles.dragHandle}></View>
-              <View style={styles.modalHeaderText}>
-                <Text style={styles.nearby}>{'내 주변\n3Km 이내'}</Text>
-                <Text style={styles.studyCount}>
-                  {'총 38개의 스터디 진행중...'}
-                </Text>
+          {(dragHandler) => (
+            <View style={styles.modalFrame}>
+              {/* 패널 헤더 */}
+              <View style={styles.modalHeader} {...dragHandler}>
+                <View style={styles.dragHandle}></View>
+                <View style={styles.modalHeaderText}>
+                  <Text style={styles.nearby}>{'내 주변\n3Km 이내'}</Text>
+                  <Text style={styles.studyCount}>
+                    {`총 ${posts.length}개의 스터디 진행중...`}
+                  </Text>
+                </View>
+              </View>
+
+              {/* 패널 바디 */}
+              <View style={styles.modalContent}>
+                <FlatList
+                  data={posts}
+                  showsVerticalScrollIndicator={false}
+                  keyExtractor={(item) => item._id}
+                  renderItem={(post) => {
+                    return (
+                      <MainCard
+                        navigation={navigation}
+                        post={post.item}
+                        key={post.item._id}
+                      />
+                    );
+                  }}
+                />
               </View>
             </View>
-
-            <View style={styles.modalContent}>
-              <FlatList
-                data={posts}
-                keyExtractor={(item) => item._id}
-                renderItem={(post) => {
-                  return (
-                    <MainCard
-                      navigation={navigation}
-                      post={post.item}
-                      key={post.item._id}
-                    />
-                  );
-                }}
-              />
-            </View>
-          </View>
+          )}
         </SlidingUpPanel>
       </View>
+      <TouchableOpacity
+        style={styles.FAB}
+        onPress={() => {
+          // getCurrentLocation();
+        }}
+      >
+        <Feather name="navigation" size={24} color="white" />
+      </TouchableOpacity>
     </View>
   ) : (
     <View style={styles.container}>
@@ -154,10 +166,11 @@ const styles = StyleSheet.create({
   },
   modalFrame: {
     flex: 1,
+    backgroundColor: '#FFF',
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
     marginTop: 100,
-    backgroundColor: 'white',
+    paddingBottom: screenHeight - windowHeight + 50,
   },
   modalHeader: {
     alignItems: 'center',
@@ -192,5 +205,16 @@ const styles = StyleSheet.create({
   modalContent: {
     marginVertical: 10,
     marginHorizontal: 25,
+  },
+  FAB: {
+    backgroundColor: getColor('defaultColor'),
+    position: 'absolute',
+    bottom: 80,
+    right: 20,
+    width: 50,
+    height: 50,
+    borderRadius: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

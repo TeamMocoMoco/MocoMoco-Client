@@ -34,12 +34,13 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     paddingHorizontal: 7,
     marginEnd: 10,
+    marginVertical: 6,
     borderRadius: 5,
     alignItems: 'center',
   },
   title: {
     color: '#818181',
-    fontSize: 10,
+    fontSize: 12,
     fontWeight: 'bold',
   },
 });

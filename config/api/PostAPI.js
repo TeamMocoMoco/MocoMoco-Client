@@ -24,7 +24,7 @@ export async function getPosts(pageNum) {
   }
 }
 
-// 전체 모집글 검색 (페이징)
+// 전체 모집글 검색 (페이징) - 완료
 export async function getPostsByKeyword(keyword, pageNum) {
   try {
     const response = await axios({
@@ -86,7 +86,7 @@ export async function getPostsByMeeting(meeting, pageNum) {
   }
 }
 
-// 온/오프라인 모집글 검색 (페이징)
+// 온/오프라인 모집글 검색 (페이징) - 완료
 export async function getPostsByMeetingByKeyword(meeting, keyword, pageNum) {
   try {
     const response = await axios({
@@ -226,13 +226,13 @@ export async function getJoinedPosts(pageNum) {
   }
 }
 
-// 모집글 올리기 - 날짜 관련 수정중
+// 모집글 올리기 - 완료
 export async function postPosts(
   navigation,
   onAndOff,
+  location,
   category,
   personnel,
-  location,
   startDate,
   dueDate,
   position,
@@ -250,17 +250,17 @@ export async function postPosts(
         token: token,
       },
       data: {
-        title: title,
+        meeting: onAndOff,
+        location: location,
         category: category,
-        content: intro,
+        personnel: personnel,
+        startDate: new Date(startDate).toISOString(),
+        dueDate: new Date(dueDate).toISOString(),
         position: position,
         language: language,
-        personnel: personnel,
+        title: title,
+        content: intro,
         hashtag: hashtagList,
-        location: location,
-        meeting: onAndOff,
-        startDate: startDate.toISOString(),
-        dueDate: dueDate.toISOString(),
       },
     });
 
