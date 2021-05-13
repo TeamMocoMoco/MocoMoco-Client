@@ -5,7 +5,7 @@ import {
   SignUp,
   Verification,
   VerificationConfirm,
-  Location,
+  Landing,
   Starting,
 } from '../pages/start';
 import TabNavigator from './TabNavigator';
@@ -35,7 +35,7 @@ const Stack = createStackNavigator();
 const StackNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Location" component={Location} />
+      <Stack.Screen name="Landing" component={Landing} />
       <Stack.Screen name="TabNavigator" component={TabNavigator} />
 
       <Stack.Screen name="Verification" component={Verification} />
