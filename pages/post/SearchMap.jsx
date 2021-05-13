@@ -43,7 +43,6 @@ export default function SearchMap({ navigation }) {
         //   console.log(post.location);
         // });
         setPosts(result);
-        console.log(result);
         setReady(true);
       });
     });
