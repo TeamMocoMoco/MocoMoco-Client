@@ -232,6 +232,7 @@ export async function postPosts(
   onAndOff,
   location,
   address,
+  name,
   category,
   personnel,
   startDate,
@@ -254,6 +255,7 @@ export async function postPosts(
         meeting: onAndOff,
         location: location,
         address: address,
+        address_name: name,
         category: category,
         personnel: personnel,
         startDate: new Date(startDate).toISOString(),
@@ -281,18 +283,19 @@ export async function patchPosts(
   navigation,
   postId,
   onAndOff,
-  title,
+  location,
+  address,
+  name,
   category,
   personnel,
-  location,
   startDate,
   dueDate,
   position,
   language,
+  title,
   intro,
   hashtagList
 ) {
-  console.log(postId);
   const token = await SecureStore.getItemAsync('usertoken');
   try {
     const response = await axios({
@@ -302,22 +305,24 @@ export async function patchPosts(
         token: token,
       },
       data: {
-        title: title,
-        category: category,
-        content: intro,
-        position: position,
-        language: language,
-        personnel: personnel,
-        hashtag: hashtagList,
-        location: location,
         meeting: onAndOff,
+        location: location,
+        address: address,
+        address_name: name,
+        category: category,
+        personnel: personnel,
         startDate: new Date(startDate).toISOString(),
         dueDate: new Date(dueDate).toISOString(),
+        position: position,
+        language: language,
+        title: title,
+        content: intro,
+        hashtag: hashtagList,
       },
     });
 
     if (response.data.result) {
-      navigation.push('ReadPost', { postId });
+      navigation.navigate('ReadPost', { postId });
     }
   } catch (err) {
     const error = err.response.data.err || err.message;
@@ -364,6 +369,28 @@ export async function closePost(navigation, postId) {
       Alert.alert('모집이 마감되었습니다.');
       // navigation.navigate('ReadPost', { postId });
     }
+  } catch (err) {
+    const error = err.response.data.err || err.message;
+    Alert.alert(error);
+  }
+}
+
+// 참가자 추가하기
+export async function postParticipants(postId, participantId) {
+  const token = await SecureStore.getItemAsync('usertoken');
+  try {
+    const response = await axios({
+      method: 'post',
+      url: host + '/posts/' + postId + '/participants',
+      headers: {
+        token: token,
+      },
+      date: {
+        participantId: participantId,
+      },
+    });
+
+    console.log(response.data.result);
   } catch (err) {
     const error = err.response.data.err || err.message;
     Alert.alert(error);

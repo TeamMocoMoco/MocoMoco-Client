@@ -55,6 +55,7 @@ export default function CreatePostFirst({ navigation }) {
               personnel,
               location,
               address,
+              name,
             })
           }
         />
@@ -76,7 +77,7 @@ export default function CreatePostFirst({ navigation }) {
             {name == '' ? (
               <Text style={{ color: '#AAA' }}>예) 스타벅스 강남</Text>
             ) : (
-              <Text style={{ color: 'black' }}>{name}</Text>
+              <Text style={{ color: '#000' }}>{name}</Text>
             )}
             <Ionicons name="md-search-outline" size={24} color="black" />
           </TouchableOpacity>
@@ -111,7 +112,7 @@ export default function CreatePostFirst({ navigation }) {
                     setLocation([]);
                     setAddress('');
                     setName('');
-                    locationInfo.current == null;
+                    locationInfo.current = null;
                   }}
                   key={i}
                 />

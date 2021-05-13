@@ -18,6 +18,7 @@ export default function CreatePostThird({ navigation, route }) {
   let personnel = route.params.personnel;
   let location = route.params.location;
   let address = route.params.address;
+  let name = route.params.name;
   let startDate = route.params.startDate;
   let dueDate = route.params.dueDate;
 
@@ -36,6 +37,7 @@ export default function CreatePostThird({ navigation, route }) {
               personnel,
               location,
               address,
+              name,
               startDate,
               dueDate,
               position,

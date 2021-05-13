@@ -1,7 +1,6 @@
 import React, { useCallback, useState, useEffect, useRef } from 'react';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import {
-  Button,
   ScrollView,
   StyleSheet,
   Text,
@@ -21,11 +20,10 @@ import {
   OnAndOffButton,
 } from '../../components/button';
 import { DatePickModal } from '../../components/modal';
-import { getColor } from '../../styles/styles';
 
 import kind from '../../config/mock/category.json';
-
 import { patchPosts } from '../../config/api/PostAPI';
+import { getColor } from '../../styles/styles';
 
 export default function UpdatePost({ navigation, route }) {
   const post = route.params;
@@ -36,10 +34,10 @@ export default function UpdatePost({ navigation, route }) {
   const [category, setCategory] = useState(post.category);
   const [personnel, setPersonnel] = useState(post.personnel);
   const [startDate, setStartDate] = useState(
-    post.startDate.substr(0, 16).replace('T', ' ')
+    post.startDate.substr(0, 16).replace('T', ' ').replace(/-/g, '/')
   );
   const [dueDate, setDueDate] = useState(
-    post.dueDate.substr(0, 16).replace('T', ' ')
+    post.dueDate.substr(0, 16).replace('T', ' ').replace(/-/g, '/')
   );
   const [position, setPosition] = useState(post.position);
   const [language, setLanguage] = useState(post.language);
@@ -48,7 +46,7 @@ export default function UpdatePost({ navigation, route }) {
   const [hashtag, setHashtag] = useState('');
   const [location, setLocation] = useState(post.location);
   const [address, setAddress] = useState(post.address);
-  const [name, setName] = useState(post.address);
+  const [name, setName] = useState(post.address_name);
 
   const locationInfo = useRef();
 
@@ -76,6 +74,7 @@ export default function UpdatePost({ navigation, route }) {
       onAndOff,
       location,
       address,
+      name,
       category,
       personnel,
       startDate,
@@ -149,6 +148,11 @@ export default function UpdatePost({ navigation, route }) {
       hashtagList.length == 0
     ) {
       return <FullButton title={'수정 완료'} empty={true} />;
+    } else if (
+      onAndOff == '오프라인' &&
+      (location == '' || address == '' || name == '')
+    ) {
+      return <FullButton title={'수정 완료'} empty={true} />;
     } else {
       return (
         <FullButton
@@ -160,7 +164,7 @@ export default function UpdatePost({ navigation, route }) {
     }
   };
 
-  const showModal = () => {
+  const showDateModal = () => {
     if (currentModal == 'start') {
       return (
         <DatePickModal
@@ -180,14 +184,10 @@ export default function UpdatePost({ navigation, route }) {
     }
   };
 
-  const deleteHashtag = useCallback(async (index) => {
+  const onRemove = (index) => {
     let list = hashtagList;
-    list.slice(index, 1);
-    setHashtagList(hashtagList);
-  });
-
-  const onRemove = (idex) => (e) => {
-    setHashtagList(hashtagList.filter((hashtag) => hashtag.idex !== idex));
+    list.splice(index, 1);
+    setHashtagList(list);
   };
 
   const showSelectedHashtag = () => {
@@ -230,17 +230,17 @@ export default function UpdatePost({ navigation, route }) {
           <View style={styles.onoffBox}>
             <Text style={styles.label}>진행 방식</Text>
             <View style={{ flexDirection: 'row' }}>
-              {['오프라인', '온라인'].map((title, i) => {
+              {['오프라인', '온라인'].map((onOff, i) => {
                 return (
                   <OnAndOffButton
-                    title={title}
+                    title={onOff}
                     onAndOff={onAndOff}
                     doFunction={(value) => {
                       setOnAndOff(value);
-                      setLocation([]);
-                      setAddress(address);
-                      setName('');
-                      locationInfo.current == null;
+                      setLocation(post.location);
+                      setAddress(post.address);
+                      setName(post.address_name);
+                      locationInfo.current = null;
                     }}
                     key={i}
                   />
@@ -350,7 +350,7 @@ export default function UpdatePost({ navigation, route }) {
             </TouchableOpacity>
           </View>
 
-          {showModal()}
+          {showDateModal()}
 
           {/* 포지션 / 사용언어 */}
           <View style={styles.column}>
@@ -454,14 +454,20 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 20,
   },
-  row: { flexDirection: 'row', justifyContent: 'space-between' },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   label: {
     color: '#263238',
     fontWeight: 'bold',
     fontSize: 14,
     marginVertical: 10,
   },
-  onoffBox: { width: '100%', marginBottom: 20 },
+  onoffBox: {
+    width: '100%',
+    marginBottom: 20,
+  },
   serviceComment: {
     fontSize: 18,
     fontWeight: 'bold',
@@ -484,7 +490,10 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     alignItems: 'center',
   },
-  categoryText: { flex: 2, marginEnd: 20 },
+  categoryText: {
+    flex: 2,
+    marginEnd: 20,
+  },
   pickerBox: {
     flex: 5,
     paddingVertical: 10,
@@ -524,7 +533,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 
-  column: { flexDirection: 'column', marginBottom: '5%' },
+  column: {
+    flexDirection: 'column',
+    marginBottom: '5%',
+  },
   inputBox: {
     width: '100%',
     marginBottom: 20,

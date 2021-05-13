@@ -32,13 +32,15 @@ export default function ReadPost({ navigation, route }) {
   const [status, setStatus] = useState(post.status);
 
   useEffect(() => {
-    setTimeout(async () => {
-      const result = await getPostsById(postId);
-      const id = await AsyncStorage.getItem('myid');
-      setPost(result);
-      setUserId(result.user._id);
-      setMyid(id);
-      setReady(true);
+    navigation.addListener('focus', (e) => {
+      setTimeout(async () => {
+        const result = await getPostsById(postId);
+        const id = await AsyncStorage.getItem('myid');
+        setPost(result);
+        setUserId(result.user._id);
+        setMyid(id);
+        setReady(true);
+      });
     });
   }, [navigation]);
 
@@ -72,10 +74,6 @@ export default function ReadPost({ navigation, route }) {
     }
   };
 
-  const closeStudy = () => {
-    closePost(navigation, post._id), setStatus(false);
-  };
-
   const showApplyButton = () => {
     if (status == false) {
       return <RadiusButton title={'모집이 마감되었습니다.'} status={status} />;
@@ -88,7 +86,10 @@ export default function ReadPost({ navigation, route }) {
             Alert.alert('모집을 마감하시겠습니까?', '', [
               {
                 text: '네',
-                onPress: () => closeStudy(),
+                onPress: () => {
+                  closePost(navigation, post._id);
+                  setStatus(false);
+                },
                 style: 'default',
               },
               {

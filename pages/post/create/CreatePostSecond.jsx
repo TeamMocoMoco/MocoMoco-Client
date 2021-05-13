@@ -11,15 +11,15 @@ import {
 import { ProgressBar, Colors } from 'react-native-paper';
 
 import { HeaderBack } from '../../../components/header';
-import { FullButton, TodayButton } from '../../../components/button';
+import { FullButton } from '../../../components/button';
 import { DatePickModal } from '../../../components/modal/';
 import { getColor } from '../../../styles/styles';
+
 
 export default function CreatePostSecond({ navigation, route }) {
   const [startDate, setStartDate] = useState('');
   const [dueDate, setDueDate] = useState('');
   const [currentModal, setCurrentModal] = useState('');
-  const [today, setToday] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
 
   let onAndOff = route.params.onAndOff;
@@ -27,6 +27,7 @@ export default function CreatePostSecond({ navigation, route }) {
   let personnel = route.params.personnel;
   let location = route.params.location;
   let address = route.params.address;
+  let name = route.params.name;
 
   const showSubmitButton = () => {
     if (
@@ -47,6 +48,7 @@ export default function CreatePostSecond({ navigation, route }) {
               personnel,
               location,
               address,
+              name,
               startDate,
               dueDate,
             })
@@ -90,26 +92,6 @@ export default function CreatePostSecond({ navigation, route }) {
         <Text style={styles.serviceComment}>
           스터디의{'\n'}처음과 끝을 정해주세요.
         </Text>
-
-        {/* 당일스터디 / 기간스터디
-        <View style={{ width: '100%', marginBottom: 20 }}>
-          <View style={styles.row}>
-            {['당일스터디', '기간스터디'].map((title, i) => {
-              return (
-                <TodayButton
-                  title={title}
-                  today={today}
-                  doFunction={(value) => {
-                    setToday(value);
-                    setStartDate('');
-                    setDueDate('');
-                  }}
-                  key={i}
-                />
-              );
-            })}
-          </View>
-        </View> */}
 
         {/* 시작일 */}
         <View style={styles.startBox}>
@@ -156,7 +138,6 @@ export default function CreatePostSecond({ navigation, route }) {
         </View>
 
         {showDateModal()}
-        {/* {showPicker()} */}
       </View>
       {showSubmitButton()}
     </View>
@@ -196,7 +177,10 @@ const styles = StyleSheet.create({
     marginVertical: '5%',
     alignItems: 'center',
   },
-  midBox: { flex: 2, marginEnd: 20 },
+  midBox: {
+    flex: 2,
+    marginEnd: 20,
+  },
   dateBox: {
     flex: 5,
     paddingVertical: 10,
