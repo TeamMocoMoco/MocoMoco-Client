@@ -85,7 +85,7 @@ export default function RecruitStudy({ navigation }) {
             if (tab == '모집중') {
               nextPosts = await getMyOpenPosts(pageNum.current + 1);
             } else {
-              nextPosts = await getMyClosedPosts(tab, pageNum.current + 1);
+              nextPosts = await getMyClosedPosts(pageNum.current + 1);
             }
             if (nextPosts.length != 0) {
               pageNum.current += 1;
