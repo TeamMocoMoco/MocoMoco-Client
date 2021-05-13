@@ -9,7 +9,7 @@ import {
   View,
 } from 'react-native';
 
-// import * as Permissions from 'expo-permissions';
+import * as Permissions from 'expo-permissions';
 
 import MapView, { Marker } from 'react-native-maps';
 import SlidingUpPanel from 'rn-sliding-up-panel';
@@ -30,8 +30,7 @@ export default function SearchMap({ navigation }) {
 
   const [ready, setReady] = useState(false);
   const [mapCenter, setMapCenter] = useState([
-    37.49799799400392,
-    127.02754613036706,
+    37.49799799400392, 127.02754613036706,
   ]);
   const [posts, setPosts] = useState([]);
 
@@ -44,21 +43,32 @@ export default function SearchMap({ navigation }) {
         //   console.log(post.location);
         // });
         setPosts(result);
+        console.log(result);
         setReady(true);
       });
     });
   }, []);
 
-  // const getCurrentLocation = async () => {
-  //   const { status, permissions } = await Permissions.askAsync(
-  //     Permissions.LOCATION_FOREGROUND
-  //   );
-  //   if (status === 'granted') {
-  //     return Location.getCurrentPositionAsync({ enableHighAccuracy: true });
-  //   } else {
-  //     throw new Error('위치 정보를 가져올 수 없습니다.');
-  //   }
-  // };
+  const getPermission = async () => {
+    if (Platform.OS !== 'web') {
+      const { status } = await Permissions.getAsync(
+        Permissions.LOCATION_FOREGROUND
+      );
+      if (status !== 'granted') {
+        Alert.alert('현재 위치에 접근할 수 없습니다.');
+        return false;
+      } else {
+        return true;
+      }
+    }
+  };
+
+  const getCurrentLocation = async () => {
+    const status = getPermission();
+    if (status) {
+      return Location.getCurrentPositionAsync({ enableHighAccuracy: true });
+    }
+  };
 
   return ready ? (
     <View style={styles.container}>
@@ -129,7 +139,7 @@ export default function SearchMap({ navigation }) {
       <TouchableOpacity
         style={styles.FAB}
         onPress={() => {
-          // getCurrentLocation();
+          getCurrentLocation();
         }}
       >
         <Feather name="navigation" size={24} color="white" />
