@@ -232,6 +232,7 @@ export async function postPosts(
   onAndOff,
   location,
   address,
+  name,
   category,
   personnel,
   startDate,
@@ -254,6 +255,7 @@ export async function postPosts(
         meeting: onAndOff,
         location: location,
         address: address,
+        address_name: name,
         category: category,
         personnel: personnel,
         startDate: new Date(startDate).toISOString(),
@@ -364,6 +366,28 @@ export async function closePost(navigation, postId) {
       Alert.alert('모집이 마감되었습니다.');
       // navigation.navigate('ReadPost', { postId });
     }
+  } catch (err) {
+    const error = err.response.data.err || err.message;
+    Alert.alert(error);
+  }
+}
+
+// 참가자 추가하기
+export async function postParticipants(postId, participantId) {
+  const token = await SecureStore.getItemAsync('usertoken');
+  try {
+    const response = await axios({
+      method: 'post',
+      url: host + '/posts/' + postId + '/participants',
+      headers: {
+        token: token,
+      },
+      date: {
+        participantId: participantId,
+      },
+    });
+
+    console.log(response.data.result);
   } catch (err) {
     const error = err.response.data.err || err.message;
     Alert.alert(error);
