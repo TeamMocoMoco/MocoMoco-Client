@@ -21,6 +21,8 @@ export default function CreatePostFirst({ navigation }) {
   const [category, setCategory] = useState('선택');
   const [personnel, setPersonnel] = useState(0);
   const [location, setLocation] = useState([]);
+  const [address, setAddress] = useState('');
+  const [name, setName] = useState('');
 
   useEffect(() => {
     navigation.addListener('focus', (e) => {
@@ -28,12 +30,18 @@ export default function CreatePostFirst({ navigation }) {
         const lat = locationInfo.current.geometry.location.lat;
         const lng = locationInfo.current.geometry.location.lng;
         setLocation([lat, lng]);
+        let array = locationInfo.current.vicinity.split(' ');
+        array.pop();
+        setAddress(array.join(' '));
+        setName(locationInfo.current.name);
       }
     });
   });
 
   const showSubmitButton = () => {
-    if (category == '선택' || personnel == '') {
+    if (onAndOff == '' || category == '선택' || personnel == '') {
+      return <FullButton title={'저장하고 다음으로'} empty={true} />;
+    } else if (onAndOff == '오프라인' && address == '') {
       return <FullButton title={'저장하고 다음으로'} empty={true} />;
     } else {
       return (
@@ -46,6 +54,7 @@ export default function CreatePostFirst({ navigation }) {
               category,
               personnel,
               location,
+              address,
             })
           }
         />
@@ -64,10 +73,10 @@ export default function CreatePostFirst({ navigation }) {
               navigation.push('SearchLocation', { info: locationInfo });
             }}
           >
-            {locationInfo.current != null ? (
-              <Text>{locationInfo.current.name}</Text>
+            {name == '' ? (
+              <Text style={{ color: '#AAA' }}>예) 스타벅스 강남</Text>
             ) : (
-              <Text>예) 스타벅스 강남</Text>
+              <Text>{name}</Text>
             )}
             <Ionicons name="md-search-outline" size={24} color="black" />
           </TouchableOpacity>
@@ -97,8 +106,13 @@ export default function CreatePostFirst({ navigation }) {
                 <OnAndOffButton
                   title={title}
                   onAndOff={onAndOff}
-                  setOnAndOff={setOnAndOff}
-                  setLocation={setLocation}
+                  doFunction={(value) => {
+                    setOnAndOff(value);
+                    setLocation([]);
+                    setAddress('');
+                    setName('');
+                    locationInfo.current == null;
+                  }}
                   key={i}
                 />
               );

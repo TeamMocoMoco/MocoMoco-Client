@@ -146,7 +146,7 @@ export async function getPostsById(postId) {
   }
 }
 
-//MyPage-모집스터디-모집중
+// MyPage-모집스터디-모집중
 export async function getMyOpenPosts(pageNum) {
   const id = await AsyncStorage.getItem('myid');
   try {
@@ -166,7 +166,7 @@ export async function getMyOpenPosts(pageNum) {
   }
 }
 
-//MyPage-모집스터디-모집완료
+// MyPage-모집스터디-모집완료
 export async function getMyClosedPosts(pageNum) {
   const id = await AsyncStorage.getItem('myid');
   try {
@@ -186,7 +186,7 @@ export async function getMyClosedPosts(pageNum) {
   }
 }
 
-//MyPage-신청스터디-모집중
+// MyPage-신청스터디-모집중
 export async function getJoiningPosts(pageNum) {
   const id = await AsyncStorage.getItem('myid');
   try {
@@ -206,7 +206,7 @@ export async function getJoiningPosts(pageNum) {
   }
 }
 
-//MyPage-신청스터디-모집완료
+// MyPage-신청스터디-모집완료
 export async function getJoinedPosts(pageNum) {
   const id = await AsyncStorage.getItem('myid');
   try {
@@ -231,6 +231,7 @@ export async function postPosts(
   navigation,
   onAndOff,
   location,
+  address,
   category,
   personnel,
   startDate,
@@ -252,6 +253,7 @@ export async function postPosts(
       data: {
         meeting: onAndOff,
         location: location,
+        address: address,
         category: category,
         personnel: personnel,
         startDate: new Date(startDate).toISOString(),

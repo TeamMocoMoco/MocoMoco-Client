@@ -25,6 +25,7 @@ export default function CreatePostSecond({ navigation, route }) {
   let category = route.params.category;
   let personnel = route.params.personnel;
   let location = route.params.location;
+  let address = route.params.address;
 
   const showSubmitButton = () => {
     if (
@@ -44,6 +45,7 @@ export default function CreatePostSecond({ navigation, route }) {
               category,
               personnel,
               location,
+              address,
               startDate,
               dueDate,
             })
