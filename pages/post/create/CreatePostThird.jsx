@@ -7,6 +7,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 
 import { HeaderBack } from '../../../components/header';
 import { FullButton } from '../../../components/button';
+import { getColor } from '../../../styles/styles';
 
 export default function CreatePostThird({ navigation, route }) {
   const [position, setPosition] = useState('');
@@ -59,7 +60,7 @@ export default function CreatePostThird({ navigation, route }) {
       />
       <KeyboardAwareScrollView style={styles.content}>
         <Text style={styles.serviceComment}>
-          포지션과{'\n'}사용언어를 작성해주세요.
+          개발 스터디의 경우{'\n'}포지션과 주 사용언어가 중요합니다.
         </Text>
 
         {/* 포지션 / 사용언어 */}
@@ -68,10 +69,11 @@ export default function CreatePostThird({ navigation, route }) {
           <View style={styles.inputBox}>
             <Text style={styles.label}>나의 포지션</Text>
             <TextInput
-              style={{ flex: 3, fontSize: 18 }}
+              style={{ flex: 3, fontSize: 22, fontWeight: 'bold' }}
               value={position}
               type={'position'}
               placeholder={'ex) 백엔드 개발자'}
+              placeholderTextColor={getColor('inactiveBorderColor')}
               onChangeText={(text) => {
                 setPosition(text);
               }}
@@ -82,10 +84,11 @@ export default function CreatePostThird({ navigation, route }) {
           <View style={styles.inputBox}>
             <Text style={styles.label}>사용 언어</Text>
             <TextInput
-              style={{ flex: 3, fontSize: 18 }}
+              style={{ flex: 3, fontSize: 22, fontWeight: 'bold' }}
               value={language}
               type={'language'}
               placeholder={'ex) Python, JS'}
+              placeholderTextColor={getColor('inactiveBorderColor')}
               onChangeText={(text) => {
                 setLanguage(text);
               }}
@@ -110,6 +113,7 @@ const styles = StyleSheet.create({
   },
   column: { flexDirection: 'column' },
   serviceComment: {
+    lineHeight: 28,
     fontSize: 20,
     fontWeight: 'bold',
     paddingVertical: '5%',
@@ -118,11 +122,11 @@ const styles = StyleSheet.create({
   inputBox: {
     width: '100%',
     paddingVertical: '2%',
-    borderBottomWidth: 1,
-    borderColor: 'black',
+    borderBottomWidth: 2,
+    borderColor: getColor('inactiveBorderColor'),
   },
   label: {
-    fontSize: 18,
+    fontSize: 14,
     fontWeight: 'bold',
     paddingVertical: '3%',
   },

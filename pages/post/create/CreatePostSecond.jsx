@@ -12,7 +12,9 @@ import { ProgressBar, Colors } from 'react-native-paper';
 
 import { HeaderBack } from '../../../components/header';
 import { FullButton } from '../../../components/button';
-import { DatePickModal } from '../../../components/modal';
+import { DatePickModal } from '../../../components/modal/';
+import { getColor } from '../../../styles/styles';
+
 
 export default function CreatePostSecond({ navigation, route }) {
   const [startDate, setStartDate] = useState('');
@@ -88,7 +90,7 @@ export default function CreatePostSecond({ navigation, route }) {
 
       <View style={styles.content}>
         <Text style={styles.serviceComment}>
-          스터디 종류와{'\n'}시작일 / 종료일을 설정해주세요.
+          스터디의{'\n'}처음과 끝을 정해주세요.
         </Text>
 
         {/* 시작일 */}
@@ -157,11 +159,13 @@ const styles = StyleSheet.create({
   },
   label: {
     color: '#263238',
+    fontSize: 14,
     fontWeight: 'bold',
     marginVertical: 10,
   },
 
   serviceComment: {
+    lineHeight: 28,
     fontSize: 20,
     fontWeight: 'bold',
     paddingVertical: '5%',
@@ -183,7 +187,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 30,
     borderWidth: 2,
-    borderColor: '#CBCBCB',
+    borderColor: getColor('inactiveBorderColor'),
   },
   dueBox: {
     flexDirection: 'row',
