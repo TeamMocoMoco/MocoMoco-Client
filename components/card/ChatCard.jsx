@@ -35,7 +35,7 @@ export default function ChatCard({ navigation, userId, room }) {
         style={styles.container}
         onPress={() => {
           navigation.push('ChatRoom', {
-            room: room,
+            roomId: room._id,
             userName: showName(),
           });
         }}

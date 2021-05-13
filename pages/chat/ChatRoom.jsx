@@ -36,10 +36,11 @@ const wait = (timeout) => {
 
 export default function ChatRoom({ navigation, route }) {
   // let flatListRef;
-  const room = route.params.room;
+  const roomId = route.params.roomId;
   const userName = route.params.userName;
 
   const ref = useRef();
+  const room = useRef();
   const chat = useRef([]);
   const myid = useRef();
 
@@ -56,7 +57,8 @@ export default function ChatRoom({ navigation, route }) {
 
     navigation.addListener('focus', (e) => {
       setTimeout(async () => {
-        const result = await getChatsByRoom(room._id);
+        const result = await getChatsByRoom(roomId);
+        room.current = result.room;
         chat.current = result.chat;
         myid.current = await AsyncStorage.getItem('myid');
         setReady(true);
@@ -64,7 +66,7 @@ export default function ChatRoom({ navigation, route }) {
     });
 
     // room._id emit (완료)
-    socket.emit('connectRoom', { roomId: room._id });
+    socket.emit('connectRoom', { roomId });
 
     socket.on('chat', async (data) => {
       setSocketState(true);
@@ -79,7 +81,7 @@ export default function ChatRoom({ navigation, route }) {
   }, []);
 
   const submitChatMessage = async () => {
-    await postChat(room._id, message);
+    await postChat(roomId, message);
     setMessage('');
   };
 
