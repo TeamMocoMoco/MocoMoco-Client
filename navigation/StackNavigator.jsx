@@ -22,6 +22,7 @@ import {
   CreatePostSecond,
   CreatePostThird,
   CreatePostFourth,
+  SucessPost,
 } from '../pages/post/create';
 
 import {
@@ -44,7 +45,6 @@ const StackNavigator = () => {
         component={VerificationConfirm}
       />
       <Stack.Screen name="SignUp" component={SignUp} />
-      {/* <Stack.Screen name="Starting" component={Starting} /> */}
 
       <Stack.Screen name="UpdatePost" component={UpdatePost} />
       <Stack.Screen name="CreatePost" component={CreatePost} />
@@ -55,6 +55,7 @@ const StackNavigator = () => {
       <Stack.Screen name="CreatePostSecond" component={CreatePostSecond} />
       <Stack.Screen name="CreatePostThird" component={CreatePostThird} />
       <Stack.Screen name="CreatePostFourth" component={CreatePostFourth} />
+      <Stack.Screen name="SucessPost" component={SucessPost} />
 
       <Stack.Screen name="ChatRoom" component={ChatRoom} />
 
