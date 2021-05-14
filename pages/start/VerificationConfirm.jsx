@@ -12,6 +12,8 @@ import {
 
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+
 import { HeaderBack } from '../../components/header';
 
 import { getColor } from '../../styles/styles';
@@ -110,7 +112,13 @@ export default function VerificationConfirm({ navigation, route }) {
               }}
               keyboardType="number-pad"
             />
-            <View>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <MaterialCommunityIcons
+                name="clock-fast"
+                size={24}
+                color="black"
+                style={{ marginRight: 10 }}
+              />
               <Text>
                 {minutes}:{seconds < 10 ? `0${seconds}` : seconds}
               </Text>
