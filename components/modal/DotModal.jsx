@@ -22,7 +22,10 @@ export default function DotModal({
     Alert.alert('게시글을 삭제하시겠습니까?', '', [
       {
         text: '네',
-        onPress: () => deletePosts(navigation, post._id),
+        onPress: () => {
+          deletePosts(navigation, post._id), setModalOpen(false);
+        },
+
         style: 'default',
       },
       {
