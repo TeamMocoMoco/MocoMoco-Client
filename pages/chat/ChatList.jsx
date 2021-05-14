@@ -30,7 +30,6 @@ export default function ChatList({ navigation }) {
         navigation={navigation}
         userId={myid.current}
         room={room.item}
-        admin={room.item.admin}
         key={room.item._id}
       />
     ),

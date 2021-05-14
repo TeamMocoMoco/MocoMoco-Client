@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -35,7 +35,7 @@ export default function ChatCard({ navigation, userId, room }) {
         style={styles.container}
         onPress={() => {
           navigation.push('ChatRoom', {
-            room: room,
+            roomId: room._id,
             userName: showName(),
           });
         }}

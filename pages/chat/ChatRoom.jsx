@@ -24,8 +24,9 @@ import { Feather } from '@expo/vector-icons';
 import { getColor } from '../../styles/styles';
 import { getChatsByRoom, postChat } from '../../config/api/ChatAPI';
 import { postParticipants } from '../../config/api/PostAPI';
-import { KeyboardAwareFlatList } from 'react-native-keyboard-aware-scroll-view';
 
+const screenHeight = Dimensions.get('screen').height;
+const diviceHeight = Dimensions.get('window').height;
 const diviceWidth = Dimensions.get('window').width;
 
 const SOCKET_URL = 'http://3.34.137.188/chat';
@@ -35,51 +36,53 @@ const wait = (timeout) => {
 };
 
 export default function ChatRoom({ navigation, route }) {
-  // let flatListRef;
-  const room = route.params.room;
+  const roomId = route.params.roomId;
   const userName = route.params.userName;
 
-  const ref = useRef();
+  const flatListRef = useRef();
+
+  const room = useRef();
   const chat = useRef([]);
   const myid = useRef();
 
   const [ready, setReady] = useState(false);
-  const [refreshing, setRefreshing] = useState(false);
 
   const [message, setMessage] = useState('');
   const [socketState, setSocketState] = useState(false);
 
+  const [admin, setAdmin] = useState(false);
+
   useEffect(() => {
     // 소켓 연결 (완료)
     const socket = io(SOCKET_URL);
-    ref.current = socket;
 
     navigation.addListener('focus', (e) => {
       setTimeout(async () => {
-        const result = await getChatsByRoom(room._id);
-        chat.current = result.chat;
+        const result = await getChatsByRoom(roomId);
+        room.current = result.roomInfo;
+        chat.current = result.chat.reverse();
         myid.current = await AsyncStorage.getItem('myid');
+        if (myid.current == room.current.admin._id) {
+          setAdmin(true);
+        } else {
+          setAdmin(false);
+        }
         setReady(true);
       });
     });
 
     // room._id emit (완료)
-    socket.emit('connectRoom', { roomId: room._id });
+    socket.emit('connectRoom', { roomId });
 
     socket.on('chat', async (data) => {
       setSocketState(true);
-      chat.current = [...chat.current, data];
+      chat.current = [data, ...chat.current];
       setSocketState(false);
     });
   }, []);
 
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    wait(1000).then(() => setRefreshing(false));
-  }, []);
-
   const submitChatMessage = async () => {
-    await postChat(room._id, message);
+    await postChat(roomId, message);
     setMessage('');
   };
 
@@ -103,56 +106,71 @@ export default function ChatRoom({ navigation, route }) {
     }
   };
 
+  // const scrollToBottom = () => {
+  //   console.log('바닥');
+  //   flatListRef.current.scrollToEnd({ animated: true });
+  // };
+
   return ready ? (
     <View style={styles.container}>
       <HeaderChat navigation={navigation} name={userName} />
-      <FlatList
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-        contentContainerStyle={styles.content}
-        data={chat.current}
-        keyExtractor={(item) => item._id}
-        renderItem={(chatInfo) => {
-          return (
-            <ChatMessage
-              receiver={myid.current}
-              sender={chatInfo.item.user}
-              message={chatInfo.item.content}
-              createdAt={chatInfo.item.createdAt.substr(11, 5)}
-              key={chatInfo.item._id}
-            />
-          );
-        }}
-      />
-
-      {/* 버튼 */}
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => postParticipants(room, postId, room.participant._id)}
-        >
-          <Text style={{ color: getColor('defaultColor'), fontSize: 12 }}>
-            확정하기 ⭕
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
-          <Text style={{ color: '#999', fontSize: 12 }}>신고 🚨</Text>
-        </TouchableOpacity>
+      <View style={styles.content}>
+        <FlatList
+          ref={(ref) => (flatListRef.current = ref)}
+          contentContainerStyle={{ padding: 10 }}
+          data={chat.current}
+          inverted={-1}
+          keyExtractor={(item) => item._id}
+          renderItem={(chatInfo) => {
+            return (
+              <ChatMessage
+                receiver={myid.current}
+                sender={chatInfo.item.user}
+                message={chatInfo.item.content}
+                createdAt={chatInfo.item.createdAt.substr(11, 5)}
+                key={chatInfo.item._id}
+              />
+            );
+          }}
+        />
       </View>
 
-      <View style={styles.bottomBox}>
-        <View style={styles.sendBox}>
-          <TextInput
-            placeholder={'메세지를 입력하세요.'}
-            value={message}
-            onChangeText={(text) => {
-              setMessage(text);
-            }}
-            style={styles.input}
-          />
+      <View style={{ position: 'absolute', bottom: 0 }}>
+        {admin ? (
+          // 버튼
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() =>
+                postParticipants(room.current.postId, room.participant._id)
+              }
+            >
+              <Text style={{ color: getColor('defaultColor'), fontSize: 12 }}>
+                확정하기 ⭕
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button}>
+              <Text style={{ color: '#999', fontSize: 12 }}>신고 🚨</Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <></>
+        )}
+
+        {/* 메세지 입력창 */}
+        <View style={styles.bottomBox}>
+          <View style={styles.sendBox}>
+            <TextInput
+              placeholder={'메세지를 입력하세요.'}
+              value={message}
+              onChangeText={(text) => {
+                setMessage(text);
+              }}
+              style={styles.input}
+            />
+          </View>
+          <View>{showSendButton()}</View>
         </View>
-        <View>{showSendButton()}</View>
       </View>
     </View>
   ) : (
@@ -186,13 +204,13 @@ const styles = StyleSheet.create({
     marginTop: getStatusBarHeight(),
   },
   content: {
-    padding: 10,
+    marginBottom: 130,
   },
   bottomBox: {
     flexDirection: 'row',
     backgroundColor: '#EFEFF3',
     width: '100%',
-    height: diviceWidth * 0.18,
+    height: 60,
     padding: 10,
     borderTopWidth: 1,
     borderTopColor: '#EFEFF3',
@@ -214,7 +232,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'center',
     marginBottom: 10,
   },
   button: {
@@ -222,5 +240,6 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     paddingVertical: 10,
     paddingHorizontal: 15,
+    marginHorizontal: 10,
   },
 });
