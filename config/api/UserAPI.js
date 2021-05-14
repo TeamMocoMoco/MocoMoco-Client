@@ -5,6 +5,7 @@ import axios from 'axios';
 
 const host = 'http://3.34.137.188';
 
+// 인증 메시지 보내기
 export async function sendSMS(phone) {
   try {
     await axios({
@@ -20,6 +21,7 @@ export async function sendSMS(phone) {
   }
 }
 
+// 인증 번호 확인
 export async function checkSMS(navigation, phone, code) {
   try {
     const response = await axios({
@@ -53,6 +55,7 @@ export async function checkSMS(navigation, phone, code) {
   }
 }
 
+// 회원 가입하기
 export async function register(name, pickRole) {
   try {
     const token = await SecureStore.getItemAsync('phonetoken');
@@ -101,6 +104,7 @@ export async function login() {
   }
 }
 
+// 로그아웃
 export async function logout(navigation) {
   try {
     await SecureStore.deleteItemAsync('usertoken');
@@ -113,6 +117,7 @@ export async function logout(navigation) {
   }
 }
 
+// 사용자 정보 가져오기
 export async function getUserInfo() {
   const token = await SecureStore.getItemAsync('usertoken');
   try {
@@ -131,6 +136,7 @@ export async function getUserInfo() {
   }
 }
 
+// 사용자 정보 수정하기
 export async function patchUserInfo(navigation, formData) {
   const token = await SecureStore.getItemAsync('usertoken');
   try {
