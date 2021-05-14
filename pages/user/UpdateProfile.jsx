@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 
 import { HeaderProfile } from '../../components/header';
+import { getColor } from '../../styles/styles';
 
 import { patchUserInfo } from '../../config/api/UserAPI';
 
