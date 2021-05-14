@@ -118,7 +118,7 @@ export default function UpdateProfile({ navigation, route }) {
             style={{
               padding: 20,
               borderWidth: 1,
-              borderColor: 'lightgrey',
+              borderColor: getColor('inactiveBorderColor'),
               borderRadius: 4,
               width: '90%',
             }}
