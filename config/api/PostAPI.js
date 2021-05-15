@@ -40,7 +40,6 @@ export async function getPostsByKeyword(keyword, pageNum) {
       },
     });
 
-    // console.log(response.data.result);
     return response.data.result;
   } catch (err) {
     const error = err.response.data.err || err.message;
@@ -62,7 +61,6 @@ export async function getPostsByCategory(category, pageNum) {
     });
 
     console.log(response.data.result);
-    // return response.data.result;
   } catch (err) {
     const error = err.response.data.err || err.message;
 
@@ -103,7 +101,6 @@ export async function getPostsByMeetingByKeyword(meeting, keyword, pageNum) {
       },
     });
 
-    // console.log(response.data.result);
     return response.data.result;
   } catch (err) {
     const error = err.response.data.err || err.message;
@@ -126,7 +123,6 @@ export async function getPostsByMeetingByCategory(meeting, category, pageNum) {
     });
 
     console.log(response.data.result);
-    // return response.data.result;
   } catch (err) {
     const error = err.response.data.err || err.message;
 
@@ -164,9 +160,9 @@ export async function getMyOpenPosts(pageNum) {
     });
     return response.data.result;
   } catch (err) {
-    console.log(err);
-    console.log('no');
-    // Alert.alert(error);
+    const error = err.response.data.err || err.message;
+
+    Alert.alert(error);
   }
 }
 
@@ -184,9 +180,9 @@ export async function getMyClosedPosts(pageNum) {
     });
     return response.data.result;
   } catch (err) {
-    console.log(err);
-    console.log('no');
-    // Alert.alert(error);
+    const error = err.response.data.err || err.message;
+
+    Alert.alert(error);
   }
 }
 
@@ -204,9 +200,9 @@ export async function getJoiningPosts(pageNum) {
     });
     return response.data.result;
   } catch (err) {
-    console.log(err);
-    console.log('no');
-    // Alert.alert(error);
+    const error = err.response.data.err || err.message;
+
+    Alert.alert(error);
   }
 }
 
@@ -224,9 +220,9 @@ export async function getJoinedPosts(pageNum) {
     });
     return response.data.result;
   } catch (err) {
-    console.log(err);
-    console.log('no');
-    // Alert.alert(error);
+    const error = err.response.data.err || err.message;
+
+    Alert.alert(error);
   }
 }
 
@@ -371,7 +367,6 @@ export async function closePost(navigation, postId) {
 
     if (response.data.result) {
       Alert.alert('모집이 마감되었습니다.');
-      // navigation.navigate('ReadPost', { postId });
     }
   } catch (err) {
     const error = err.response.data.err || err.message;
@@ -385,6 +380,28 @@ export async function postParticipants(postId, participantId) {
   try {
     const response = await axios({
       method: 'post',
+      url: host + '/posts/' + postId + '/participants',
+      headers: {
+        token: token,
+      },
+      date: {
+        participantId: participantId,
+      },
+    });
+
+    console.log(response.data.result);
+  } catch (err) {
+    const error = err.response.data.err || err.message;
+    Alert.alert(error);
+  }
+}
+
+// 참가자 삭제하기
+export async function patchParticipants(postId, participantId) {
+  const token = await SecureStore.getItemAsync('usertoken');
+  try {
+    const response = await axios({
+      method: 'patch',
       url: host + '/posts/' + postId + '/participants',
       headers: {
         token: token,
