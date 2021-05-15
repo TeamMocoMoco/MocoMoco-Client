@@ -1,17 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import {
+  Alert,
   Dimensions,
   FlatList,
+  Linking,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
 
-import * as Permissions from 'expo-permissions';
+import * as Location from 'expo-location';
 
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import SlidingUpPanel from 'rn-sliding-up-panel';
 
 import { Feather } from '@expo/vector-icons';
@@ -38,34 +40,36 @@ export default function SearchMap({ navigation }) {
     navigation.addListener('focus', (e) => {
       setTimeout(async () => {
         const result = await getPostsByLocation(mapCenter[0], mapCenter[1]);
-        // result.map((post) => {
-        //   console.log(post._id);
-        //   console.log(post.location);
-        // });
         setPosts(result);
         setReady(true);
       });
     });
   }, []);
 
-  const getPermission = async () => {
-    if (Platform.OS !== 'web') {
-      const { status } = await Permissions.getAsync(
-        Permissions.LOCATION_FOREGROUND
-      );
-      if (status !== 'granted') {
-        Alert.alert('현재 위치에 접근할 수 없습니다.');
-        return false;
-      } else {
-        return true;
-      }
-    }
-  };
-
   const getCurrentLocation = async () => {
-    const status = getPermission();
-    if (status) {
-      return Location.getCurrentPositionAsync({ enableHighAccuracy: true });
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== 'granted') {
+      Alert.alert(
+        '위치 정보를 가져올 수 없습니다.',
+        'MocoMoco 앱 설정에서 위치 접근 권한을 허용해주세요. ',
+        [
+          {
+            text: '취소',
+            style: 'cancel',
+          },
+          {
+            text: '앱 설정',
+            onPress: async () => {
+              await Linking.openSettings();
+            },
+            style: 'default',
+          },
+        ]
+      );
+    } else {
+      let location = await Location.getCurrentPositionAsync({});
+      console.log(location);
+      setMapCenter([location.coords.latitude, location.coords.longitude]);
     }
   };
 
@@ -75,6 +79,7 @@ export default function SearchMap({ navigation }) {
         {/* 지도 */}
         <MapView
           ref={mapRef}
+          provider={PROVIDER_GOOGLE}
           style={styles.map}
           initialRegion={{
             latitude: mapCenter[0],
