@@ -8,7 +8,6 @@ import {
   TextInput,
   TouchableOpacity,
   FlatList,
-  RefreshControl,
   Text,
 } from 'react-native';
 
@@ -61,6 +60,7 @@ export default function ChatRoom({ navigation, route }) {
         const result = await getChatsByRoom(roomId);
         room.current = result.roomInfo;
         chat.current = result.chat.reverse();
+        console.log(result.participants);
         myid.current = await AsyncStorage.getItem('myid');
         if (myid.current == room.current.admin._id) {
           setAdmin(true);
@@ -106,11 +106,6 @@ export default function ChatRoom({ navigation, route }) {
     }
   };
 
-  // const scrollToBottom = () => {
-  //   console.log('바닥');
-  //   flatListRef.current.scrollToEnd({ animated: true });
-  // };
-
   return ready ? (
     <View style={styles.container}>
       <HeaderChat navigation={navigation} name={userName} />
@@ -142,9 +137,13 @@ export default function ChatRoom({ navigation, route }) {
             <TouchableOpacity
               style={styles.button}
               onPress={() =>
-                postParticipants(room.current.postId, room.participant._id)
+                postParticipants(
+                  room.current.postId,
+                  room.current.participant._id
+                )
               }
             >
+              room.current.participant._id
               <Text style={{ color: getColor('defaultColor'), fontSize: 12 }}>
                 확정하기 ⭕
               </Text>
