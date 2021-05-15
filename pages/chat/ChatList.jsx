@@ -23,19 +23,6 @@ export default function ChatList({ navigation }) {
   const [ready, setReady] = useState(false);
   const [rooms, setRooms] = useState([]);
 
-  const keyExtractor = useCallback((item) => item._id, []);
-  const renderItem = useCallback(
-    (room) => (
-      <ChatCard
-        navigation={navigation}
-        userId={myid.current}
-        room={room.item}
-        key={room.item._id}
-      />
-    ),
-    []
-  );
-
   useEffect(() => {
     navigation.addListener('focus', (e) => {
       setTimeout(async () => {
@@ -55,15 +42,26 @@ export default function ChatList({ navigation }) {
           ]);
         } else {
           const result = await getMyRooms();
-          // console.log(result);
           setRooms(result.rooms);
           myid.current = await AsyncStorage.getItem('myid');
-          // console.log(myid);
           setReady(true);
         }
       });
     });
   }, []);
+
+  const keyExtractor = useCallback((item) => item._id, []);
+  const renderItem = useCallback(
+    (room) => (
+      <ChatCard
+        navigation={navigation}
+        userId={myid.current}
+        room={room.item}
+        key={room.item._id}
+      />
+    ),
+    []
+  );
 
   return ready ? (
     <View style={styles.container}>
