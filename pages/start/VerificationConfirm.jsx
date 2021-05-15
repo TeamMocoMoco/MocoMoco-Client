@@ -106,9 +106,9 @@ export default function VerificationConfirm({ navigation, route }) {
                 setCode(text);
               }}
               style={{
+                flex: 1,
                 fontSize: 20,
                 fontWeight: 'bold',
-                width: 250,
               }}
               keyboardType="number-pad"
             />
