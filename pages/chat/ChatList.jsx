@@ -55,8 +55,10 @@ export default function ChatList({ navigation }) {
           ]);
         } else {
           const result = await getMyRooms();
+          // console.log(result);
           setRooms(result.rooms);
           myid.current = await AsyncStorage.getItem('myid');
+          // console.log(myid);
           setReady(true);
         }
       });
