@@ -2,10 +2,10 @@ import { Alert } from 'react-native';
 import axios from 'axios';
 
 // nginx
-const host = 'http://3.35.133.180';
+// const host = 'http://3.35.133.180';
 
 // pm2
-// const host = 'http://3.34.137.188';
+const host = 'http://3.34.137.188';
 
 export async function getPostsByLocation(lat, log) {
   try {
@@ -17,7 +17,6 @@ export async function getPostsByLocation(lat, log) {
       },
     });
 
-    // console.log(response.data.result);
     return response.data.result;
   } catch (err) {
     const error = err.response.data.err || err.message;

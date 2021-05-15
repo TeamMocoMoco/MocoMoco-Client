@@ -7,10 +7,10 @@ import axios from 'axios';
 const host = 'http://3.35.133.180';
 
 // pm2
-// const host = 'http://3.34.137.188';
+const host = 'http://3.34.137.188';
 
 // 전체 모집글 보기 (페이징) - 완료
-export async function getPosts(pageNum) {
+// export async function getPosts(pageNum) {
   try {
     const response = await axios({
       method: 'get',
