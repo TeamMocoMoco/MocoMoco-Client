@@ -10,6 +10,7 @@ import {
   Platform,
   Alert,
   ScrollView,
+  Linking,
 } from 'react-native';
 
 import { HeaderProfile } from '../../components/header';
@@ -17,7 +18,6 @@ import { getColor } from '../../styles/styles';
 
 import { patchUserInfo } from '../../config/api/UserAPI';
 
-import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
 
 export default function UpdateProfile({ navigation, route }) {
@@ -27,29 +27,38 @@ export default function UpdateProfile({ navigation, route }) {
   const [introduce, setIntroduce] = useState(userinfo.introduce);
   const [imgUri, setImgUri] = useState(userinfo.userImg);
 
-  const getPermission = async () => {
-    if (Platform.OS !== 'web') {
-      const { status } = await Permissions.getAsync(Permissions.MEDIA_LIBRARY);
-      if (status !== 'granted') {
-        Alert.alert('카메라, 저장공간에 접근할 수 없습니다.');
-        return false;
-      } else {
-        return true;
-      }
-    }
-  };
-
   const pickImage = async () => {
-    const status = getPermission();
-    if (status) {
-      let imageData = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
-        allowsEditing: true,
-        aspect: [4, 4],
-        quality: 1,
-      });
+    if (Platform.OS !== 'web') {
+      const { status } =
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert(
+          '갤러리에 접근할 수 없습니다.',
+          'MocoMoco 앱 설정에서 저장공간 권한을 허용해주세요. ',
+          [
+            {
+              text: '취소',
+              style: 'cancel',
+            },
+            {
+              text: '앱 설정',
+              onPress: async () => {
+                await Linking.openSettings();
+              },
+              style: 'default',
+            },
+          ]
+        );
+      } else {
+        let imageData = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.All,
+          allowsEditing: true,
+          aspect: [4, 4],
+          quality: 1,
+        });
 
-      setImgUri(imageData.uri);
+        setImgUri(imageData.uri);
+      }
     }
   };
 
