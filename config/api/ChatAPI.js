@@ -5,7 +5,7 @@ import axios from 'axios';
 const host = 'http://3.34.137.188';
 
 // 채팅방 만들기 - 완료
-export async function createRoom(navigation, postId, userName, admin) {
+export async function createRoom(navigation, postId, userId, userName) {
   const token = await SecureStore.getItemAsync('usertoken');
   try {
     const response = await axios({
@@ -16,6 +16,7 @@ export async function createRoom(navigation, postId, userName, admin) {
       },
       data: {
         postId: postId,
+        admin: userId,
       },
     });
 
