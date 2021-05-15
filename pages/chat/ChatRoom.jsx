@@ -1,10 +1,9 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import {
   ActivityIndicator,
   StyleSheet,
   View,
-  Dimensions,
   TextInput,
   TouchableOpacity,
   FlatList,
@@ -24,15 +23,7 @@ import { getColor } from '../../styles/styles';
 import { getChatsByRoom, postChat } from '../../config/api/ChatAPI';
 import { postParticipants } from '../../config/api/PostAPI';
 
-const screenHeight = Dimensions.get('screen').height;
-const diviceHeight = Dimensions.get('window').height;
-const diviceWidth = Dimensions.get('window').width;
-
 const SOCKET_URL = 'http://3.34.137.188/chat';
-
-const wait = (timeout) => {
-  return new Promise((resolve) => setTimeout(resolve, timeout));
-};
 
 export default function ChatRoom({ navigation, route }) {
   const roomId = route.params.roomId;
@@ -132,18 +123,16 @@ export default function ChatRoom({ navigation, route }) {
 
       <View style={{ position: 'absolute', bottom: 0 }}>
         {admin ? (
-          // 버튼
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={styles.button}
-              onPress={() =>
+              onPress={() => {
                 postParticipants(
                   room.current.postId,
                   room.current.participant._id
-                )
-              }
+                );
+              }}
             >
-              room.current.participant._id
               <Text style={{ color: getColor('defaultColor'), fontSize: 12 }}>
                 확정하기 ⭕
               </Text>
