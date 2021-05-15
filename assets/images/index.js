@@ -7,6 +7,7 @@ import Recruit from './Recruit.png';
 import Save from './Save.png';
 import man from './man.png';
 import jumping from './jumping.png';
+import landingImage from './scopeman.png';
 
 module.exports = {
   Circles,
@@ -18,4 +19,5 @@ module.exports = {
   Save,
   man,
   jumping,
+  landingImage,
 };

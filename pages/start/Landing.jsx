@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import { man } from '../../assets/images';
+import { landingImage } from '../../assets/images';
 import { getColor } from '../../styles/styles';
 
 const diviceWidth = Dimensions.get('window').width;
@@ -22,7 +22,13 @@ export default function Landing({ navigation }) {
         <Text style={styles.logoTitle}>MOCO{'\n'}MOCO</Text>
 
         {/* 사진 */}
-        <Image source={man} style={styles.logoImg} />
+        <View style={styles.logoImgBox}>
+          <Image
+            source={landingImage}
+            style={styles.logoImg}
+            resizeMode={'contain'}
+          />
+        </View>
 
         <View style={styles.bottomWrap}>
           {/* 설명 */}
@@ -61,10 +67,17 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontStyle: 'italic',
   },
-  logoImg: {
+  logoImgBox: {
     position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 50,
     width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
+  logoImg: { width: '100%' },
   bottomWrap: {
     width: '100%',
     paddingHorizontal: 15,
