@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import { jumping } from '../../../assets/images';
+import { handsup } from '../../../assets/images';
 import { getColor } from '../../../styles/styles';
 
 const diviceWidth = Dimensions.get('window').width;
@@ -24,7 +24,13 @@ export default function SucessPost({ navigation }) {
         </Text>
 
         {/* 사진 */}
-        <Image source={jumping} style={styles.logoImg} />
+        <View style={styles.logoImgBox}>
+          <Image
+            source={handsup}
+            style={styles.logoImg}
+            resizeMode={'contain'}
+          />
+        </View>
 
         <View style={styles.bottomWrap}>
           {/* 설명 */}
@@ -57,17 +63,23 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: diviceWidth * 0.2,
     alignItems: 'center',
+    justifyContent: 'space-between',
   },
   logoTitle: {
     fontSize: 20,
     fontWeight: 'bold',
   },
-  logoImg: {
-    // position: 'absolute',
+  logoImgBox: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: '20%',
     width: '100%',
-    height: 350,
-    borderColor: 'black',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
+  logoImg: { width: '100%' },
   bottomWrap: {
     width: '100%',
     paddingHorizontal: 15,
