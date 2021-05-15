@@ -89,9 +89,9 @@ export default function SignUp({ navigation }) {
               onChangeText={(text) => {
                 setName(text);
               }}
-              style={{ fontSize: 15, width: '50%' }}
+              style={{ flex: 1, fontSize: 22 }}
             />
-            <Text style={{ width: '50%' }}>Tip! 대부분 실명을 사용해요</Text>
+            <Text>Tip! 대부분 실명을 사용해요</Text>
           </View>
         </KeyboardAwareScrollView>
       </View>
@@ -119,11 +119,12 @@ const styles = StyleSheet.create({
   inputContainer: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-between',
     padding: 10,
     marginVertical: diviceWidth * 0.1,
     borderBottomWidth: 1,
     borderColor: 'black',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   buttonContainer: {
     borderRadius: 5,

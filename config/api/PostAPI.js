@@ -3,7 +3,7 @@ import * as SecureStore from 'expo-secure-store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
-const host = 'http://3.34.137.188';
+const host = 'http://3.35.133.180';
 
 // 전체 모집글 보기 (페이징) - 완료
 export async function getPosts(pageNum) {

@@ -1,7 +1,7 @@
 import { Alert } from 'react-native';
 import axios from 'axios';
 
-const host = 'http://3.34.137.188';
+const host = 'http://3.35.133.180';
 
 export async function getPostsByLocation(lat, log) {
   try {
