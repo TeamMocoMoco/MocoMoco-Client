@@ -22,9 +22,9 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.hju.MocoMoco",
+      "package": "com.teammocomoco.android.mocomoco",
       "config": {
-        "googleMaps": { "apiKey": "AIzaSyCb7-lRvwTSzQ4x4MZ4ur4kpHJjL0WLzx8" }
+        "googleMaps": { "apiKey": "AIzaSyDrSoi6PGcKc7IoIxN7ucfMpCq7Jf670b0" }
       }
     },
     "web": {
