@@ -21,6 +21,10 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
+      },
+      "package": "com.hju.MocoMoco",
+      "config": {
+        "googleMaps": { "apiKey": "AIzaSyCb7-lRvwTSzQ4x4MZ4ur4kpHJjL0WLzx8" }
       }
     },
     "web": {
