@@ -269,7 +269,7 @@ export async function postPosts(
     });
 
     if (response.data.result) {
-      navigation.push('TabNavigator');
+      navigation.push('SucessPost');
     }
   } catch (err) {
     const error = err.response.data.err || err.message;
