@@ -66,7 +66,7 @@ export default function MyPage({ navigation }) {
         user={user}
       />
 
-      <View style={styles.content}>
+      <ScrollView style={styles.content}>
         {/* 프로필 */}
         <TouchableOpacity style={styles.profile}>
           <View style={styles.imgFrame}>
@@ -118,11 +118,11 @@ export default function MyPage({ navigation }) {
           </TouchableOpacity>
         </View>
         <View style={styles.myBox}>
-          <ScrollView>
+          <View>
             <Text>{user.introduce} </Text>
-          </ScrollView>
+          </View>
         </View>
-      </View>
+      </ScrollView>
     </View>
   ) : (
     <View style={styles.container}>
@@ -182,9 +182,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'lightgrey',
     borderRadius: 5,
-    margin: 20,
+    marginHorizontal: 20,
     marginTop: 50,
+    marginBottom: 30,
     padding: 20,
-    height: 300,
   },
 });

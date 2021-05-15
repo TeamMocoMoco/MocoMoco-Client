@@ -9,40 +9,37 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import { landingImage } from '../../assets/images';
-import { getColor } from '../../styles/styles';
+import { jumping } from '../../../assets/images';
+import { getColor } from '../../../styles/styles';
 
 const diviceWidth = Dimensions.get('window').width;
 
-export default function Landing({ navigation }) {
+export default function SucessPost({ navigation }) {
   return (
     <View style={styles.container}>
       <View style={styles.content}>
         {/* 앱 이름 */}
-        <Text style={styles.logoTitle}>MOCO{'\n'}MOCO</Text>
+        <Text style={styles.logoTitle}>
+          게시글이 성공적으로 게시되었습니다.
+        </Text>
 
         {/* 사진 */}
-        <View style={styles.logoImgBox}>
-          <Image
-            source={landingImage}
-            style={styles.logoImg}
-            resizeMode={'contain'}
-          />
-        </View>
+        <Image source={jumping} style={styles.logoImg} />
 
         <View style={styles.bottomWrap}>
           {/* 설명 */}
-          <Text style={styles.descTitle}>코린이들을 위한 스터디 플랫폼</Text>
-          <Text style={styles.descContents}>
-            기획자, 개발자, 디자이너를{'\n'}모코모코에서 간편하게 만나자!
+          <Text style={styles.descTitle}>
+            조금씩 의지를 갖고 꾸준히 하다보면{'\n'}대단한 결실을 맛보게 된다.{' '}
           </Text>
+
+          <Text style={styles.descTitle}>- 샤를 보들레드 -</Text>
 
           {/* 버튼 */}
           <TouchableOpacity
             onPress={() => navigation.push('TabNavigator')}
             style={styles.buttonContainer}
           >
-            <Text style={styles.buttonText}>로그인 없이 스터디 구경하기</Text>
+            <Text style={styles.buttonText}>탐색탭으로 이동</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -58,26 +55,19 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    paddingVertical: diviceWidth * 0.15,
+    paddingVertical: diviceWidth * 0.2,
     alignItems: 'center',
-    justifyContent: 'space-between',
   },
   logoTitle: {
-    fontSize: 30,
+    fontSize: 20,
     fontWeight: 'bold',
-    fontStyle: 'italic',
   },
-  logoImgBox: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 50,
+  logoImg: {
+    // position: 'absolute',
     width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
+    height: 350,
+    borderColor: 'black',
   },
-  logoImg: { width: '100%' },
   bottomWrap: {
     width: '100%',
     paddingHorizontal: 15,
@@ -85,8 +75,10 @@ const styles = StyleSheet.create({
   },
   descTitle: {
     fontSize: 18,
+    fontStyle: 'italic',
     fontWeight: 'bold',
-    marginBottom: 15,
+    margin: 15,
+    textAlign: 'center',
   },
   descContents: {
     fontSize: 14,
@@ -98,6 +90,7 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingVertical: 13,
     borderRadius: 8,
+    marginTop: 20,
     justifyContent: 'center',
   },
   buttonText: {

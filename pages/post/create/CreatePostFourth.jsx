@@ -270,7 +270,7 @@ const styles = StyleSheet.create({
   },
   row: { flexDirection: 'row', justifyContent: 'space-between' },
   textarea: {
-    height: 80,
+    height: 200,
     width: '90%',
     fontSize: 15,
     fontWeight: 'bold',

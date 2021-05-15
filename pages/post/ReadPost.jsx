@@ -232,7 +232,9 @@ export default function ReadPost({ navigation, route }) {
         </View>
 
         {/* 신청 버튼 */}
-        <View style={styles.m_h_25}>{showApplyButton()}</View>
+        <View style={[styles.m_h_25, styles.upbottom]}>
+          {showApplyButton()}
+        </View>
       </ScrollView>
     </View>
   ) : (
@@ -340,4 +342,5 @@ const styles = StyleSheet.create({
     color: '#000',
     marginBottom: 10,
   },
+  upbottom: { marginBottom: 15 },
 });

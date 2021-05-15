@@ -106,7 +106,7 @@ export async function logout(navigation) {
     await SecureStore.deleteItemAsync('usertoken');
     await AsyncStorage.clear();
     Alert.alert('로그아웃!');
-    navigation.push('Location');
+    navigation.push('Landing');
   } catch (err) {
     const error = err.response.data.message || err.message;
     Alert.alert(error);
