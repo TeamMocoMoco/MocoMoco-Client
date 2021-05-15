@@ -384,12 +384,12 @@ export async function postParticipants(postId, participantId) {
       headers: {
         token: token,
       },
-      date: {
+      data: {
         participantId: participantId,
       },
     });
 
-    console.log(response.data.result);
+    Alert.alert(response.data.result);
   } catch (err) {
     const error = err.response.data.err || err.message;
     Alert.alert(error);
@@ -406,12 +406,12 @@ export async function patchParticipants(postId, participantId) {
       headers: {
         token: token,
       },
-      date: {
+      data: {
         participantId: participantId,
       },
     });
 
-    console.log(response.data.result);
+    Alert.alert(response.data.result);
   } catch (err) {
     const error = err.response.data.err || err.message;
     Alert.alert(error);
