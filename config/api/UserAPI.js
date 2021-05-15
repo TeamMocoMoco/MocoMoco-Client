@@ -3,7 +3,11 @@ import * as SecureStore from 'expo-secure-store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
+// nginx
 const host = 'http://3.35.133.180';
+
+// pm2
+// const host = 'http://3.34.137.188';
 
 // 인증 메시지 보내기
 export async function sendSMS(phone) {
