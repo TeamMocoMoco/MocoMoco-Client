@@ -38,6 +38,7 @@ export default function ChatRoom({ navigation, route }) {
 
   const [ready, setReady] = useState(false);
 
+  const [status, setStatus] = useState(false);
   const [message, setMessage] = useState('');
   const [socketState, setSocketState] = useState(false);
 
@@ -50,15 +51,18 @@ export default function ChatRoom({ navigation, route }) {
     navigation.addListener('focus', (e) => {
       setTimeout(async () => {
         const result = await getChatsByRoom(roomId);
+
         room.current = result.roomInfo;
         chat.current = result.chat.reverse();
         participants.current = result.participants.participants;
+
         myid.current = await AsyncStorage.getItem('myid');
         if (myid.current == room.current.admin._id) {
           setAdmin(true);
         } else {
           setAdmin(false);
         }
+
         setReady(true);
       });
     });
@@ -99,25 +103,13 @@ export default function ChatRoom({ navigation, route }) {
   };
 
   const showConfirmButton = () => {
-    let status = false;
     participants.current.map((participant) => {
       if (room.current.participant._id == participant._id) {
-        status = true;
+        setStatus(true);
       }
     });
 
     return status ? (
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => {
-          postParticipants(room.current.postId, room.current.participant._id);
-        }}
-      >
-        <Text style={{ color: getColor('defaultColor'), fontSize: 12 }}>
-          확정하기 ⭕
-        </Text>
-      </TouchableOpacity>
-    ) : (
       <TouchableOpacity
         style={styles.button}
         onPress={() => {
@@ -126,6 +118,17 @@ export default function ChatRoom({ navigation, route }) {
       >
         <Text style={{ color: getColor('defaultColor'), fontSize: 12 }}>
           확정 취소하기 ❌
+        </Text>
+      </TouchableOpacity>
+    ) : (
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => {
+          postParticipants(room.current.postId, room.current.participant._id);
+        }}
+      >
+        <Text style={{ color: getColor('defaultColor'), fontSize: 12 }}>
+          확정하기 ⭕
         </Text>
       </TouchableOpacity>
     );
