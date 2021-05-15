@@ -4,7 +4,8 @@ import axios from 'axios';
 
 const host = 'http://3.34.137.188';
 
-export async function createRoom(navigation, postId, userName, admin) {
+// 채팅방 만들기 - 완료
+export async function createRoom(navigation, postId, userId, userName) {
   const token = await SecureStore.getItemAsync('usertoken');
   try {
     const response = await axios({
@@ -15,6 +16,7 @@ export async function createRoom(navigation, postId, userName, admin) {
       },
       data: {
         postId: postId,
+        admin: userId,
       },
     });
 
@@ -34,6 +36,7 @@ export async function createRoom(navigation, postId, userName, admin) {
   }
 }
 
+// 채팅 내역 가져오기 - 완료
 export async function getChatsByRoom(roomId) {
   const token = await SecureStore.getItemAsync('usertoken');
   try {
@@ -57,6 +60,7 @@ export async function getChatsByRoom(roomId) {
   }
 }
 
+// 메시지 보내기 - 완료
 export async function postChat(roomId, message) {
   const token = await SecureStore.getItemAsync('usertoken');
   try {
@@ -81,6 +85,7 @@ export async function postChat(roomId, message) {
   }
 }
 
+// 내 채팅방 목록 가져오기 - 완료
 export async function getMyRooms() {
   const token = await SecureStore.getItemAsync('usertoken');
   try {

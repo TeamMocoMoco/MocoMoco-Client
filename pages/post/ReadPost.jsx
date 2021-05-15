@@ -6,6 +6,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
 
@@ -25,19 +26,36 @@ export default function ReadPost({ navigation, route }) {
   const postId = route.params.postId;
 
   const [ready, setReady] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+
   const [post, setPost] = useState({});
   const [myid, setMyid] = useState('');
   const [userId, setUserId] = useState('');
-  const [modalOpen, setModalOpen] = useState(false);
-  const [status, setStatus] = useState(post.status);
+  const [startDate, setStartDate] = useState('');
+  const [dueDate, setDueDate] = useState('');
 
   useEffect(() => {
     navigation.addListener('focus', (e) => {
       setTimeout(async () => {
         const result = await getPostsById(postId);
-        const id = await AsyncStorage.getItem('myid');
         setPost(result);
         setUserId(result.user._id);
+        setStartDate(
+          new Date(
+            new Date(result.startDate).toLocaleString('ko-KR', {
+              timeZone: 'UTC',
+            })
+          )
+        );
+        setDueDate(
+          new Date(
+            new Date(result.dueDate).toLocaleString('ko-KR', {
+              timeZone: 'UTC',
+            })
+          )
+        );
+
+        const id = await AsyncStorage.getItem('myid');
         setMyid(id);
         setReady(true);
       });
@@ -75,7 +93,7 @@ export default function ReadPost({ navigation, route }) {
   };
 
   const showApplyButton = () => {
-    if (status == false) {
+    if (post.status == false) {
       return <RadiusButton title={'모집이 마감되었습니다.'} status={status} />;
     } else if (myid == userId) {
       return (
@@ -114,7 +132,7 @@ export default function ReadPost({ navigation, route }) {
   };
 
   const showdotModal = () => {
-    if (myid == userId) {
+    if (myid == post.user._id) {
       return (
         <MaterialCommunityIcons
           name="dots-vertical"
@@ -130,11 +148,24 @@ export default function ReadPost({ navigation, route }) {
     }
   };
 
+  const getStudyDate = (d) => {
+    const year = d.getFullYear();
+    const month = d.getMonth() + 1;
+    const date = d.getDate();
+    const hour = ((d.getHours() - 1) % 12) + 1;
+    const minutes = d.getMinutes() == 0 ? '' : d.getMinutes() + '분';
+
+    return year + '년 ' + month + '월 ' + date + '일 ' + hour + '시 ' + minutes;
+  };
+
   const getDday = () => {
     const today = new Date();
-    const d_day = new Date(post.startDate);
 
-    const days = d_day.getDate() - today.getDate();
+    const difference = startDate.getTime() - today.getTime();
+    let days = Math.floor(difference / (1000 * 60 * 60 * 24));
+    const Remainder = difference % (1000 * 3600 * 24);
+    days = Remainder === 0 ? days : (days += 1);
+
     if (days > 0) {
       return `D-${days}`;
     } else if (days == 0) {
@@ -147,7 +178,7 @@ export default function ReadPost({ navigation, route }) {
   return ready ? (
     <View style={styles.container}>
       <HeaderBack navigation={navigation} title={''} />
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.m_h_25}>
           {/* 해시태그 */}
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
@@ -157,6 +188,7 @@ export default function ReadPost({ navigation, route }) {
               })}
             </View>
           </ScrollView>
+
           <View style={styles.arrowRow}>
             {/* 제목 */}
             <Text style={styles.title}>
@@ -178,8 +210,7 @@ export default function ReadPost({ navigation, route }) {
           <View style={{ marginVertical: 10 }}>
             <Text style={styles.day}>{getDday()}</Text>
             <Text style={styles.date}>
-              {post.startDate.substr(0, 16).replace('T', ' ')} ~{' '}
-              {post.dueDate.substr(0, 16).replace('T', ' ')}
+              {getStudyDate(startDate)} ~ {getStudyDate(dueDate)}
             </Text>
           </View>
         </View>
@@ -212,7 +243,9 @@ export default function ReadPost({ navigation, route }) {
             <Text style={styles.label}>참가자</Text>
             <View style={styles.arrowRow}>
               <Text style={styles.tag}>{post.participants.length}명</Text>
-              <Entypo name="chevron-right" size={22} color="black" />
+              <TouchableOpacity>
+                <Entypo name="chevron-right" size={22} color="black" />
+              </TouchableOpacity>
             </View>
           </View>
 
