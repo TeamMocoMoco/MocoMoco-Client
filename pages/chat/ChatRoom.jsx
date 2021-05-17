@@ -60,6 +60,13 @@ export default function ChatRoom({ navigation, route }) {
         chat.current = result.chat.reverse();
         participants.current = result.participants.participants;
 
+        // 해당 모집글에 참여중인 사람인지 판단
+        participants.current.map((participant) => {
+          if (room.current.participant._id == participant._id) {
+            setStatus(true);
+          }
+        });
+
         myid.current = await AsyncStorage.getItem('myid');
         if (myid.current == room.current.admin._id) {
           setAdmin(true);
@@ -107,17 +114,13 @@ export default function ChatRoom({ navigation, route }) {
   };
 
   const showConfirmButton = () => {
-    participants.current.map((participant) => {
-      if (room.current.participant._id == participant._id) {
-        setStatus(true);
-      }
-    });
-
+    // 확정 취소 or 확정하기 버튼
     return status ? (
       <TouchableOpacity
         style={styles.button}
         onPress={() => {
           patchParticipants(room.current.postId, room.current.participant._id);
+          setStatus(!status);
         }}
       >
         <Text style={{ color: getColor('defaultColor'), fontSize: 12 }}>
@@ -129,6 +132,7 @@ export default function ChatRoom({ navigation, route }) {
         style={styles.button}
         onPress={() => {
           postParticipants(room.current.postId, room.current.participant._id);
+          setStatus(!status);
         }}
       >
         <Text style={{ color: getColor('defaultColor'), fontSize: 12 }}>
