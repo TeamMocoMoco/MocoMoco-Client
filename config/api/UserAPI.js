@@ -113,7 +113,7 @@ export async function logout(navigation) {
   try {
     await SecureStore.deleteItemAsync('usertoken');
     await AsyncStorage.clear();
-    Alert.alert('로그아웃!');
+    Alert.alert('로그아웃 되었습니다.');
     navigation.push('Landing');
   } catch (err) {
     const error = err.response.data.message || err.message;
