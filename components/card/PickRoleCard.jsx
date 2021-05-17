@@ -39,7 +39,7 @@ export default function PickRoleCard({ item, pickRole, setPickRole }) {
         roleName = designer;
         break;
       case '개발자':
-        roleName = pm;
+        roleName = developer;
         break;
     }
     return (
