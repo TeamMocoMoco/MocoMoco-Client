@@ -7,8 +7,6 @@ import { pmIcon, dvIcon, dsIcon } from '../../assets/images';
 import { getColor } from '../../styles/styles';
 
 export default function MainCard({ navigation, post }) {
-  const startDate = post.startDate.substr(0, 10);
-
   let roleName = '';
   switch (post.user.role) {
     case '기획자':

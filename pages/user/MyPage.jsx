@@ -52,6 +52,29 @@ export default function MyPage({ navigation }) {
     });
   }, []);
 
+  const showProfileImage = () => {
+    let pickColor;
+    switch (user.role) {
+      case '기획자':
+        pickColor = getColor('pmColor');
+        break;
+      case '디자이너':
+        pickColor = getColor('designerColor');
+        break;
+      case '개발자':
+        pickColor = getColor('developerColor');
+        break;
+    }
+    return (
+      <Image
+        style={[styles.img, { borderColor: pickColor }]}
+        source={{
+          uri: user.userImg,
+        }}
+      />
+    );
+  };
+
   return ready ? (
     <View style={styles.container}>
       <HeaderSetting
@@ -69,23 +92,18 @@ export default function MyPage({ navigation }) {
       <ScrollView style={styles.content}>
         {/* 프로필 */}
         <TouchableOpacity style={styles.profile}>
-          <View style={styles.imgFrame}>
-            <Image
-              style={styles.img}
-              source={{
-                uri: user.userImg,
-              }}
-            />
-          </View>
+          {showProfileImage()}
+
           <View style={styles.nameBox}>
             <Text style={styles.nameText}>{user.name} </Text>
             <Text style={styles.roleText}>{user.role}</Text>
           </View>
         </TouchableOpacity>
 
-        <View style={styles.studyAll}>
+        {/* 버튼 */}
+        <View style={styles.buttonContainer}>
           <TouchableOpacity
-            style={styles.studyBox}
+            style={styles.button}
             onPress={() => navigation.push('RecruitStudy')}
           >
             <Image source={recruit} style={styles.studyIcon} />
@@ -96,7 +114,7 @@ export default function MyPage({ navigation }) {
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={styles.studyBox}
+            style={styles.button}
             onPress={() => navigation.push('ApplicationStudy')}
           >
             <Image source={application} style={styles.studyIcon} />
@@ -107,7 +125,7 @@ export default function MyPage({ navigation }) {
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={styles.studyBox}
+            style={styles.button}
             onPress={() => navigation.push('SaveStudy')}
           >
             <Image source={save} style={styles.studyIcon} />
@@ -117,6 +135,8 @@ export default function MyPage({ navigation }) {
             </View>
           </TouchableOpacity>
         </View>
+
+        {/* 소개글 */}
         <View style={styles.myBox}>
           <View>
             <Text>{user.introduce} </Text>
@@ -153,29 +173,21 @@ const styles = StyleSheet.create({
     padding: 20,
     marginBottom: 10,
   },
-  imgFrame: {
+  img: {
     width: 80,
     height: 80,
     borderRadius: 100,
-    borderWidth: 1,
-    borderColor: 'lightgrey',
-    justifyContent: 'center',
-    alignContent: 'center',
-  },
-  img: {
-    width: '100%',
-    height: '100%',
-    borderRadius: 100,
+    borderWidth: 2,
   },
   nameBox: { flexDirection: 'row', marginLeft: 20, alignItems: 'center' },
   nameText: { fontSize: 20, fontWeight: 'bold' },
   roleText: { fontSize: 15, color: 'grey', marginLeft: 5 },
-  studyAll: {
+  buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
   },
+  button: { alignItems: 'center' },
   studyIcon: { width: 50, height: 50 },
-  studyBox: { alignItems: 'center' },
   textBox: { flexDirection: 'row', paddingTop: 20 },
   cateText: { fontWeight: 'bold' },
   studyText: { color: 'grey' },
@@ -184,8 +196,7 @@ const styles = StyleSheet.create({
     borderColor: 'lightgrey',
     borderRadius: 5,
     marginHorizontal: 20,
-    marginTop: 50,
-    marginBottom: 30,
-    padding: 20,
+    marginVertical: 30,
+    padding: 15,
   },
 });

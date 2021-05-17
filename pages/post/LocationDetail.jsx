@@ -11,7 +11,7 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 const ASPECT_RATIO = windowWidth / windowHeight;
-const LATITUDE_DELTA = 0.02; //Very high zoom level
+const LATITUDE_DELTA = 0.02;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 export default function LocationDetail({ navigation, route }) {
