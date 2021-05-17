@@ -17,7 +17,6 @@ export async function getPostsByLocation(lat, log) {
       },
     });
 
-    // console.log(response.data.result);
     return response.data.result;
   } catch (err) {
     const error = err.response.data.err || err.message;

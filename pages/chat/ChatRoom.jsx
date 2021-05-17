@@ -21,9 +21,13 @@ import { Feather } from '@expo/vector-icons';
 
 import { getColor } from '../../styles/styles';
 import { getChatsByRoom, postChat } from '../../config/api/ChatAPI';
-import { postParticipants } from '../../config/api/PostAPI';
+import { postParticipants, patchParticipants } from '../../config/api/PostAPI';
 
-const SOCKET_URL = 'http://3.34.137.188/chat';
+// nginx
+const SOCKET_URL = 'http://3.35.133.180/chat';
+
+// pm2
+// const SOCKET_URL = 'http://3.34.137.188/chat';
 
 export default function ChatRoom({ navigation, route }) {
   const roomId = route.params.roomId;
@@ -33,10 +37,12 @@ export default function ChatRoom({ navigation, route }) {
 
   const room = useRef();
   const chat = useRef([]);
+  const participants = useRef([]);
   const myid = useRef();
 
   const [ready, setReady] = useState(false);
 
+  const [status, setStatus] = useState(false);
   const [message, setMessage] = useState('');
   const [socketState, setSocketState] = useState(false);
 
@@ -49,15 +55,18 @@ export default function ChatRoom({ navigation, route }) {
     navigation.addListener('focus', (e) => {
       setTimeout(async () => {
         const result = await getChatsByRoom(roomId);
+
         room.current = result.roomInfo;
         chat.current = result.chat.reverse();
-        console.log(result.participants);
+        participants.current = result.participants.participants;
+
         myid.current = await AsyncStorage.getItem('myid');
         if (myid.current == room.current.admin._id) {
           setAdmin(true);
         } else {
           setAdmin(false);
         }
+
         setReady(true);
       });
     });
@@ -97,6 +106,38 @@ export default function ChatRoom({ navigation, route }) {
     }
   };
 
+  const showConfirmButton = () => {
+    participants.current.map((participant) => {
+      if (room.current.participant._id == participant._id) {
+        setStatus(true);
+      }
+    });
+
+    return status ? (
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => {
+          patchParticipants(room.current.postId, room.current.participant._id);
+        }}
+      >
+        <Text style={{ color: getColor('defaultColor'), fontSize: 12 }}>
+          확정 취소하기 ❌
+        </Text>
+      </TouchableOpacity>
+    ) : (
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => {
+          postParticipants(room.current.postId, room.current.participant._id);
+        }}
+      >
+        <Text style={{ color: getColor('defaultColor'), fontSize: 12 }}>
+          확정하기 ⭕
+        </Text>
+      </TouchableOpacity>
+    );
+  };
+
   return ready ? (
     <View style={styles.container}>
       <HeaderChat navigation={navigation} name={userName} />
@@ -124,19 +165,8 @@ export default function ChatRoom({ navigation, route }) {
       <View style={{ position: 'absolute', bottom: 0 }}>
         {admin ? (
           <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => {
-                postParticipants(
-                  room.current.postId,
-                  room.current.participant._id
-                );
-              }}
-            >
-              <Text style={{ color: getColor('defaultColor'), fontSize: 12 }}>
-                확정하기 ⭕
-              </Text>
-            </TouchableOpacity>
+            {showConfirmButton()}
+
             <TouchableOpacity style={styles.button}>
               <Text style={{ color: '#999', fontSize: 12 }}>신고 🚨</Text>
             </TouchableOpacity>
