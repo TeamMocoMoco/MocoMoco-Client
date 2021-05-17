@@ -23,7 +23,11 @@ import { getColor } from '../../styles/styles';
 import { getChatsByRoom, postChat } from '../../config/api/ChatAPI';
 import { postParticipants, patchParticipants } from '../../config/api/PostAPI';
 
-const SOCKET_URL = 'http://3.34.137.188/chat';
+// nginx
+const SOCKET_URL = 'http://3.35.133.180/chat';
+
+// pm2
+// const SOCKET_URL = 'http://3.34.137.188/chat';
 
 export default function ChatRoom({ navigation, route }) {
   const roomId = route.params.roomId;
