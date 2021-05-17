@@ -2,6 +2,7 @@ import MainCategory from './MainCategory';
 import MainList from './MainList';
 import SubList from './SubList';
 import SearchMap from './SearchMap';
+import LocationDetail from './LocationDetail';
 import SearchLocation from './SearchLocation';
 import CreatePost from './CreatePost';
 import ReadPost from './ReadPost';
@@ -12,6 +13,7 @@ module.exports = {
   MainList,
   SubList,
   SearchMap,
+  LocationDetail,
   SearchLocation,
   CreatePost,
   ReadPost,
