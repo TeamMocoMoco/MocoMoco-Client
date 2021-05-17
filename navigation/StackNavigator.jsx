@@ -13,6 +13,7 @@ import {
   SubList,
   CreatePost,
   ReadPost,
+  LocationDetail,
   UpdatePost,
   SearchLocation,
 } from '../pages/post';
@@ -61,6 +62,7 @@ const StackNavigator = () => {
 
       <Stack.Screen name="SubList" component={SubList} />
       <Stack.Screen name="ReadPost" component={ReadPost} />
+      <Stack.Screen name="LocationDetail" component={LocationDetail} />
 
       <Stack.Screen name="UpdateProfile" component={UpdateProfile} />
       <Stack.Screen name="RecruitStudy" component={RecruitStudy} />

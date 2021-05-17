@@ -84,10 +84,16 @@ export default function ReadPost({ navigation, route }) {
   const showLocation = () => {
     if (post.meeting == '오프라인') {
       return (
-        <View style={styles.locationBox}>
+        // post.location
+        <TouchableOpacity
+          style={styles.locationBox}
+          onPress={() => {
+            navigation.push('LocationDetail', post.location);
+          }}
+        >
           <Text style={styles.location}>{post.address}</Text>
           <Entypo name="chevron-right" size={22} color="black" />
-        </View>
+        </TouchableOpacity>
       );
     }
   };
