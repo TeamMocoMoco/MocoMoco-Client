@@ -143,14 +143,29 @@ export default function ChatRoom({ navigation, route }) {
     }
   };
 
+  const download = async () => {
+    const result = await getChatsByRoom(roomId);
+    participants.current = result.participants.participants;
+    setStatus(!status);
+  };
+
+  const cancleConfirm = async () => {
+    await patchParticipants(room.current.postId, room.current.participant._id);
+    await download();
+  };
+
+  const confirm = async () => {
+    await postParticipants(room.current.postId, room.current.participant._id);
+    await download();
+  };
+
   const showConfirmButton = () => {
     // 확정 취소 or 확정하기 버튼
     return status ? (
       <TouchableOpacity
         style={styles.button}
         onPress={() => {
-          patchParticipants(room.current.postId, room.current.participant._id);
-          setStatus(!status);
+          cancleConfirm();
         }}
       >
         <Text style={{ color: getColor('defaultColor'), fontSize: 12 }}>
@@ -161,8 +176,7 @@ export default function ChatRoom({ navigation, route }) {
       <TouchableOpacity
         style={styles.button}
         onPress={() => {
-          postParticipants(room.current.postId, room.current.participant._id);
-          setStatus(!status);
+          confirm();
         }}
       >
         <Text style={{ color: getColor('defaultColor'), fontSize: 12 }}>
@@ -357,8 +371,16 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     marginLeft: 7,
   },
-  participantName: { marginLeft: 10, fontWeight: 'bold', fontSize: 14 },
-  participantRole: { marginLeft: 5, color: 'grey', fontSize: 12 },
+  participantName: {
+    marginLeft: 10,
+    fontWeight: 'bold',
+    fontSize: 14,
+  },
+  participantRole: {
+    marginLeft: 5,
+    color: 'grey',
+    fontSize: 12,
+  },
   bottomBox: {
     flexDirection: 'row',
     backgroundColor: '#EFEFF3',
