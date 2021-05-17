@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   FlatList,
   Text,
+  Image,
 } from 'react-native';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -176,7 +177,15 @@ export default function ChatRoom({ navigation, route }) {
           </View>
           <View style={styles.participants}>
             {participants.current.map((participant) => {
-              return <Text key={participant.id}>{participant.name}</Text>;
+              return (
+                <View key={participant._id} style={styles.participantImgBox}>
+                  <Image
+                    source={{ uri: participant.userImg }}
+                    style={styles.participantImg}
+                  />
+                  <Text>{participant.name}</Text>
+                </View>
+              );
             })}
           </View>
         </View>
@@ -209,19 +218,19 @@ export default function ChatRoom({ navigation, route }) {
         />
       </View>
 
+      {admin ? (
+        <View style={styles.buttonContainer}>
+          {showConfirmButton()}
+
+          <TouchableOpacity style={styles.button}>
+            <Text style={{ color: '#999', fontSize: 12 }}>신고 🚨</Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <></>
+      )}
+
       <View style={{ position: 'absolute', bottom: 0 }}>
-        {admin ? (
-          <View style={styles.buttonContainer}>
-            {showConfirmButton()}
-
-            <TouchableOpacity style={styles.button}>
-              <Text style={{ color: '#999', fontSize: 12 }}>신고 🚨</Text>
-            </TouchableOpacity>
-          </View>
-        ) : (
-          <></>
-        )}
-
         {/* 메세지 입력창 */}
         <View style={styles.bottomBox}>
           <View style={styles.sendBox}>
@@ -269,7 +278,8 @@ const styles = StyleSheet.create({
     marginTop: getStatusBarHeight(),
   },
   content: {
-    marginBottom: 130,
+    flex: 1,
+    marginBottom: 60,
   },
   row: {
     flexDirection: 'row',
@@ -286,6 +296,13 @@ const styles = StyleSheet.create({
   },
   participants: {
     margin: 3,
+  },
+  participantImgBox: { flexDirection: 'row', alignItems: 'center' },
+  participantImg: {
+    resizeMode: 'cover',
+    height: 40,
+    width: 40,
+    borderRadius: 100,
   },
   bottomBox: {
     flexDirection: 'row',
@@ -313,8 +330,11 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: 'row',
+    position: 'absolute',
+    bottom: 70,
+    left: 0,
+    right: 0,
     justifyContent: 'center',
-    marginBottom: 10,
   },
   button: {
     backgroundColor: '#E5E5E5',
