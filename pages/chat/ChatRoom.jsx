@@ -17,7 +17,7 @@ import { io } from 'socket.io-client';
 import { HeaderChat } from '../../components/header';
 import { ChatMessage } from '../../components/card';
 
-import { Feather } from '@expo/vector-icons';
+import { Feather, Entypo } from '@expo/vector-icons';
 
 import { getColor } from '../../styles/styles';
 import { getChatsByRoom, postChat } from '../../config/api/ChatAPI';
@@ -48,6 +48,8 @@ export default function ChatRoom({ navigation, route }) {
 
   const [admin, setAdmin] = useState(false);
 
+  const [participantBox, setParticipantBox] = useState(false);
+
   useEffect(() => {
     // 소켓 연결 (완료)
     const socket = io(SOCKET_URL);
@@ -73,7 +75,6 @@ export default function ChatRoom({ navigation, route }) {
         } else {
           setAdmin(false);
         }
-
         setReady(true);
       });
     });
@@ -142,10 +143,52 @@ export default function ChatRoom({ navigation, route }) {
     );
   };
 
+  const showParticipantBox = () => {
+    if (participantBox == false) {
+      return (
+        <View style={styles.participantBox}>
+          <View style={styles.row}>
+            <Text>참가자</Text>
+            <Entypo
+              name="chevron-small-down"
+              size={35}
+              color="black"
+              onPress={() => {
+                setParticipantBox(true);
+              }}
+            />
+          </View>
+        </View>
+      );
+    } else {
+      return (
+        <View style={styles.participantBox}>
+          <View style={styles.row}>
+            <Text>참가자</Text>
+            <Entypo
+              name="chevron-small-up"
+              size={35}
+              color="black"
+              onPress={() => {
+                setParticipantBox(false);
+              }}
+            />
+          </View>
+          <View style={styles.participants}>
+            {participants.current.map((participant) => {
+              return <Text key={participant.id}>{participant.name}</Text>;
+            })}
+          </View>
+        </View>
+      );
+    }
+  };
+
   return ready ? (
     <View style={styles.container}>
       <HeaderChat navigation={navigation} name={userName} />
       <View style={styles.content}>
+        {showParticipantBox()}
         <FlatList
           ref={(ref) => (flatListRef.current = ref)}
           contentContainerStyle={{ padding: 10 }}
@@ -227,6 +270,22 @@ const styles = StyleSheet.create({
   },
   content: {
     marginBottom: 130,
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  participantBox: {
+    flexDirection: 'column',
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: getColor('inactiveBorderColor'),
+    margin: 10,
+    padding: 10,
+  },
+  participants: {
+    margin: 3,
   },
   bottomBox: {
     flexDirection: 'row',
