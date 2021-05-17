@@ -3,6 +3,7 @@ import HeaderBack from './HeaderBack';
 import HeaderChat from './HeaderChat';
 import HeaderSetting from './HeaderSetting';
 import HeaderProfile from './HeaderProfile';
+import HeaderBackTitle from './HeaderBackTitle';
 
 module.exports = {
   HeaderTitle,
@@ -10,4 +11,5 @@ module.exports = {
   HeaderChat,
   HeaderSetting,
   HeaderProfile,
+  HeaderBackTitle,
 };
