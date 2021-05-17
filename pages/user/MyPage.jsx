@@ -19,7 +19,7 @@ import { SettingModal } from '../../components/modal';
 import { getUserInfo } from '../../config/api/UserAPI';
 
 import { getColor } from '../../styles/styles';
-import { Recruit, Save, Application } from '../../assets/images';
+import { recruit, save, application } from '../../assets/images';
 
 export default function MyPage({ navigation }) {
   const [ready, setReady] = useState(false);
@@ -88,7 +88,7 @@ export default function MyPage({ navigation }) {
             style={styles.studyBox}
             onPress={() => navigation.push('RecruitStudy')}
           >
-            <Image source={Recruit} />
+            <Image source={recruit} style={styles.studyIcon} />
             <View style={styles.textBox}>
               <Text style={styles.cateText}>모집</Text>
               <Text style={styles.studyText}> 스터디</Text>
@@ -99,7 +99,7 @@ export default function MyPage({ navigation }) {
             style={styles.studyBox}
             onPress={() => navigation.push('ApplicationStudy')}
           >
-            <Image source={Application} />
+            <Image source={application} style={styles.studyIcon} />
             <View style={styles.textBox}>
               <Text style={styles.cateText}>신청</Text>
               <Text style={styles.studyText}> 스터디</Text>
@@ -110,7 +110,7 @@ export default function MyPage({ navigation }) {
             style={styles.studyBox}
             onPress={() => navigation.push('SaveStudy')}
           >
-            <Image source={Save} />
+            <Image source={save} style={styles.studyIcon} />
             <View style={styles.textBox}>
               <Text style={styles.cateText}>저장</Text>
               <Text style={styles.studyText}> 스터디</Text>
@@ -174,6 +174,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
   },
+  studyIcon: { width: 50, height: 50 },
   studyBox: { alignItems: 'center' },
   textBox: { flexDirection: 'row', paddingTop: 20 },
   cateText: { fontWeight: 'bold' },

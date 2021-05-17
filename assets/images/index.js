@@ -1,6 +1,6 @@
-import Application from './Application.png';
-import Recruit from './Recruit.png';
-import Save from './Save.png';
+import application from './application.png';
+import recruit from './recruit.png';
+import save from './save.png';
 import handsup from './handsup.png';
 import landingImage from './scopeman.png';
 import pm from './pm.png';
@@ -9,11 +9,12 @@ import designer from './designer.png';
 import dvIcon from './dvIcon.png';
 import pmIcon from './pmIcon.png';
 import dsIcon from './dsIcon.png';
+import mogury from './mogury.png';
 
 module.exports = {
-  Application,
-  Recruit,
-  Save,
+  application,
+  recruit,
+  save,
   handsup,
   landingImage,
   pm,
@@ -22,4 +23,5 @@ module.exports = {
   dvIcon,
   pmIcon,
   dsIcon,
+  mogury,
 };

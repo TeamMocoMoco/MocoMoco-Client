@@ -1,38 +1,45 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { getColor } from '../../styles/styles';
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  Image,
+  Dimensions,
+} from 'react-native';
+import { developer, designer, pm } from '../../assets/images';
+
+const diviceWidth = Dimensions.get('window').width;
 
 export default function PickRoleCard({ item, pickRole, setPickRole }) {
-  let pickcolor;
+  let roleName;
   if (pickRole == item.role) {
     switch (item.role) {
       case '기획자':
-        pickcolor = getColor('pmColor');
+        roleName = pm;
         break;
       case '디자이너':
-        pickcolor = getColor('designerColor');
+        roleName = designer;
         break;
       case '개발자':
-        pickcolor = getColor('developerColor');
+        roleName = developer;
         break;
     }
     return (
       <TouchableOpacity disabled>
         <Text style={{ textAlign: 'center' }}>{item.role}</Text>
-        <Ionicons name={item.name} size={80} color={pickcolor} />
+        <Image source={roleName} style={styles.img} />
       </TouchableOpacity>
     );
   } else {
     switch (item.role) {
       case '기획자':
-        pickcolor = getColor('pmColor');
+        roleName = pm;
         break;
       case '디자이너':
-        pickcolor = getColor('designerColor');
+        roleName = designer;
         break;
       case '개발자':
-        pickcolor = getColor('developerColor');
+        roleName = pm;
         break;
     }
     return (
@@ -43,10 +50,15 @@ export default function PickRoleCard({ item, pickRole, setPickRole }) {
         }}
       >
         <Text style={{ textAlign: 'center' }}>{item.role}</Text>
-        <Ionicons name={item.name} size={80} color={pickcolor} />
+        <Image source={roleName} style={styles.img} />
       </TouchableOpacity>
     );
   }
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  img: {
+    width: diviceWidth * 0.2,
+    height: diviceWidth * 0.2,
+  },
+});

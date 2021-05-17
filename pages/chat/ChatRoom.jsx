@@ -18,7 +18,7 @@ import { io } from 'socket.io-client';
 import { HeaderChat } from '../../components/header';
 import { ChatMessage } from '../../components/card';
 
-import { Feather, Entypo } from '@expo/vector-icons';
+import { Feather, Entypo, Ionicons } from '@expo/vector-icons';
 
 import { getColor } from '../../styles/styles';
 import { getChatsByRoom, postChat } from '../../config/api/ChatAPI';
@@ -89,6 +89,34 @@ export default function ChatRoom({ navigation, route }) {
       setSocketState(false);
     });
   }, []);
+
+  const showRoleIcon = (participant) => {
+    let pickColor;
+    let iconName;
+    switch (participant.role) {
+      case '기획자':
+        pickColor = getColor('pmColor');
+        iconName = 'ellipse';
+        break;
+      case '디자이너':
+        pickColor = getColor('designerColor');
+        iconName = 'triangle-sharp';
+        break;
+      case '개발자':
+        pickColor = getColor('developerColor');
+        iconName = 'md-square-sharp';
+        break;
+    }
+    return (
+      <>
+        <Ionicons name={iconName} size={15} color={pickColor} />
+        <Image
+          source={{ uri: participant.userImg }}
+          style={[styles.participantImg, { borderColor: pickColor }]}
+        />
+      </>
+    );
+  };
 
   const submitChatMessage = async () => {
     await postChat(roomId, message);
@@ -176,17 +204,28 @@ export default function ChatRoom({ navigation, route }) {
             />
           </View>
           <View style={styles.participants}>
-            {participants.current.map((participant) => {
-              return (
-                <View key={participant._id} style={styles.participantImgBox}>
-                  <Image
-                    source={{ uri: participant.userImg }}
-                    style={styles.participantImg}
-                  />
-                  <Text>{participant.name}</Text>
-                </View>
-              );
-            })}
+            {participants.current.length == 0 ? (
+              <View style={styles.participantLine}>
+                <Text>참가자가 없습니다.</Text>
+              </View>
+            ) : (
+              participants.current.map((participant) => {
+                return (
+                  <View key={participant._id} style={styles.participantLine}>
+                    {showRoleIcon(participant)}
+
+                    <View style={styles.row}>
+                      <Text style={styles.participantName}>
+                        {participant.name}
+                      </Text>
+                      <Text style={styles.participantRole}>
+                        {participant.role}{' '}
+                      </Text>
+                    </View>
+                  </View>
+                );
+              })
+            )}
           </View>
         </View>
       );
@@ -200,7 +239,10 @@ export default function ChatRoom({ navigation, route }) {
         {showParticipantBox()}
         <FlatList
           ref={(ref) => (flatListRef.current = ref)}
-          contentContainerStyle={{ padding: 10 }}
+          contentContainerStyle={[
+            styles.flatList,
+            admin ? { paddingTop: 50 } : { paddingTop: 10 },
+          ]}
           data={chat.current}
           inverted={-1}
           keyExtractor={(item) => item._id}
@@ -286,24 +328,37 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  flatList: {
+    paddingHorizontal: 10,
+    paddingBottom: 10,
+  },
   participantBox: {
     flexDirection: 'column',
     borderWidth: 1,
     borderRadius: 5,
     borderColor: getColor('inactiveBorderColor'),
-    margin: 10,
+    marginTop: 10,
+    marginHorizontal: 10,
     padding: 10,
   },
   participants: {
     margin: 3,
   },
-  participantImgBox: { flexDirection: 'row', alignItems: 'center' },
+  participantLine: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 5,
+  },
   participantImg: {
     resizeMode: 'cover',
-    height: 40,
-    width: 40,
+    height: 30,
+    width: 30,
     borderRadius: 100,
+    borderWidth: 2,
+    marginLeft: 7,
   },
+  participantName: { marginLeft: 10, fontWeight: 'bold', fontSize: 14 },
+  participantRole: { marginLeft: 5, color: 'grey', fontSize: 12 },
   bottomBox: {
     flexDirection: 'row',
     backgroundColor: '#EFEFF3',
