@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     marginVertical: 9,
     marginHorizontal: 5,
     borderRadius: 5,
-    elevation: 5,
+    elevation: 3,
   },
   date: {
     color: getColor('defaultColor'),

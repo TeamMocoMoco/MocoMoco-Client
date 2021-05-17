@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
   FlatList,
+  Image,
 } from 'react-native';
 
 import * as SecureStore from 'expo-secure-store';
@@ -19,6 +20,8 @@ import { TabButton } from '../../components/button';
 import { getColor } from '../../styles/styles';
 
 import { getPosts, getPostsByMeeting } from '../../config/api/PostAPI';
+
+import { mogury } from '../../assets/images';
 
 export default function MainList({ navigation }) {
   const pageNum = useRef(1);
@@ -75,13 +78,14 @@ export default function MainList({ navigation }) {
 
   return ready ? (
     <View style={styles.container}>
+      <Image source={mogury} style={styles.morugyImg} />
       <SearchBar
         doFunction={(value) => {
           navigation.push('SubList', { value, tab });
         }}
       />
 
-      <View style={{ flexDirection: 'row', marginVertical: 10 }}>
+      <View style={{ flexDirection: 'row', marginTop: 10 }}>
         {['전체보기', '온라인', '오프라인'].map((title, i) => {
           return (
             <TabButton
@@ -97,6 +101,7 @@ export default function MainList({ navigation }) {
 
       <View style={styles.content}>
         <FlatList
+          contentContainerStyle={styles.flatList}
           ref={(ref) => (flatListRef.current = ref)}
           showsVerticalScrollIndicator={false}
           data={posts}
@@ -179,7 +184,14 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    marginVertical: 10,
+  },
+  morugyImg: {
+    height: 40,
+    width: 80,
+    resizeMode: 'contain',
+  },
+  flatList: {
+    paddingBottom: 10,
   },
   FAB: {
     backgroundColor: getColor('defaultColor'),
