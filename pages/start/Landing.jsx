@@ -32,7 +32,7 @@ export default function Landing({ navigation }) {
 
         <View style={styles.bottomWrap}>
           {/* 설명 */}
-          <Text style={styles.descTitle}>코린이들을 위한 스터디 플랫폼</Text>
+          <Text style={styles.descTitle}>모여라 Coworkers!</Text>
           <Text style={styles.descContents}>
             기획자, 개발자, 디자이너를{'\n'}모코모코에서 간편하게 만나자!
           </Text>
@@ -42,7 +42,7 @@ export default function Landing({ navigation }) {
             onPress={() => navigation.push('TabNavigator')}
             style={styles.buttonContainer}
           >
-            <Text style={styles.buttonText}>로그인 없이 스터디 구경하기</Text>
+            <Text style={styles.buttonText}>동료 만나러 가기</Text>
           </TouchableOpacity>
         </View>
       </View>
