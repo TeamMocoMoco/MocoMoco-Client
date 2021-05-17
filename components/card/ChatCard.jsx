@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,6 +7,8 @@ import {
   Image,
   Dimensions,
 } from 'react-native';
+
+import { Ionicons } from '@expo/vector-icons';
 
 import { getColor } from '../../styles/styles';
 
@@ -21,12 +23,43 @@ export default function ChatCard({ navigation, userId, room }) {
     }
   };
 
-  const showImg = () => {
+  const showProfileImage = () => {
+    let image;
+    let role;
     if (userId == room.admin._id) {
-      return room.participant.userImg;
+      image = room.participant.userImg;
+      role = room.participant.role;
     } else {
-      return room.admin.userImg;
+      image = room.admin.userImg;
+      role = room.admin.role;
     }
+
+    let pickColor;
+    let iconName;
+    switch (role) {
+      case '기획자':
+        pickColor = getColor('pmColor');
+        iconName = 'ellipse';
+        break;
+      case '디자이너':
+        pickColor = getColor('designerColor');
+        iconName = 'triangle-sharp';
+        break;
+      case '개발자':
+        pickColor = getColor('developerColor');
+        iconName = 'md-square-sharp';
+        break;
+    }
+
+    return (
+      <>
+        <Ionicons name={iconName} size={15} color={pickColor} />
+        <Image
+          source={{ uri: image }}
+          style={[styles.profileImage, { borderColor: pickColor }]}
+        />
+      </>
+    );
   };
 
   if (room.admin != null && room.participant != null) {
@@ -41,7 +74,7 @@ export default function ChatCard({ navigation, userId, room }) {
         }}
       >
         {/* 프로필사진 */}
-        <Image source={{ uri: showImg() }} style={styles.img} />
+        {showProfileImage()}
 
         <View style={styles.textContainer}>
           {/* 이름, 채팅온시간 */}
@@ -77,11 +110,13 @@ const styles = StyleSheet.create({
     borderBottomColor: getColor('ChatBorderColor'),
     alignItems: 'center',
   },
-  img: {
+  profileImage: {
     resizeMode: 'cover',
     height: diviceWidth * 0.15,
     width: diviceWidth * 0.15,
     borderRadius: 100,
+    borderWidth: 3,
+    marginLeft: 7,
   },
   textContainer: {
     flex: 1,
