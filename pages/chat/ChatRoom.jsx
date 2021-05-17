@@ -75,7 +75,6 @@ export default function ChatRoom({ navigation, route }) {
         } else {
           setAdmin(false);
         }
-        console.log(result);
         setReady(true);
       });
     });
@@ -177,7 +176,7 @@ export default function ChatRoom({ navigation, route }) {
           </View>
           <View style={styles.participants}>
             {participants.current.map((participant) => {
-              return <Text>{participant.name}</Text>;
+              return <Text key={participant.id}>{participant.name}</Text>;
             })}
           </View>
         </View>
