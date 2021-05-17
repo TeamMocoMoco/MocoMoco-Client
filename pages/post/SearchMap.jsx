@@ -23,23 +23,36 @@ import { MainCard } from '../../components/card';
 import { getColor } from '../../styles/styles';
 import { getPostsByLocation } from '../../config/api/MapAPI';
 
-const screenHeight = Dimensions.get('screen').height;
+const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
+const screenHeight = Dimensions.get('screen').height;
+
+const ASPECT_RATIO = windowWidth / windowHeight;
+const LATITUDE_DELTA = 0.03;
+const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 export default function SearchMap({ navigation }) {
   const mapRef = useRef(null);
   const pannelRef = useRef(null);
 
+  const locationGangNam = [37.49799799400392, 127.02754613036706];
+
   const [ready, setReady] = useState(false);
-  const [mapCenter, setMapCenter] = useState([
-    37.49799799400392, 127.02754613036706,
-  ]);
+  const [mapRegion, setMapRegion] = useState({
+    latitude: locationGangNam[0],
+    longitude: locationGangNam[1],
+    latitudeDelta: LATITUDE_DELTA,
+    longitudeDelta: LONGITUDE_DELTA,
+  });
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     navigation.addListener('focus', (e) => {
       setTimeout(async () => {
-        const result = await getPostsByLocation(mapCenter[0], mapCenter[1]);
+        const result = await getPostsByLocation(
+          mapRegion.latitude,
+          mapRegion.longitude
+        );
         setPosts(result);
         setReady(true);
       });
@@ -69,8 +82,23 @@ export default function SearchMap({ navigation }) {
     } else {
       let location = await Location.getCurrentPositionAsync({});
       console.log(location);
-      setMapCenter([location.coords.latitude, location.coords.longitude]);
+      mapRef.current.animateToRegion({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA,
+      });
+      setMapRegion({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA,
+      });
     }
+  };
+
+  const onRegionChange = (region) => {
+    setMapRegion(region);
   };
 
   return ready ? (
@@ -78,15 +106,11 @@ export default function SearchMap({ navigation }) {
       <View style={styles.content}>
         {/* 지도 */}
         <MapView
-          ref={mapRef}
+          ref={(ref) => (mapRef.current = ref)}
           provider={PROVIDER_GOOGLE}
           style={styles.map}
-          initialRegion={{
-            latitude: mapCenter[0],
-            longitude: mapCenter[1],
-            latitudeDelta: 0.001,
-            longitudeDelta: 0.001,
-          }}
+          initialRegion={mapRegion}
+          onRegionChange={(region) => onRegionChange(region)}
         >
           {posts.map((post) => {
             return (
@@ -98,6 +122,7 @@ export default function SearchMap({ navigation }) {
                 onPress={() => {
                   pannelRef.current.show();
                 }}
+                pinColor={getColor('defaultColor')}
                 key={post._id}
               />
             );
@@ -156,14 +181,7 @@ export default function SearchMap({ navigation }) {
         <MapView
           ref={mapRef}
           style={styles.map}
-          initialRegion={{
-            latitude: 37.497961,
-            longitude: 127.027574,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          }}
-          minZoomLevel={0}
-          minZoomLevel={0}
+          initialRegion={mapRegion}
         ></MapView>
       </View>
     </View>
