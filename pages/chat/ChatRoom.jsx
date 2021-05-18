@@ -48,6 +48,7 @@ export default function ChatRoom({ navigation, route }) {
   const [socketState, setSocketState] = useState(false);
 
   const [postId, setPostId] = useState('');
+  const [title, setTitle] = useState('');
 
   const [admin, setAdmin] = useState(false);
 
@@ -62,6 +63,7 @@ export default function ChatRoom({ navigation, route }) {
         const result = await getChatsByRoom(roomId);
         room.current = result.roomInfo;
         setPostId(room.current.post._id);
+        setTitle(room.current.post.title);
         chat.current = result.chat.reverse();
 
         participants.current = result.participants.participants;
@@ -199,7 +201,10 @@ export default function ChatRoom({ navigation, route }) {
             }}
             style={styles.row}
           >
-            <Text>참가자</Text>
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={{ fontWeight: 'bold' }}>{title}</Text>
+              <Text> 참가자</Text>
+            </View>
             <Entypo name="chevron-small-down" size={35} color="black" />
           </TouchableOpacity>
         </View>
@@ -213,7 +218,10 @@ export default function ChatRoom({ navigation, route }) {
             }}
             style={styles.row}
           >
-            <Text>참가자</Text>
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={{ fontWeight: 'bold' }}>{title}</Text>
+              <Text> 참가자</Text>
+            </View>
             <Entypo name="chevron-small-up" size={35} color="black" />
           </TouchableOpacity>
           <View style={styles.participants}>
