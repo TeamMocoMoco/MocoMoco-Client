@@ -172,6 +172,7 @@ export default function OtherProfile({ navigation, route }) {
         title={'프로필'}
         modalOpen={modalOpen}
         setModalOpen={setModalOpen}
+        navigation={navigation}
       />
       <ActivityIndicator
         size="large"
