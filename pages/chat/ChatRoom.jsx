@@ -25,10 +25,10 @@ import { getChatsByRoom, postChat } from '../../config/api/ChatAPI';
 import { postParticipants, patchParticipants } from '../../config/api/PostAPI';
 
 // nginx
-const SOCKET_URL = 'http://3.35.133.180/chat';
+// const SOCKET_URL = 'http://3.35.133.180/chat';
 
 // pm2
-// const SOCKET_URL = 'http://3.34.137.188/chat';
+const SOCKET_URL = 'http://15.165.163.126/chat';
 
 export default function ChatRoom({ navigation, route }) {
   const roomId = route.params.roomId;
@@ -150,12 +150,15 @@ export default function ChatRoom({ navigation, route }) {
   };
 
   const cancleConfirm = async () => {
-    await patchParticipants(room.current.postId, room.current.participant._id);
+    await patchParticipants(
+      room.current.post._id,
+      room.current.participant._id
+    );
     await download();
   };
 
   const confirm = async () => {
-    await postParticipants(room.current.postId, room.current.participant._id);
+    await postParticipants(room.current.post._id, room.current.participant._id);
     await download();
   };
 
