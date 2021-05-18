@@ -8,6 +8,7 @@ import {
   View,
   FlatList,
   Image,
+  RefreshControl,
 } from 'react-native';
 
 import * as SecureStore from 'expo-secure-store';
@@ -28,6 +29,7 @@ export default function MainList({ navigation }) {
   const flatListRef = useRef();
 
   const [ready, setReady] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const [posts, setPosts] = useState([]);
   const [tab, setTab] = useState('전체보기');
 
@@ -76,6 +78,15 @@ export default function MainList({ navigation }) {
     flatListRef.current.scrollToOffset({ animated: true, y: 0 });
   };
 
+  const wait = (timeout) => {
+    return new Promise((resolve) => setTimeout(resolve, timeout));
+  };
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    wait(1000).then(() => setRefreshing(false));
+  }, []);
+
   return ready ? (
     <View style={styles.container}>
       <Image source={mogury} style={styles.morugyImg} />
@@ -107,6 +118,9 @@ export default function MainList({ navigation }) {
         <FlatList
           contentContainerStyle={styles.flatList}
           ref={(ref) => (flatListRef.current = ref)}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
           showsVerticalScrollIndicator={false}
           data={posts}
           keyExtractor={(item) => item._id}

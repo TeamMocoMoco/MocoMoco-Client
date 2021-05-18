@@ -62,11 +62,17 @@ export default function ChatRoom({ navigation, route }) {
       setTimeout(async () => {
         const result = await getChatsByRoom(roomId);
         room.current = result.roomInfo;
-        setPostId(room.current.post._id);
-        setTitle(room.current.post.title);
+
+        if (room.current.post != null) {
+          setPostId(room.current.post._id);
+          setTitle(room.current.post.title);
+        }
         chat.current = result.chat.reverse();
 
-        participants.current = result.participants.participants;
+        if (result.participants != null) {
+          participants.current = result.participants.participants;
+        }
+
         // 해당 모집글에 참여중인 사람인지 판단
         participants.current.map((participant) => {
           if (room.current.participant._id == participant._id) {
@@ -159,6 +165,7 @@ export default function ChatRoom({ navigation, route }) {
     );
     await download();
   };
+
   const confirm = async () => {
     await postParticipants(room.current.post._id, room.current.participant._id);
     await download();
@@ -192,7 +199,7 @@ export default function ChatRoom({ navigation, route }) {
   };
 
   const showParticipantBox = () => {
-    if (participantBox == false) {
+    if (!participantBox) {
       return (
         <View style={styles.participantBox}>
           <TouchableOpacity
@@ -225,7 +232,8 @@ export default function ChatRoom({ navigation, route }) {
             <Entypo name="chevron-small-up" size={35} color="black" />
           </TouchableOpacity>
           <View style={styles.participants}>
-            {participants.current.length == 0 ? (
+            {participants.current.length == 0 ||
+            participants.current == null ? (
               <View style={styles.participantLine}>
                 <Text>참가자가 아직 없습니다.</Text>
               </View>
@@ -249,7 +257,7 @@ export default function ChatRoom({ navigation, route }) {
                         {participant.name}
                       </Text>
                       <Text style={styles.participantRole}>
-                        {participant.role}{' '}
+                        {participant.role}
                       </Text>
                     </View>
                   </TouchableOpacity>
@@ -263,71 +271,117 @@ export default function ChatRoom({ navigation, route }) {
   };
 
   return ready ? (
-    <View style={styles.container}>
-      <HeaderChat navigation={navigation} name={userName} />
-      <View style={styles.content}>
-        {showParticipantBox()}
-        <FlatList
-          ref={(ref) => (flatListRef.current = ref)}
-          contentContainerStyle={[
-            styles.flatList,
-            admin ? { paddingTop: 50 } : { paddingTop: 10 },
-          ]}
-          data={chat.current}
-          inverted={-1}
-          keyExtractor={(item) => item._id}
-          renderItem={(chatInfo) => {
-            return (
-              <ChatMessage
-                receiver={myid.current}
-                sender={chatInfo.item.user}
-                message={chatInfo.item.content}
-                createdAt={chatInfo.item.createdAt.substr(11, 5)}
-                key={chatInfo.item._id}
-              />
-            );
-          }}
-        />
-      </View>
-
-      {admin ? (
-        <View style={styles.buttonContainer}>
-          {showConfirmButton()}
-
-          <TouchableOpacity
-            onPress={() => {
-              navigation.push('ReadPost', { postId });
+    room.current.post == null ? (
+      <View style={styles.container}>
+        <HeaderChat navigation={navigation} name={userName} />
+        <View style={styles.content}>
+          {showParticipantBox()}
+          <FlatList
+            ref={(ref) => (flatListRef.current = ref)}
+            contentContainerStyle={[
+              styles.flatList,
+              admin ? { paddingTop: 50 } : { paddingTop: 10 },
+            ]}
+            data={chat.current}
+            inverted={-1}
+            keyExtractor={(item) => item._id}
+            renderItem={(chatInfo) => {
+              return (
+                <ChatMessage
+                  receiver={myid.current}
+                  sender={chatInfo.item.user}
+                  message={chatInfo.item.content}
+                  createdAt={chatInfo.item.createdAt.substr(11, 5)}
+                  key={chatInfo.item._id}
+                />
+              );
             }}
-            style={styles.button}
-          >
-            <Text style={{ color: '#999', fontSize: 12 }}>게시물로 이동🤔</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.button}>
-            <Text style={{ color: '#999', fontSize: 12 }}>신고 🚨</Text>
-          </TouchableOpacity>
+          />
         </View>
-      ) : (
-        <></>
-      )}
 
-      <View style={{ position: 'absolute', bottom: 0 }}>
-        {/* 메세지 입력창 */}
-        <View style={styles.bottomBox}>
-          <View style={styles.sendBox}>
-            <TextInput
-              placeholder={'메세지를 입력하세요.'}
-              value={message}
-              onChangeText={(text) => {
-                setMessage(text);
-              }}
-              style={styles.input}
-            />
+        <View style={{ position: 'absolute', bottom: 0 }}>
+          {/* 메세지 입력창 */}
+          <View style={styles.bottomBox}>
+            <View style={styles.sendBox}>
+              <TextInput
+                disabled
+                placeholder={'메세지를 입력하세요.'}
+                style={styles.input}
+              />
+            </View>
+            <View>{showSendButton()}</View>
           </View>
-          <View>{showSendButton()}</View>
         </View>
       </View>
-    </View>
+    ) : (
+      <View style={styles.container}>
+        <HeaderChat navigation={navigation} name={userName} />
+        <View style={styles.content}>
+          {showParticipantBox()}
+          <FlatList
+            ref={(ref) => (flatListRef.current = ref)}
+            contentContainerStyle={[
+              styles.flatList,
+              admin ? { paddingTop: 50 } : { paddingTop: 10 },
+            ]}
+            data={chat.current}
+            inverted={-1}
+            keyExtractor={(item) => item._id}
+            renderItem={(chatInfo) => {
+              return (
+                <ChatMessage
+                  receiver={myid.current}
+                  sender={chatInfo.item.user}
+                  message={chatInfo.item.content}
+                  createdAt={chatInfo.item.createdAt.substr(11, 5)}
+                  key={chatInfo.item._id}
+                />
+              );
+            }}
+          />
+        </View>
+
+        {admin ? (
+          <View style={styles.buttonContainer}>
+            {showConfirmButton()}
+
+            <TouchableOpacity
+              onPress={() => {
+                navigation.push('ReadPost', { postId });
+              }}
+              style={styles.button}
+            >
+              <Text style={{ color: '#999', fontSize: 12 }}>
+                게시물로 이동🤔
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.button}>
+              <Text style={{ color: '#999', fontSize: 12 }}>신고 🚨</Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <></>
+        )}
+
+        <View style={{ position: 'absolute', bottom: 0 }}>
+          {/* 메세지 입력창 */}
+          <View style={styles.bottomBox}>
+            <View style={styles.sendBox}>
+              <TextInput
+                placeholder={'메세지를 입력하세요.'}
+                value={message}
+                onChangeText={(text) => {
+                  setMessage(text);
+                }}
+                style={styles.input}
+              />
+            </View>
+            <View>{showSendButton()}</View>
+          </View>
+        </View>
+      </View>
+    )
   ) : (
     <View style={styles.container}>
       <ActivityIndicator
