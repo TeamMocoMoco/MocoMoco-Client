@@ -140,6 +140,21 @@ export async function getUserInfo() {
   }
 }
 
+// 다른 사용자 정보 가져오기
+export async function getOtherInfo(id) {
+  try {
+    const response = await axios({
+      method: 'get',
+      url: host + '/auth/' + id,
+    });
+    return response.data.result;
+  } catch (err) {
+    const error = err.response.data.err || err.message;
+    console.log('err');
+    Alert.alert(error);
+  }
+}
+
 // 사용자 정보 수정하기
 export async function patchUserInfo(navigation, formData) {
   const token = await SecureStore.getItemAsync('usertoken');

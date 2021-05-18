@@ -226,6 +226,44 @@ export async function getJoinedPosts(pageNum) {
   }
 }
 
+// OtherProfile-모집스터디-모집중
+export async function getOtherOpenPosts(pageNum, id) {
+  try {
+    const response = await axios({
+      method: 'get',
+      url: host + '/auth/admin/' + id,
+      params: {
+        status: true,
+        page: pageNum,
+      },
+    });
+    return response.data.result;
+  } catch (err) {
+    const error = err.response.data.err || err.message;
+
+    Alert.alert(error);
+  }
+}
+
+// OtherProfile-모집스터디-모집완료
+export async function getOtherClosedPosts(pageNum, id) {
+  try {
+    const response = await axios({
+      method: 'get',
+      url: host + '/auth/admin/' + id,
+      params: {
+        status: false,
+        page: pageNum,
+      },
+    });
+    return response.data.result;
+  } catch (err) {
+    const error = err.response.data.err || err.message;
+
+    Alert.alert(error);
+  }
+}
+
 // 모집글 올리기 - 완료
 export async function postPosts(
   navigation,
