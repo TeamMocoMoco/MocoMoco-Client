@@ -4,10 +4,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
 // nginx
-const host = 'http://3.35.133.180';
+// const host = 'http://3.35.133.180';
 
 // pm2
-// const host = 'http://3.34.137.188';
+const host = 'http://15.165.163.126';
 
 // 전체 모집글 보기 (페이징) - 완료
 export async function getPosts(pageNum) {
