@@ -130,7 +130,7 @@ export default function VerificationConfirm({ navigation, route }) {
               style={styles.resendButton}
               onPress={() => reSend()}
             >
-              <Text style={styles.resendText}>인증번호가 오지 않았어요!</Text>
+              <Text style={styles.resendText}>인증번호 다시받기</Text>
             </TouchableOpacity>
           </View>
         </KeyboardAwareScrollView>

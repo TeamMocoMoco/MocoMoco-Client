@@ -26,8 +26,8 @@ export default function Verification({ navigation }) {
     if (phone.length < 10) {
       Alert.alert('올바른 전화번호를 입력해주세요.');
     } else {
-      await sendSMS(phone);
-      navigation.push('VerificationConfirm', phone);
+      await navigation.push('VerificationConfirm', phone);
+      sendSMS(phone);
     }
   };
 

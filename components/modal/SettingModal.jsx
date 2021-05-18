@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Text,
   Image,
+  Alert,
 } from 'react-native';
 const pickerWidth = Dimensions.get('window').width * 0.8;
 
@@ -21,7 +22,20 @@ export default function SettingModal({
   user,
 }) {
   const logoutFunc = () => {
-    logout(navigation);
+    Alert.alert('로그아웃 하시겠습니까?', '', [
+      {
+        text: '네',
+        onPress: () => {
+          setModalOpen(false);
+          logout(navigation);
+        },
+        style: 'default',
+      },
+      {
+        text: '아니오',
+        style: 'cancel',
+      },
+    ]);
   };
 
   return (
