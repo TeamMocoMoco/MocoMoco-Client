@@ -4,41 +4,44 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableOpacity,
   Image,
   ScrollView,
-  Alert,
   ActivityIndicator,
   FlatList,
 } from 'react-native';
 
-import * as SecureStore from 'expo-secure-store';
-
 import { HeaderBackTitle } from '../../components/header';
 import { SettingModal } from '../../components/modal';
-import { getColor } from '../../styles/styles';
+import { MainCard } from '../../components/card';
 import { StudyTabButton } from '../../components/button';
+import { getColor } from '../../styles/styles';
 
-import { getUserInfo } from '../../config/api/UserAPI';
+import { getOtherInfo } from '../../config/api/UserAPI';
+import {
+  getOtherOpenPosts,
+  getOtherClosedPosts,
+} from '../../config/api/PostAPI';
 
 import { Feather } from '@expo/vector-icons';
 
-export default function OthereProfile({ navigation }) {
+export default function OtherProfile({ navigation, route }) {
+  const OtherId = route.params;
+
   const [ready, setReady] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [user, setUser] = useState({});
 
-  const pageNum = useRef(1);
-  const flatListRef = useRef();
-
   const [posts, setPosts] = useState([]);
   const [tab, setTab] = useState('모집중');
+
+  const pageNum = useRef(1);
+  const flatListRef = useRef();
 
   useEffect(() => {
     navigation.addListener('focus', (e) => {
       setTimeout(async () => {
         setReady(false);
-        const result = await getUserInfo();
+        const result = await getOtherInfo(OtherId);
         setUser(result);
         download(tab);
         setReady(true);
@@ -51,9 +54,9 @@ export default function OthereProfile({ navigation }) {
     setTab(title);
     let result = [];
     if (title == '모집중') {
-      result = await getJoiningPosts(pageNum.current);
+      result = await getOtherOpenPosts(pageNum.current, OtherId);
     } else {
-      result = await getJoinedPosts(pageNum.current);
+      result = await getOtherClosedPosts(pageNum.current, OtherId);
     }
     setPosts(result);
   });
@@ -61,108 +64,112 @@ export default function OthereProfile({ navigation }) {
   const scrollToTop = () => {
     flatListRef.current.scrollToOffset({ animated: true, y: 0 });
   };
-
   return ready ? (
     <View style={styles.container}>
       <HeaderBackTitle
         title={'프로필'}
         modalOpen={modalOpen}
         setModalOpen={setModalOpen}
+        navigation={navigation}
       />
+
       <SettingModal
         navigation={navigation}
         modalOpen={modalOpen}
         setModalOpen={setModalOpen}
         user={user}
+        navigation={navigation}
       />
 
-      <View style={styles.content}>
-        {/* 프로필 */}
-        <View style={styles.profile}>
-          <View style={styles.imgFrame}>
-            <Image
-              style={styles.img}
-              source={{
-                uri: user.userImg,
-              }}
-            />
-          </View>
-          <View style={styles.nameBox}>
-            <Text style={styles.nameText}>{user.name} </Text>
-            <Text style={styles.roleText}>{user.role}</Text>
-          </View>
+      {/* 프로필 */}
+      <View style={styles.profile}>
+        <View style={styles.imgFrame}>
+          <Image
+            style={styles.img}
+            source={{
+              uri: user.userImg,
+            }}
+          />
         </View>
-
-        <View style={styles.myBox}>
-          <ScrollView>
-            <Text>{user.introduce} </Text>
-          </ScrollView>
+        <View style={styles.nameBox}>
+          <Text style={styles.nameText}>{user.name} </Text>
+          <Text style={styles.roleText}>{user.role}</Text>
         </View>
       </View>
 
-      <ScrollView style={styles.studyBox}>
+      <View style={styles.myBox}>
+        <ScrollView>
+          <Text>{user.introduce} </Text>
+        </ScrollView>
+      </View>
+
+      <View style={styles.studyBox}>
         <View style={styles.studyHeader}>
           <Feather name="book-open" size={30} color="black" />
           <Text style={styles.studyHeaderText}>모집 스터디 내역</Text>
         </View>
+      </View>
 
-        <View style={styles.BottomContainer}>
-          <View
-            style={{
-              flexDirection: 'row',
-            }}
-          >
-            {['모집중', '모집완료'].map((title, i) => {
-              return (
-                <StudyTabButton
-                  title={title}
-                  state={tab}
-                  download={download}
-                  scroll={scrollToTop}
-                  key={i}
-                />
-              );
-            })}
-          </View>
-
-          <View style={styles.BottomContent}>
-            <FlatList
-              ref={(ref) => (flatListRef.current = ref)}
-              showsVerticalScrollIndicator={false}
-              data={posts}
-              keyExtractor={(item) => item._id}
-              renderItem={(post) => {
-                return (
-                  <MainCard
-                    navigation={navigation}
-                    post={post.item}
-                    key={post.item._id}
-                  />
-                );
-              }}
-              onEndReachedThreshold={0.1}
-              onEndReached={async () => {
-                let nextPosts = [];
-                if (tab == '모집중') {
-                  nextPosts = await getJoiningPosts(pageNum.current + 1);
-                } else {
-                  nextPosts = await getJoinedPosts(pageNum.current + 1);
-                }
-                if (nextPosts.length != 0) {
-                  pageNum.current += 1;
-                  let allPosts = [...posts, ...nextPosts];
-                  setPosts(allPosts);
-                }
-              }}
+      <View
+        style={{
+          flexDirection: 'row',
+        }}
+      >
+        {['모집중', '모집완료'].map((title, i) => {
+          return (
+            <StudyTabButton
+              title={title}
+              state={tab}
+              download={download}
+              scroll={scrollToTop}
+              key={i}
             />
-          </View>
-        </View>
-      </ScrollView>
+          );
+        })}
+      </View>
+
+      <View style={styles.BottomContent}>
+        <FlatList
+          ref={(ref) => (flatListRef.current = ref)}
+          showsVerticalScrollIndicator={false}
+          data={posts}
+          keyExtractor={(item) => item._id}
+          renderItem={(post) => {
+            return (
+              <MainCard
+                navigation={navigation}
+                post={post.item}
+                key={post.item._id}
+              />
+            );
+          }}
+          onEndReachedThreshold={0.1}
+          onEndReached={async () => {
+            let nextPosts = [];
+            if (tab == '모집중') {
+              nextPosts = await getOtherOpenPosts(
+                pageNum.current + 1,
+                user._id
+              );
+            } else {
+              nextPosts = await getOtherClosedPosts(
+                pageNum.current + 1,
+                user._id
+              );
+            }
+            if (nextPosts.length != 0) {
+              pageNum.current += 1;
+              let allPosts = [...posts, ...nextPosts];
+              setPosts(allPosts);
+            }
+          }}
+        />
+      </View>
     </View>
   ) : (
     <View style={styles.container}>
       <HeaderBackTitle
-        title={'마이페이지'}
+        title={'프로필'}
         modalOpen={modalOpen}
         setModalOpen={setModalOpen}
       />
@@ -227,4 +234,5 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   studyHeaderText: { fontSize: 16, fontWeight: 'bold', marginLeft: 13 },
+  BottomContent: { flex: 1, marginVertical: 10, paddingHorizontal: 25 },
 });
