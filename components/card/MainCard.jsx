@@ -85,8 +85,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 0,
     top: '10%',
-    width: 40,
-    height: 39,
+    width: 35,
+    height: 35,
   },
   logoImg: { width: '100%', height: '100%' },
   cardContainer: {
