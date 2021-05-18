@@ -8,6 +8,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Image,
 } from 'react-native';
 
 import * as SecureStore from 'expo-secure-store';
@@ -233,12 +234,24 @@ export default function ReadPost({ navigation, route }) {
           {/* 주최자 */}
           <View style={[styles.row, { alignItems: 'flex-start' }]}>
             <Text style={styles.label}>주최자</Text>
-            <View>
-              <Text style={styles.tag}>{post.user.name}</Text>
-              <Text style={styles.position}>
-                {post.position} / {post.language}
-              </Text>
-            </View>
+
+            <TouchableOpacity
+              onPress={() => {
+                navigation.push('OtherProfile', (navigation, post.user._id));
+              }}
+              style={{ flexDirection: 'row' }}
+            >
+              <Image
+                source={{ uri: post.user.userImg }}
+                style={styles.userImg}
+              />
+              <View>
+                <Text style={styles.tag}>{post.user.name}</Text>
+                <Text style={styles.position}>
+                  {post.position} / {post.language}
+                </Text>
+              </View>
+            </TouchableOpacity>
           </View>
 
           {/* 모집 인원 */}
@@ -307,14 +320,12 @@ const styles = StyleSheet.create({
     borderBottomColor: '#ECEEF1',
     marginVertical: 10,
   },
-
   arrowRow: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-
   hashtagRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -324,7 +335,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginVertical: 15,
   },
-
+  userImg: { width: 30, height: 30, borderRadius: 50, marginRight: 10 },
   day: {
     color: '#484848',
     fontSize: 12,
@@ -335,7 +346,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
   },
-
   locationBox: {
     flexDirection: 'row',
     backgroundColor: '#F8F9FB',
@@ -348,13 +358,11 @@ const styles = StyleSheet.create({
   location: {
     fontWeight: 'bold',
   },
-
   name: {
     width: '30%',
     fontSize: 15,
     fontWeight: 'bold',
   },
-
   row: {
     flexDirection: 'row',
     marginVertical: 10,
@@ -374,7 +382,6 @@ const styles = StyleSheet.create({
     color: '#8E9297',
     marginTop: 5,
   },
-
   descBox: {
     backgroundColor: '#F8F9FB',
     paddingVertical: 15,
