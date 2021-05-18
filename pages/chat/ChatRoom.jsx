@@ -47,6 +47,9 @@ export default function ChatRoom({ navigation, route }) {
   const [message, setMessage] = useState('');
   const [socketState, setSocketState] = useState(false);
 
+  const [postId, setPostId] = useState('');
+  const [title, setTitle] = useState('');
+
   const [admin, setAdmin] = useState(false);
 
   const [participantBox, setParticipantBox] = useState(false);
@@ -58,11 +61,12 @@ export default function ChatRoom({ navigation, route }) {
     navigation.addListener('focus', (e) => {
       setTimeout(async () => {
         const result = await getChatsByRoom(roomId);
-
         room.current = result.roomInfo;
+        setPostId(room.current.post._id);
+        setTitle(room.current.post.title);
         chat.current = result.chat.reverse();
-        participants.current = result.participants.participants;
 
+        participants.current = result.participants.participants;
         // 해당 모집글에 참여중인 사람인지 판단
         participants.current.map((participant) => {
           if (room.current.participant._id == participant._id) {
@@ -79,7 +83,6 @@ export default function ChatRoom({ navigation, route }) {
         setReady(true);
       });
     });
-
     // room._id emit (완료)
     socket.emit('connectRoom', { roomId });
 
@@ -156,7 +159,6 @@ export default function ChatRoom({ navigation, route }) {
     );
     await download();
   };
-
   const confirm = async () => {
     await postParticipants(room.current.post._id, room.current.participant._id);
     await download();
@@ -172,7 +174,7 @@ export default function ChatRoom({ navigation, route }) {
         }}
       >
         <Text style={{ color: getColor('defaultColor'), fontSize: 12 }}>
-          확정 취소하기 ❌
+          확정 취소 ❌
         </Text>
       </TouchableOpacity>
     ) : (
@@ -183,7 +185,7 @@ export default function ChatRoom({ navigation, route }) {
         }}
       >
         <Text style={{ color: getColor('defaultColor'), fontSize: 12 }}>
-          확정하기 ⭕
+          확정 ⭕
         </Text>
       </TouchableOpacity>
     );
@@ -193,42 +195,53 @@ export default function ChatRoom({ navigation, route }) {
     if (participantBox == false) {
       return (
         <View style={styles.participantBox}>
-          <View style={styles.row}>
-            <Text>참가자</Text>
-            <Entypo
-              name="chevron-small-down"
-              size={35}
-              color="black"
-              onPress={() => {
-                setParticipantBox(true);
-              }}
-            />
-          </View>
+          <TouchableOpacity
+            onPress={() => {
+              setParticipantBox(true);
+            }}
+            style={styles.row}
+          >
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={{ fontWeight: 'bold' }}>{title}</Text>
+              <Text> 참가자</Text>
+            </View>
+            <Entypo name="chevron-small-down" size={35} color="black" />
+          </TouchableOpacity>
         </View>
       );
     } else {
       return (
         <View style={styles.participantBox}>
-          <View style={styles.row}>
-            <Text>참가자</Text>
-            <Entypo
-              name="chevron-small-up"
-              size={35}
-              color="black"
-              onPress={() => {
-                setParticipantBox(false);
-              }}
-            />
-          </View>
+          <TouchableOpacity
+            onPress={() => {
+              setParticipantBox(false);
+            }}
+            style={styles.row}
+          >
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={{ fontWeight: 'bold' }}>{title}</Text>
+              <Text> 참가자</Text>
+            </View>
+            <Entypo name="chevron-small-up" size={35} color="black" />
+          </TouchableOpacity>
           <View style={styles.participants}>
             {participants.current.length == 0 ? (
               <View style={styles.participantLine}>
-                <Text>참가자가 없습니다.</Text>
+                <Text>참가자가 아직 없습니다.</Text>
               </View>
             ) : (
               participants.current.map((participant) => {
                 return (
-                  <View key={participant._id} style={styles.participantLine}>
+                  <TouchableOpacity
+                    key={participant._id}
+                    style={styles.participantLine}
+                    onPress={() => {
+                      navigation.push(
+                        'OtherProfile',
+                        (navigation, participant._id)
+                      );
+                    }}
+                  >
                     {showRoleIcon(participant)}
 
                     <View style={styles.row}>
@@ -239,7 +252,7 @@ export default function ChatRoom({ navigation, route }) {
                         {participant.role}{' '}
                       </Text>
                     </View>
-                  </View>
+                  </TouchableOpacity>
                 );
               })
             )}
@@ -280,6 +293,15 @@ export default function ChatRoom({ navigation, route }) {
       {admin ? (
         <View style={styles.buttonContainer}>
           {showConfirmButton()}
+
+          <TouchableOpacity
+            onPress={() => {
+              navigation.push('ReadPost', { postId });
+            }}
+            style={styles.button}
+          >
+            <Text style={{ color: '#999', fontSize: 12 }}>게시물로 이동🤔</Text>
+          </TouchableOpacity>
 
           <TouchableOpacity style={styles.button}>
             <Text style={{ color: '#999', fontSize: 12 }}>신고 🚨</Text>
