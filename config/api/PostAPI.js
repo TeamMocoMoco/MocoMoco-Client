@@ -367,6 +367,7 @@ export async function closePost(navigation, postId) {
 
     if (response.data.result) {
       Alert.alert('모집이 마감되었습니다.');
+      navigation.replace('ReadPost', { postId });
     }
   } catch (err) {
     const error = err.response.data.err || err.message;
