@@ -79,13 +79,17 @@ export default function MainList({ navigation }) {
   return ready ? (
     <View style={styles.container}>
       <Image source={mogury} style={styles.morugyImg} />
-      <SearchBar
-        doFunction={(value) => {
-          navigation.push('SubList', { value, tab });
-        }}
-      />
+      <View style={{ flexDirection: 'row', marginVertical: 10 }}>
+        <SearchBar
+          hint={'해시태그 또는 한 줄 소개글을 검색하세요.'}
+          keyword={''}
+          doFunction={(value) => {
+            navigation.push('SubList', { value, tab });
+          }}
+        />
+      </View>
 
-      <View style={{ flexDirection: 'row', marginTop: 10 }}>
+      <View style={{ flexDirection: 'row' }}>
         {['전체보기', '온라인', '오프라인'].map((title, i) => {
           return (
             <TabButton
@@ -142,7 +146,10 @@ export default function MainList({ navigation }) {
     </View>
   ) : (
     <View style={styles.container}>
-      <SearchBar />
+      <SearchBar
+        hint={'해시태그 또는 한 줄 소개글을 검색하세요.'}
+        keyword={''}
+      />
 
       <View style={{ flexDirection: 'row', marginVertical: 10 }}>
         <TabButton

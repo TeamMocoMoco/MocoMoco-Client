@@ -3,8 +3,8 @@ import { StyleSheet, TextInput, View } from 'react-native';
 
 import { Ionicons } from '@expo/vector-icons';
 
-export default function SearchBar({ doFunction }) {
-  const [value, setValue] = useState('');
+export default function SearchBar({ hint, keyword, doFunction }) {
+  const [value, setValue] = useState(keyword);
 
   return (
     <View style={styles.container}>
@@ -18,7 +18,7 @@ export default function SearchBar({ doFunction }) {
         <TextInput
           style={styles.input}
           value={value}
-          placeholder={'검색어를 입력하세요.'}
+          placeholder={hint}
           placeholderTextColor="#777"
           onChangeText={(text) => {
             setValue(text);
@@ -34,8 +34,8 @@ export default function SearchBar({ doFunction }) {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     flexDirection: 'row',
-    width: '100%',
   },
   inputContainer: {
     backgroundColor: '#F6F7F9',
