@@ -34,6 +34,8 @@ export default function ReadPost({ navigation, route }) {
   const [startDate, setStartDate] = useState('');
   const [dueDate, setDueDate] = useState('');
 
+  const [status, setStatus] = useState(post.status);
+
   useEffect(() => {
     navigation.addListener('focus', (e) => {
       setTimeout(async () => {
@@ -57,6 +59,7 @@ export default function ReadPost({ navigation, route }) {
 
         const id = await AsyncStorage.getItem('myid');
         setMyid(id);
+        setStatus(post.status);
         setReady(true);
       });
     });
