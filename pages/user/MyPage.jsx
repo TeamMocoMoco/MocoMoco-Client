@@ -9,6 +9,7 @@ import {
   ScrollView,
   Alert,
   ActivityIndicator,
+  Dimensions,
 } from 'react-native';
 
 import * as SecureStore from 'expo-secure-store';
@@ -21,10 +22,13 @@ import { getUserInfo } from '../../config/api/UserAPI';
 import { getColor } from '../../styles/styles';
 import { recruit, save, application } from '../../assets/images';
 
+const windowWidth = Dimensions.get('window').width;
+
 export default function MyPage({ navigation }) {
   const [ready, setReady] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [user, setUser] = useState({});
+
   useEffect(() => {
     navigation.addListener('focus', (e) => {
       setTimeout(async () => {
@@ -67,11 +71,20 @@ export default function MyPage({ navigation }) {
     }
     return (
       <Image
-        style={[styles.img, { borderColor: pickColor }]}
+        style={[styles.profileImage, { borderColor: pickColor }]}
         source={{
           uri: user.userImg,
         }}
       />
+    );
+  };
+
+  const showButtonText = (text) => {
+    return (
+      <View style={styles.buttonTextBox}>
+        <Text style={{ fontWeight: 'bold' }}>{text}</Text>
+        <Text style={{ color: 'grey' }}> 내역</Text>
+      </View>
     );
   };
 
@@ -89,58 +102,49 @@ export default function MyPage({ navigation }) {
         user={user}
       />
 
-      <ScrollView style={styles.content}>
+      <ScrollView contentContainerStyle={styles.scrollView}>
         {/* 프로필 */}
-        <TouchableOpacity style={styles.profile}>
+        <View style={styles.profileBox}>
           {showProfileImage()}
 
-          <View style={styles.nameBox}>
-            <Text style={styles.nameText}>{user.name} </Text>
-            <Text style={styles.roleText}>{user.role}</Text>
+          <View style={{ flex: 1, marginLeft: 20 }}>
+            <View style={styles.profileTextBox}>
+              <Text style={styles.nameText}>{user.name} </Text>
+              <Text style={styles.roleText}>{user.role}</Text>
+            </View>
+
+            {/* 버튼 */}
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => navigation.push('RecruitStudy')}
+              >
+                <Image source={recruit} style={styles.buttonImage} />
+                {showButtonText('모집')}
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => navigation.push('ApplicationStudy')}
+              >
+                <Image source={application} style={styles.buttonImage} />
+                {showButtonText('참가')}
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => navigation.push('SaveStudy')}
+              >
+                <Image source={save} style={styles.buttonImage} />
+                {showButtonText('저장')}
+              </TouchableOpacity>
+            </View>
           </View>
-        </TouchableOpacity>
-
-        {/* 버튼 */}
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => navigation.push('RecruitStudy')}
-          >
-            <Image source={recruit} style={styles.studyIcon} />
-            <View style={styles.textBox}>
-              <Text style={styles.cateText}>모집</Text>
-              <Text style={styles.studyText}> 스터디</Text>
-            </View>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => navigation.push('ApplicationStudy')}
-          >
-            <Image source={application} style={styles.studyIcon} />
-            <View style={styles.textBox}>
-              <Text style={styles.cateText}>신청</Text>
-              <Text style={styles.studyText}> 스터디</Text>
-            </View>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => navigation.push('SaveStudy')}
-          >
-            <Image source={save} style={styles.studyIcon} />
-            <View style={styles.textBox}>
-              <Text style={styles.cateText}>저장</Text>
-              <Text style={styles.studyText}> 스터디</Text>
-            </View>
-          </TouchableOpacity>
         </View>
 
         {/* 소개글 */}
-        <View style={styles.myBox}>
-          <View>
-            <Text>{user.introduce} </Text>
-          </View>
+        <View style={styles.introduceBox}>
+          <Text>{user.introduce}</Text>
         </View>
       </ScrollView>
     </View>
@@ -166,37 +170,55 @@ const styles = StyleSheet.create({
     marginTop: getStatusBarHeight(),
     backgroundColor: 'white',
   },
-  content: { padding: 10 },
-  profile: {
+  scrollView: {
+    paddingHorizontal: 30,
+    paddingVertical: 10,
+  },
+  profileBox: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 20,
-    marginBottom: 10,
   },
-  img: {
-    width: 80,
-    height: 80,
+  profileImage: {
+    width: windowWidth * 0.2,
+    height: windowWidth * 0.2,
     borderRadius: 100,
     borderWidth: 2,
   },
-  nameBox: { flexDirection: 'row', marginLeft: 20, alignItems: 'center' },
-  nameText: { fontSize: 20, fontWeight: 'bold' },
-  roleText: { fontSize: 15, color: 'grey', marginLeft: 5 },
+  profileTextBox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 10,
+    paddingVertical: 20,
+  },
+  nameText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  roleText: {
+    color: 'grey',
+    fontSize: 15,
+    marginLeft: 5,
+  },
   buttonContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
   },
-  button: { alignItems: 'center' },
-  studyIcon: { width: 50, height: 50 },
-  textBox: { flexDirection: 'row', paddingTop: 20 },
-  cateText: { fontWeight: 'bold' },
-  studyText: { color: 'grey' },
-  myBox: {
+  button: {
+    alignItems: 'center',
+  },
+  buttonImage: {
+    width: windowWidth * 0.12,
+    height: windowWidth * 0.12,
+  },
+  buttonTextBox: {
+    flexDirection: 'row',
+    paddingTop: 5,
+  },
+  introduceBox: {
+    padding: 15,
+    marginVertical: 30,
     borderWidth: 1,
     borderColor: 'lightgrey',
     borderRadius: 5,
-    marginHorizontal: 20,
-    marginVertical: 30,
-    padding: 15,
   },
 });

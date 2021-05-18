@@ -23,10 +23,12 @@ export default function MainCard({ navigation, post }) {
   const getDays = () => {
     const today = new Date();
     const startDate = new Date(post.startDate);
+
     const difference = startDate.getTime() - today.getTime();
     let days = Math.floor(difference / (1000 * 60 * 60 * 24));
     const Remainder = difference % (1000 * 3600 * 24);
     days = Remainder === 0 ? days : (days += 1);
+
     if (days >= 7) {
       return `${Math.floor(days / 7)}주일 뒤 시작`;
     } else if (days > 1) {
@@ -60,10 +62,10 @@ export default function MainCard({ navigation, post }) {
       >
         <Text style={styles.date}>{getDays()}</Text>
         <View style={{ marginVertical: 10 }}>
-          <Text style={styles.title}>
+          <Text style={styles.title}>{post.title}</Text>
+          <Text style={styles.info}>
             {post.meeting} {post.category}
           </Text>
-          <Text style={styles.info}>{post.title}</Text>
         </View>
         <View style={styles.hashtagList}>
           {post.hashtag.map((title, i) => {
