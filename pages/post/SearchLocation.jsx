@@ -1,10 +1,17 @@
 import React, { useCallback, useState } from 'react';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
-import { ActivityIndicator, StyleSheet, View, FlatList } from 'react-native';
+import {
+  ActivityIndicator,
+  StyleSheet,
+  View,
+  FlatList,
+  TouchableOpacity,
+} from 'react-native';
 
 import { SearchBar } from '../../components/input';
 import { LocationCard } from '../../components/card';
-import { HeaderBack } from '../../components/header';
+
+import { Entypo } from '@expo/vector-icons';
 
 import { getLocations } from '../../config/api/MapAPI';
 import { getColor } from '../../styles/styles';
@@ -24,9 +31,19 @@ export default function SearchLocation({ navigation, route }) {
 
   return ready ? (
     <View style={styles.container}>
-      <HeaderBack navigation={navigation} />
       {/* 검색창 */}
-      <View style={{ flexDirection: 'row', marginVertical: 10 }}>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+        }}
+      >
+        <TouchableOpacity
+          style={{ paddingVertical: 10, paddingEnd: 10 }}
+          onPress={() => navigation.goBack()}
+        >
+          <Entypo name="chevron-small-left" size={30} color="black" />
+        </TouchableOpacity>
         <SearchBar doFunction={download} />
       </View>
 
@@ -51,7 +68,15 @@ export default function SearchLocation({ navigation, route }) {
     </View>
   ) : (
     <View style={styles.container}>
-      <SearchBar doFunction={download} />
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <TouchableOpacity
+          style={{ paddingVertical: 10, paddingEnd: 10 }}
+          onPress={() => navigation.goBack()}
+        >
+          <Entypo name="chevron-small-left" size={30} color="black" />
+        </TouchableOpacity>
+        <SearchBar doFunction={download} />
+      </View>
       <ActivityIndicator
         size="large"
         color={getColor('defaultColor')}
