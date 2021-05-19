@@ -160,12 +160,14 @@ export default function MainList({ navigation }) {
     </View>
   ) : (
     <View style={styles.container}>
-      <SearchBar
-        hint={'해시태그 또는 한 줄 소개글을 검색하세요.'}
-        keyword={''}
-      />
-
       <View style={{ flexDirection: 'row', marginVertical: 10 }}>
+        <SearchBar
+          hint={'해시태그 또는 한 줄 소개글을 검색하세요.'}
+          keyword={''}
+        />
+      </View>
+
+      <View style={{ flexDirection: 'row' }}>
         <TabButton
           title={'전체보기'}
           state={tab}

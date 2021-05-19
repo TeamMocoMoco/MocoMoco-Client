@@ -92,7 +92,7 @@ export default function ReadPost({ navigation, route }) {
         <TouchableOpacity
           style={styles.locationBox}
           onPress={() => {
-            navigation.push('LocationDetail', post.location);
+            navigation.push('LocationDetail', post.offLocation);
           }}
         >
           <Text style={styles.location}>{post.address}</Text>
