@@ -26,7 +26,9 @@ export default function SearchLocation({ navigation, route }) {
     <View style={styles.container}>
       <HeaderBack navigation={navigation} />
       {/* 검색창 */}
-      <SearchBar doFunction={download} />
+      <View style={{ flexDirection: 'row', marginVertical: 10 }}>
+        <SearchBar doFunction={download} />
+      </View>
 
       {/* 검색한 주소 목록 */}
       <View style={styles.content}>
