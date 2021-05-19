@@ -223,7 +223,7 @@ export default function UpdatePost({ navigation, route }) {
 
   return (
     <View style={styles.container}>
-      <HeaderBack navigation={navigation} title={'모집글 수정'} />
+      <HeaderBack navigation={navigation} />
       <ScrollView>
         <View style={styles.content}>
           {/* 온/오프라인 */}
