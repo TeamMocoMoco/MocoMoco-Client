@@ -34,7 +34,6 @@ export default function SearchBar({ hint, keyword, doFunction }) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     flexDirection: 'row',
   },
   inputContainer: {
