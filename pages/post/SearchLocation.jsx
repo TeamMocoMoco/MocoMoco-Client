@@ -4,6 +4,7 @@ import { ActivityIndicator, StyleSheet, View, FlatList } from 'react-native';
 
 import { SearchBar } from '../../components/input';
 import { LocationCard } from '../../components/card';
+import { HeaderBack } from '../../components/header';
 
 import { getLocations } from '../../config/api/MapAPI';
 import { getColor } from '../../styles/styles';
@@ -23,6 +24,7 @@ export default function SearchLocation({ navigation, route }) {
 
   return ready ? (
     <View style={styles.container}>
+      <HeaderBack navigation={navigation} />
       {/* 검색창 */}
       <SearchBar doFunction={download} />
 
