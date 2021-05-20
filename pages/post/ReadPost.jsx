@@ -286,9 +286,9 @@ export default function ReadPost({ navigation, route }) {
           </View>
         </View>
 
-        {/* 소개글 */}
+        {/* 설명 */}
         <View style={styles.m_h_25}>
-          <Text style={[styles.label, { marginVertical: 10 }]}>소개글</Text>
+          <Text style={[styles.label, { marginVertical: 10 }]}>설명</Text>
         </View>
         <View style={styles.descBox}>
           <Text style={styles.desc}>{post.content}</Text>

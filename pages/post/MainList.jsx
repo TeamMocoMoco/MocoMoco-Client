@@ -91,7 +91,7 @@ export default function MainList({ navigation }) {
       <Image source={mogury} style={styles.morugyImg} />
       <View style={{ flexDirection: 'row', marginVertical: 10 }}>
         <SearchBar
-          hint={'해시태그 또는 한 줄 소개글을 검색하세요.'}
+          hint={'해시태그 또는 대표 문구를 검색하세요.'}
           keyword={''}
           doFunction={(value) => {
             navigation.push('SubList', { value, tab });
