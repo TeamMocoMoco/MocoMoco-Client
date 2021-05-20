@@ -14,7 +14,7 @@ import { getColor } from '../../../styles/styles';
 
 const diviceWidth = Dimensions.get('window').width;
 
-export default function SucessPost({ navigation }) {
+export default function SuccessPost({ navigation }) {
   return (
     <View style={styles.container}>
       <View style={styles.content}>
@@ -42,7 +42,12 @@ export default function SucessPost({ navigation }) {
 
           {/* 버튼 */}
           <TouchableOpacity
-            onPress={() => navigation.push('TabNavigator')}
+            onPress={() =>
+              navigation.reset({
+                index: 0,
+                routes: [{ name: 'TabNavigator' }],
+              })
+            }
             style={styles.buttonContainer}
           >
             <Text style={styles.buttonText}>탐색탭으로 이동</Text>

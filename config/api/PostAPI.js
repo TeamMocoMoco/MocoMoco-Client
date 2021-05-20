@@ -303,7 +303,10 @@ export async function postPosts(
     });
 
     if (response.data.result) {
-      navigation.push('SucessPost');
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'SuccessPost' }],
+      });
     }
   } catch (err) {
     const error = err.response.data.err || err.message;
