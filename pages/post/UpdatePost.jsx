@@ -166,8 +166,7 @@ export default function UpdatePost({ navigation, route }) {
       new Date(dueDate).getTime() - new Date(startDate).getTime() < 0 ||
       position == '' ||
       language == '' ||
-      intro == '' ||
-      hashtagList.length == 0
+      intro == ''
     ) {
       return <FullButton title={'수정 완료'} empty={true} />;
     } else if (
@@ -440,6 +439,7 @@ export default function UpdatePost({ navigation, route }) {
               <TextInput
                 placeholder={'해시태그를 입력하세요. (최대 5개)'}
                 value={hashtag}
+                maxLength={14}
                 onChangeText={(text) => {
                   setHashtag(text);
                 }}
