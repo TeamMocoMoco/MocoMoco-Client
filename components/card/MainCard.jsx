@@ -19,7 +19,6 @@ export default function MainCard({ navigation, post }) {
       roleName = dvIcon;
       break;
   }
-
   const getDays = () => {
     const today = new Date();
     const startDate = new Date(post.startDate);
@@ -60,7 +59,15 @@ export default function MainCard({ navigation, post }) {
           navigation.push('ReadPost', { postId });
         }}
       >
-        <Text style={styles.date}>{getDays()}</Text>
+        <View style={styles.participantsBox}>
+          <Text style={styles.date}>{getDays()}</Text>
+          <View style={styles.row}>
+            <Text style={styles.participantsText}>참가자 </Text>
+            <Text style={styles.participantsNum}>
+              {post.participants.length}/{post.personnel}
+            </Text>
+          </View>
+        </View>
         <View style={{ marginVertical: 10 }}>
           <Text style={styles.title}>{post.title}</Text>
           <Text style={styles.info}>
@@ -81,6 +88,7 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
   },
+  row: { flexDirection: 'row' },
   logoImgBox: {
     position: 'absolute',
     right: 0,
@@ -101,6 +109,16 @@ const styles = StyleSheet.create({
   date: {
     color: getColor('defaultColor'),
     fontSize: 12,
+    fontWeight: 'bold',
+  },
+  participantsBox: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  participantsText: { fontSize: 12, color: '#8E9297', fontWeight: 'bold' },
+  participantsNum: {
+    fontSize: 12,
+    color: getColor('defaultColor'),
     fontWeight: 'bold',
   },
   title: {
