@@ -85,6 +85,7 @@ export default function SignUp({ navigation }) {
           <View style={styles.inputContainer}>
             <TextInput
               placeholder={'김정훈'}
+              maxLength={5}
               value={name}
               onChangeText={(text) => {
                 setName(text);
