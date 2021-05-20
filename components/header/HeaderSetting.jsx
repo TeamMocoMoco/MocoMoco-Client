@@ -29,7 +29,7 @@ export default function HeaderSetting({ title, modalOpen, setModalOpen }) {
 const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
-    paddingVertical: 20,
+    paddingVertical: 15,
     paddingHorizontal: 15,
     backgroundColor: 'white',
     alignItems: 'center',
@@ -43,5 +43,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
   },
-  settingIcon: { paddingHorizontal: 20 },
+  settingIcon: { paddingHorizontal: 20, paddingVertical: 5 },
 });

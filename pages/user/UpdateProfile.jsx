@@ -82,7 +82,7 @@ export default function UpdateProfile({ navigation, route }) {
   return (
     <View style={styles.container}>
       <HeaderProfile
-        title={'프로필 수정'}
+        title={'프로필 편집'}
         navigation={navigation}
         update={update}
       />
@@ -135,7 +135,7 @@ export default function UpdateProfile({ navigation, route }) {
             }}
           >
             <TextInput
-              style={[styles.textarea, introduce == '' ? { opacity: 0.6 } : {}]}
+              style={[styles.textarea, introduce == '' ? { opacity: 0.4 } : {}]}
               placeholder={
                 'ex)\n👋안녕하세요 저는 개발자 이지은 입니다.\n🌎현재 저는 서울에 거주중이에요!\n👨‍💻클라이언트 개발자로 열심히 성장중입니다.\n⌨Python, JavaScript를 주로 사용해요.\nReact Native를 사용해서 앱을 만들고있습니다.\n깃허브가 궁금하시면 아래를 참고해주세요!\nhttps://github.com/hyeonginju'
               }

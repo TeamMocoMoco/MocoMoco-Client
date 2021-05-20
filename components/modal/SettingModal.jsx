@@ -71,7 +71,7 @@ export default function SettingModal({
             }}
           >
             <FontAwesome name="pencil-square-o" size={30} color="black" />
-            <Text style={styles.setText}>프로필 수정</Text>
+            <Text style={styles.setText}>프로필 편집</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.setBox} onPress={logoutFunc}>

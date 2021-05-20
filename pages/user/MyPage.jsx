@@ -28,7 +28,6 @@ export default function MyPage({ navigation }) {
   const [ready, setReady] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [user, setUser] = useState({});
-
   useEffect(() => {
     navigation.addListener('focus', (e) => {
       setTimeout(async () => {
@@ -88,6 +87,22 @@ export default function MyPage({ navigation }) {
     );
   };
 
+  const ProfileText = () => {
+    if (user.introduce == '') {
+      return (
+        <View style={styles.introduceBox}>
+          <Text>아직 소개 글이 없어요😥</Text>
+        </View>
+      );
+    } else {
+      return (
+        <View style={styles.introduceBox}>
+          <Text>{user.introduce}</Text>
+        </View>
+      );
+    }
+  };
+
   return ready ? (
     <View style={styles.container}>
       <HeaderSetting
@@ -101,7 +116,6 @@ export default function MyPage({ navigation }) {
         setModalOpen={setModalOpen}
         user={user}
       />
-
       <ScrollView contentContainerStyle={styles.scrollView}>
         {/* 프로필 */}
         <View style={styles.profileBox}>
@@ -142,10 +156,17 @@ export default function MyPage({ navigation }) {
           </View>
         </View>
 
+        <TouchableOpacity
+          onPress={() => {
+            navigation.push('UpdateProfile', { user });
+          }}
+          style={styles.editBox}
+        >
+          <Text style={styles.editText}>프로필 편집</Text>
+        </TouchableOpacity>
+
         {/* 소개글 */}
-        <View style={styles.introduceBox}>
-          <Text>{user.introduce}</Text>
-        </View>
+        {ProfileText()}
       </ScrollView>
     </View>
   ) : (
@@ -214,11 +235,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingTop: 5,
   },
+  editBox: {
+    borderWidth: 1,
+    marginTop: 27,
+    borderColor: getColor('inactiveBorderColor'),
+    borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 6,
+  },
+  editText: { fontSize: 14, fontWeight: 'bold' },
   introduceBox: {
     padding: 15,
     marginVertical: 30,
     borderWidth: 1,
-    borderColor: 'lightgrey',
+    borderColor: getColor('inactiveBorderColor'),
     borderRadius: 5,
   },
 });
