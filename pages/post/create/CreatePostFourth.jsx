@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  Alert,
 } from 'react-native';
 
 import { HeaderBack } from '../../../components/header';
@@ -32,21 +33,33 @@ export default function CreatePostFourth({ navigation, route }) {
   let startDate = route.params.startDate;
   let dueDate = route.params.dueDate;
 
-  const upload = async () => {
-    await postPosts(
-      navigation,
-      onAndOff,
-      location,
-      address,
-      name,
-      category,
-      personnel,
-      startDate,
-      dueDate,
-      title,
-      intro,
-      hashtagList
-    );
+  const upload = () => {
+    Alert.alert('게시글을 등록 하시겠습니까?', '', [
+      {
+        text: '네',
+        onPress: () => {
+          postPosts(
+            navigation,
+            onAndOff,
+            location,
+            address,
+            name,
+            category,
+            personnel,
+            startDate,
+            dueDate,
+            title,
+            intro,
+            hashtagList
+          );
+        },
+        style: 'default',
+      },
+      {
+        text: '아니오',
+        style: 'cancel',
+      },
+    ]);
   };
 
   const showAddButton = () => {
