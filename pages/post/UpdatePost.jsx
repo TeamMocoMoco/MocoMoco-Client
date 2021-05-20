@@ -40,8 +40,6 @@ export default function UpdatePost({ navigation, route }) {
   const [showStartPicker, setShowStartPicker] = useState(false);
   const [showEndPicker, setShowEndPicker] = useState(false);
 
-  const [position, setPosition] = useState(post.position);
-  const [language, setLanguage] = useState(post.language);
   const [intro, setIntro] = useState(post.content);
   const [hashtagList, setHashtagList] = useState(post.hashtag);
   const [hashtag, setHashtag] = useState('');
@@ -164,8 +162,6 @@ export default function UpdatePost({ navigation, route }) {
       startDate == '' ||
       dueDate == '' ||
       new Date(dueDate).getTime() - new Date(startDate).getTime() < 0 ||
-      position == '' ||
-      language == '' ||
       intro == ''
     ) {
       return <FullButton title={'수정 완료'} empty={true} />;
@@ -198,8 +194,6 @@ export default function UpdatePost({ navigation, route }) {
       personnel,
       startDate,
       dueDate,
-      position,
-      language,
       title,
       intro,
       hashtagList
@@ -364,37 +358,6 @@ export default function UpdatePost({ navigation, route }) {
               }}
             />
           )}
-
-          {/* 포지션 / 사용언어 */}
-          <View style={styles.column}>
-            {/* 작성자 포지션 */}
-            <View style={styles.inputBox}>
-              <Text style={styles.tag}>나의 포지션</Text>
-              <TextInput
-                style={{ flex: 3, fontSize: 18 }}
-                value={position}
-                type={'position'}
-                placeholder={'ex) 백엔드 개발자'}
-                onChangeText={(text) => {
-                  setPosition(text);
-                }}
-              />
-            </View>
-
-            {/* 작성자 사용 언어 */}
-            <View style={styles.inputBox}>
-              <Text style={styles.tag}>사용 언어</Text>
-              <TextInput
-                style={{ flex: 3, fontSize: 18 }}
-                value={language}
-                type={'language'}
-                placeholder={'ex) Python, JS'}
-                onChangeText={(text) => {
-                  setLanguage(text);
-                }}
-              />
-            </View>
-          </View>
 
           {/* 소개글 */}
           <View style={styles.inputBox}>

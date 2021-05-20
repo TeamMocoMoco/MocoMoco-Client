@@ -31,8 +31,6 @@ export default function CreatePostFourth({ navigation, route }) {
   let name = route.params.name;
   let startDate = route.params.startDate;
   let dueDate = route.params.dueDate;
-  let position = route.params.position;
-  let language = route.params.language;
 
   const upload = async () => {
     await postPosts(
@@ -45,8 +43,6 @@ export default function CreatePostFourth({ navigation, route }) {
       personnel,
       startDate,
       dueDate,
-      position,
-      language,
       title,
       intro,
       hashtagList

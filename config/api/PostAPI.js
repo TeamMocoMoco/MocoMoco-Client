@@ -275,8 +275,6 @@ export async function postPosts(
   personnel,
   startDate,
   dueDate,
-  position,
-  language,
   title,
   intro,
   hashtagList
@@ -298,8 +296,6 @@ export async function postPosts(
         personnel: personnel,
         startDate: new Date(startDate).toISOString(),
         dueDate: new Date(dueDate).toISOString(),
-        position: position,
-        language: language,
         title: title,
         content: intro,
         hashtag: hashtagList,
@@ -328,8 +324,6 @@ export async function patchPosts(
   personnel,
   startDate,
   dueDate,
-  position,
-  language,
   title,
   intro,
   hashtagList

@@ -42,7 +42,7 @@ export default function CreatePostSecond({ navigation, route }) {
           title={'저장하고 다음으로'}
           empty={false}
           doFunction={() =>
-            navigation.push('CreatePostThird', {
+            navigation.push('CreatePostFourth', {
               onAndOff,
               category,
               personnel,
@@ -63,7 +63,7 @@ export default function CreatePostSecond({ navigation, route }) {
       <HeaderBack navigation={navigation} title={'시간까지 설정하는 센스!'} />
       {/* 진행 현황 */}
       <ProgressBar
-        progress={0.5}
+        progress={0.66}
         color={Colors.grey900}
         backgroundColor={Colors.grey50}
       />
