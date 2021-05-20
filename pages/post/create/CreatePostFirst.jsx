@@ -31,8 +31,12 @@ export default function CreatePostFirst({ navigation }) {
         const lng = locationInfo.current.geometry.location.lng;
         setLocation([lat, lng]);
         let array = locationInfo.current.vicinity.split(' ');
-        array.pop();
-        setAddress(array.join(' '));
+        if (array.length > 1) {
+          array.pop();
+          setAddress(array.join(' '));
+        } else {
+          setAddress(array);
+        }
         setName(locationInfo.current.name);
       }
     });
