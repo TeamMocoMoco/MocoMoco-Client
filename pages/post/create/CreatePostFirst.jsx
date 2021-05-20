@@ -33,10 +33,8 @@ export default function CreatePostFirst({ navigation }) {
         let array = locationInfo.current.vicinity.split(' ');
         if (array.length > 1) {
           array.pop();
-          setAddress(array.join(' '));
-        } else {
-          setAddress(array);
         }
+        setAddress(array.join(' '));
         setName(locationInfo.current.name);
       }
     });
