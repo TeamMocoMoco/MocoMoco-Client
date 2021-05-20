@@ -265,7 +265,15 @@ export default function ReadPost({ navigation, route }) {
             <Text style={styles.label}>참가자</Text>
             <View style={styles.arrowRow}>
               <Text style={styles.tag}>{post.participants.length}명</Text>
-              <TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.push(
+                    'ParticipantsList',
+                    (navigation, post.participants)
+                  );
+                }}
+                style={styles.goParticipantIcon}
+              >
                 <Entypo name="chevron-right" size={22} color="black" />
               </TouchableOpacity>
             </View>
@@ -392,4 +400,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   upbottom: { marginBottom: 15 },
+  goParticipantIcon: {
+    paddingHorizontal: 10,
+  },
 });

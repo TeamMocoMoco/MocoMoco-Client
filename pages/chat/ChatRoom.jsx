@@ -135,7 +135,7 @@ export default function ChatRoom({ navigation, route }) {
   const showSendButton = () => {
     if (message == '') {
       return (
-        <TouchableOpacity disabled style={{ opacity: 0.4 }}>
+        <TouchableOpacity disabled style={styles.offSendButton}>
           <Feather name="send" size={24} color="#777" />
         </TouchableOpacity>
       );
@@ -145,6 +145,7 @@ export default function ChatRoom({ navigation, route }) {
           onPress={() => {
             submitChatMessage();
           }}
+          style={styles.sendButton}
         >
           <Feather name="send" size={24} color="black" />
         </TouchableOpacity>
@@ -202,35 +203,55 @@ export default function ChatRoom({ navigation, route }) {
     if (!participantBox) {
       return (
         <View style={styles.participantBox}>
-          <TouchableOpacity
-            onPress={() => {
-              setParticipantBox(true);
-            }}
-            style={styles.row}
-          >
+          <View style={styles.row}>
             <View style={{ flexDirection: 'row' }}>
-              <Text style={{ fontWeight: 'bold' }}>{title}</Text>
-              <Text> 참가자</Text>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.push('ReadPost', { postId });
+                }}
+              >
+                <Text style={{ fontWeight: 'bold' }}>{title}</Text>
+              </TouchableOpacity>
+              {/* <Text> 참가자</Text> */}
             </View>
-            <Entypo name="chevron-small-down" size={35} color="black" />
-          </TouchableOpacity>
+            <TouchableOpacity style={{ paddingHorizontal: 5 }}>
+              <Entypo
+                name="chevron-small-down"
+                size={35}
+                color="black"
+                onPress={() => {
+                  setParticipantBox(true);
+                }}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
       );
     } else {
       return (
         <View style={styles.participantBox}>
-          <TouchableOpacity
-            onPress={() => {
-              setParticipantBox(false);
-            }}
-            style={styles.row}
-          >
+          <View style={styles.row}>
             <View style={{ flexDirection: 'row' }}>
-              <Text style={{ fontWeight: 'bold' }}>{title}</Text>
-              <Text> 참가자</Text>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.push('ReadPost', { postId });
+                }}
+              >
+                <Text style={{ fontWeight: 'bold' }}>{title}</Text>
+              </TouchableOpacity>
+              {/* <Text> 참가자</Text> */}
             </View>
-            <Entypo name="chevron-small-up" size={35} color="black" />
-          </TouchableOpacity>
+            <TouchableOpacity style={{ paddingHorizontal: 5 }}>
+              <Entypo
+                name="chevron-small-down"
+                size={35}
+                color="black"
+                onPress={() => {
+                  setParticipantBox(false);
+                }}
+              />
+            </TouchableOpacity>
+          </View>
           <View style={styles.participants}>
             {participants.current.length == 0 ||
             participants.current == null ? (
@@ -499,4 +520,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     marginHorizontal: 10,
   },
+  offSendButton: { opacity: 0.4, padding: 10 },
+  sendButton: { padding: 10 },
 });

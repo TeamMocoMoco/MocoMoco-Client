@@ -108,6 +108,7 @@ export default function UpdateProfile({ navigation, route }) {
             <TextInput
               style={{ fontSize: 18 }}
               placeholder={'이지은'}
+              maxLength={5}
               value={name}
               onChangeText={(text) => {
                 setName(text);
