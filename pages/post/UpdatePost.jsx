@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import {
   ScrollView,
@@ -11,6 +11,8 @@ import {
 
 import { Entypo, Ionicons } from '@expo/vector-icons';
 
+import moment from 'moment';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
 
 import { HeaderBack } from '../../components/header';
@@ -19,7 +21,6 @@ import {
   FullButton,
   OnAndOffButton,
 } from '../../components/button';
-import { DatePickModal } from '../../components/modal';
 
 import kind from '../../config/mock/category.json';
 import { patchPosts } from '../../config/api/PostAPI';
@@ -33,25 +34,23 @@ export default function UpdatePost({ navigation, route }) {
   const [title, setTitle] = useState(post.title);
   const [category, setCategory] = useState(post.category);
   const [personnel, setPersonnel] = useState(post.personnel);
-  const [startDate, setStartDate] = useState(
-    post.startDate.substr(0, 16).replace('T', ' ').replace(/-/g, '/')
-  );
-  const [dueDate, setDueDate] = useState(
-    post.dueDate.substr(0, 16).replace('T', ' ').replace(/-/g, '/')
-  );
+
+  const [startDate, setStartDate] = useState(new Date(post.startDate));
+  const [dueDate, setDueDate] = useState(new Date(post.dueDate));
+  const [showStartPicker, setShowStartPicker] = useState(false);
+  const [showEndPicker, setShowEndPicker] = useState(false);
+
   const [position, setPosition] = useState(post.position);
   const [language, setLanguage] = useState(post.language);
   const [intro, setIntro] = useState(post.content);
   const [hashtagList, setHashtagList] = useState(post.hashtag);
   const [hashtag, setHashtag] = useState('');
+
   const [location, setLocation] = useState(post.location);
   const [address, setAddress] = useState(post.address);
   const [name, setName] = useState(post.address_name);
 
   const locationInfo = useRef();
-
-  const [currentModal, setCurrentModal] = useState('');
-  const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     navigation.addListener('focus', (e) => {
@@ -67,27 +66,8 @@ export default function UpdatePost({ navigation, route }) {
     });
   });
 
-  const update = async () => {
-    await patchPosts(
-      navigation,
-      post._id,
-      onAndOff,
-      location,
-      address,
-      name,
-      category,
-      personnel,
-      startDate,
-      dueDate,
-      position,
-      language,
-      title,
-      intro,
-      hashtagList
-    );
-  };
-
-  const showAdressInput = () => {
+  // 오프라인일 때 주소 검색 창
+  const showAddressInput = () => {
     if (onAndOff == '오프라인') {
       return (
         <View>
@@ -110,86 +90,7 @@ export default function UpdatePost({ navigation, route }) {
     }
   };
 
-  const showAddButton = () => {
-    if (hashtagList.length == 5) {
-      return (
-        <TouchableOpacity
-          disabled
-          style={[styles.buttonContainer, styles.inactive]}
-        >
-          <Text style={styles.buttonText}>추가</Text>
-        </TouchableOpacity>
-      );
-    } else {
-      return (
-        <TouchableOpacity
-          style={[styles.buttonContainer, styles.active]}
-          onPress={() => {
-            setHashtagList([...hashtagList, hashtag]);
-            setHashtag('');
-          }}
-        >
-          <Text style={styles.buttonText}>추가</Text>
-        </TouchableOpacity>
-      );
-    }
-  };
-
-  const showSubmitButton = () => {
-    if (
-      title == '' ||
-      category == '선택' ||
-      personnel == '' ||
-      startDate == '' ||
-      dueDate == '' ||
-      position == '' ||
-      language == '' ||
-      intro == '' ||
-      hashtagList.length == 0
-    ) {
-      return <FullButton title={'수정 완료'} empty={true} />;
-    } else if (
-      onAndOff == '오프라인' &&
-      (location == '' || address == '' || name == '')
-    ) {
-      return <FullButton title={'수정 완료'} empty={true} />;
-    } else {
-      return (
-        <FullButton
-          title={'수정 완료'}
-          empty={false}
-          doFunction={() => update()}
-        />
-      );
-    }
-  };
-
-  const showDateModal = () => {
-    if (currentModal == 'start') {
-      return (
-        <DatePickModal
-          modalOpen={modalOpen}
-          setModalOpen={setModalOpen}
-          setDateTime={setStartDate}
-        />
-      );
-    } else {
-      return (
-        <DatePickModal
-          modalOpen={modalOpen}
-          setModalOpen={setModalOpen}
-          setDateTime={setDueDate}
-        />
-      );
-    }
-  };
-
-  const onRemove = (index) => {
-    let list = hashtagList;
-    list.splice(index, 1);
-    setHashtagList(list);
-  };
-
+  // 선택된 해시태그
   const showSelectedHashtag = () => {
     if (hashtagList.length > 0) {
       return (
@@ -221,6 +122,91 @@ export default function UpdatePost({ navigation, route }) {
     }
   };
 
+  // 해시태그 추가 버튼
+  const showAddButton = () => {
+    if (hashtagList.length == 5) {
+      return (
+        <TouchableOpacity
+          disabled
+          style={[styles.buttonContainer, styles.inactive]}
+        >
+          <Text style={styles.buttonText}>추가</Text>
+        </TouchableOpacity>
+      );
+    } else {
+      return (
+        <TouchableOpacity
+          style={[styles.buttonContainer, styles.active]}
+          onPress={() => {
+            setHashtagList([...hashtagList, hashtag]);
+            setHashtag('');
+          }}
+        >
+          <Text style={styles.buttonText}>추가</Text>
+        </TouchableOpacity>
+      );
+    }
+  };
+
+  // 해시태그 삭제 함수
+  const onRemove = (index) => {
+    let list = hashtagList;
+    list.splice(index, 1);
+    setHashtagList(list);
+  };
+
+  // 게시글 업로드 버튼
+  const showSubmitButton = () => {
+    if (
+      title == '' ||
+      category == '선택' ||
+      personnel == '' ||
+      startDate == '' ||
+      dueDate == '' ||
+      new Date(dueDate).getTime() - new Date(startDate).getTime() < 0 ||
+      position == '' ||
+      language == '' ||
+      intro == '' ||
+      hashtagList.length == 0
+    ) {
+      return <FullButton title={'수정 완료'} empty={true} />;
+    } else if (
+      onAndOff == '오프라인' &&
+      (location == '' || address == '' || name == '')
+    ) {
+      return <FullButton title={'수정 완료'} empty={true} />;
+    } else {
+      return (
+        <FullButton
+          title={'수정 완료'}
+          empty={false}
+          doFunction={() => update()}
+        />
+      );
+    }
+  };
+
+  // 게시글 업로드 함수
+  const update = async () => {
+    await patchPosts(
+      navigation,
+      post._id,
+      onAndOff,
+      location,
+      address,
+      name,
+      category,
+      personnel,
+      startDate,
+      dueDate,
+      position,
+      language,
+      title,
+      intro,
+      hashtagList
+    );
+  };
+
   return (
     <View style={styles.container}>
       <HeaderBack navigation={navigation} />
@@ -250,7 +236,7 @@ export default function UpdatePost({ navigation, route }) {
           </View>
 
           {/* 주소 */}
-          {showAdressInput()}
+          {showAddressInput()}
 
           {/* 모집분류 */}
           <View style={styles.categoryBox}>
@@ -314,8 +300,7 @@ export default function UpdatePost({ navigation, route }) {
             <TouchableOpacity
               style={styles.pickerBox}
               onPress={() => {
-                setCurrentModal('start');
-                setModalOpen(true);
+                setShowStartPicker(true);
               }}
             >
               <TextInput
@@ -323,7 +308,7 @@ export default function UpdatePost({ navigation, route }) {
                 editable={false}
                 placeholder={'시작 일시를 선택하세요.'}
                 placeholderTextColor={'#999'}
-                value={startDate}
+                value={moment(startDate).format('YYYY년 MM월 DD일')}
               />
             </TouchableOpacity>
           </View>
@@ -336,8 +321,7 @@ export default function UpdatePost({ navigation, route }) {
             <TouchableOpacity
               style={styles.pickerBox}
               onPress={() => {
-                setCurrentModal('due');
-                setModalOpen(true);
+                setShowEndPicker(true);
               }}
             >
               <TextInput
@@ -345,12 +329,42 @@ export default function UpdatePost({ navigation, route }) {
                 editable={false}
                 placeholder={'종료 일시를 선택하세요.'}
                 placeholderTextColor={'#999'}
-                value={dueDate}
+                value={moment(dueDate).format('YYYY년 MM월 DD일')}
               />
             </TouchableOpacity>
           </View>
 
-          {showDateModal()}
+          {/* 시작일 DatePicker */}
+          {showStartPicker && !showEndPicker && (
+            <DateTimePicker
+              testID="dateTimePicker"
+              value={startDate}
+              minimumDate={new Date()}
+              mode={'date'}
+              display="default"
+              onChange={(event, selectedDate) => {
+                setStartDate(selectedDate || startDate);
+                setShowStartPicker(false);
+                setShowEndPicker(false);
+              }}
+            />
+          )}
+
+          {/* 종료일 DatePicker */}
+          {!showStartPicker && showEndPicker && (
+            <DateTimePicker
+              testID="dateTimePicker"
+              value={dueDate}
+              minimumDate={startDate}
+              mode={'date'}
+              display="default"
+              onChange={(event, selectedDate) => {
+                setDueDate(selectedDate || dueDate);
+                setShowStartPicker(false);
+                setShowEndPicker(false);
+              }}
+            />
+          )}
 
           {/* 포지션 / 사용언어 */}
           <View style={styles.column}>
@@ -421,21 +435,17 @@ export default function UpdatePost({ navigation, route }) {
           {showSelectedHashtag()}
 
           {/* 해시태그 */}
-          <View style={styles.row}>
-            <View style={{ width: '100%', paddingBottom: 20 }}>
-              <View style={styles.row}>
-                <View style={styles.hashtagBox}>
-                  <TextInput
-                    placeholder={'해시태그를 입력하세요. (최대 5개)'}
-                    value={hashtag}
-                    onChangeText={(text) => {
-                      setHashtag(text);
-                    }}
-                  />
-                </View>
-                <View style={{ width: '17%' }}>{showAddButton()}</View>
-              </View>
+          <View style={[styles.row, { width: '100%', paddingBottom: 20 }]}>
+            <View style={styles.hashtagBox}>
+              <TextInput
+                placeholder={'해시태그를 입력하세요. (최대 5개)'}
+                value={hashtag}
+                onChangeText={(text) => {
+                  setHashtag(text);
+                }}
+              />
             </View>
+            <View style={{ width: '17%' }}>{showAddButton()}</View>
           </View>
         </View>
         {showSubmitButton()}
