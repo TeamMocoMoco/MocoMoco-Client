@@ -16,6 +16,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
 
+import moment from 'moment';
+
 import { HeaderBack } from '../../components/header';
 import { HashtagButton, RadiusButton } from '../../components/button';
 import { DotModal } from '../../components/modal';
@@ -220,7 +222,8 @@ export default function ReadPost({ navigation, route }) {
           <View style={{ marginVertical: 10 }}>
             <Text style={styles.day}>{getDday()}</Text>
             <Text style={styles.date}>
-              {getStudyDate(startDate)} ~ {getStudyDate(dueDate)}
+              {moment(startDate).format('YYYY년 MM월 DD일')} ~{' '}
+              {moment(dueDate).format('YYYY년 MM월 DD일')}
             </Text>
           </View>
         </View>

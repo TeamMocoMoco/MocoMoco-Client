@@ -125,6 +125,7 @@ export default function CreatePostSecond({ navigation, route }) {
             onChange={(event, selectedDate) => {
               setStartDate(selectedDate || startDate);
               setShowStartPicker(false);
+              setShowEndPicker(false);
             }}
           />
         )}
@@ -138,6 +139,7 @@ export default function CreatePostSecond({ navigation, route }) {
             display="default"
             onChange={(event, selectedDate) => {
               setDueDate(selectedDate || dueDate);
+              setShowStartPicker(false);
               setShowEndPicker(false);
             }}
           />
