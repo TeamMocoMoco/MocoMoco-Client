@@ -67,7 +67,7 @@ export default function SubList({ navigation, route }) {
           <Entypo name="chevron-small-left" size={30} color="black" />
         </TouchableOpacity>
         <SearchBar
-          hint={'검색어를 입력하세요'}
+          hint={'해시태그 또는 대표 문구를 검색하세요.'}
           keyword={route.params.value}
           doFunction={(value) => {
             download(value);

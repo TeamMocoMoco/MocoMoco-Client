@@ -359,9 +359,9 @@ export default function UpdatePost({ navigation, route }) {
             />
           )}
 
-          {/* 소개글 */}
+          {/* 대표 문구 */}
           <View style={styles.inputBox}>
-            <Text style={styles.tag}>소개글</Text>
+            <Text style={styles.tag}>대표 문구</Text>
             <TextInput
               style={{ flex: 3, fontSize: 18 }}
               value={title}
