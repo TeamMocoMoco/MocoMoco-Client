@@ -27,7 +27,6 @@ export default function FullButton({ title, empty, doFunction }) {
 const styles = StyleSheet.create({
   buttonContainer: {
     paddingVertical: 13,
-    marginTop: 20,
   },
   active: {
     backgroundColor: getColor('defaultColor'),

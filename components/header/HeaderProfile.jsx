@@ -1,11 +1,13 @@
 import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 
+import { Entypo } from '@expo/vector-icons';
+
 export default function HeaderProfile({ navigation, title, update }) {
   return (
     <View style={styles.header}>
-      <TouchableOpacity disabled>
-        <Text style={{ color: 'white', fontSize: 16 }}>완료</Text>
+      <TouchableOpacity onPress={() => navigation.goBack()}>
+        <Entypo name="chevron-small-left" size={38} color="black" />
       </TouchableOpacity>
 
       <Text style={styles.headerText}>{title}</Text>
