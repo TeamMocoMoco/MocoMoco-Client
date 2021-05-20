@@ -8,19 +8,20 @@ import {
   View,
 } from 'react-native';
 
+import moment from 'moment';
+
 import { ProgressBar, Colors } from 'react-native-paper';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 import { HeaderBack } from '../../../components/header';
 import { FullButton } from '../../../components/button';
-import { DatePickModal } from '../../../components/modal/';
 import { getColor } from '../../../styles/styles';
 
-
 export default function CreatePostSecond({ navigation, route }) {
-  const [startDate, setStartDate] = useState('');
-  const [dueDate, setDueDate] = useState('');
-  const [currentModal, setCurrentModal] = useState('');
-  const [modalOpen, setModalOpen] = useState(false);
+  const [startDate, setStartDate] = useState(new Date());
+  const [dueDate, setDueDate] = useState(new Date());
+  const [showStartPicker, setShowStartPicker] = useState(false);
+  const [showEndPicker, setShowEndPicker] = useState(false);
 
   let onAndOff = route.params.onAndOff;
   let category = route.params.category;
@@ -31,7 +32,6 @@ export default function CreatePostSecond({ navigation, route }) {
 
   const showSubmitButton = () => {
     if (
-      dueDate == '' ||
       startDate == '' ||
       new Date(dueDate).getTime() - new Date(startDate).getTime() < 0
     ) {
@@ -58,26 +58,6 @@ export default function CreatePostSecond({ navigation, route }) {
     }
   };
 
-  const showDateModal = () => {
-    if (currentModal == 'start') {
-      return (
-        <DatePickModal
-          modalOpen={modalOpen}
-          setModalOpen={setModalOpen}
-          setDateTime={setStartDate}
-        />
-      );
-    } else {
-      return (
-        <DatePickModal
-          modalOpen={modalOpen}
-          setModalOpen={setModalOpen}
-          setDateTime={setDueDate}
-        />
-      );
-    }
-  };
-
   return (
     <View style={styles.container}>
       <HeaderBack navigation={navigation} title={'시간까지 설정하는 센스!'} />
@@ -90,7 +70,7 @@ export default function CreatePostSecond({ navigation, route }) {
 
       <View style={styles.content}>
         <Text style={styles.serviceComment}>
-          스터디의{'\n'}처음과 끝을 정해주세요.
+          모임의{'\n'}시작일과 종료일을 정해주세요.
         </Text>
 
         {/* 시작일 */}
@@ -101,8 +81,7 @@ export default function CreatePostSecond({ navigation, route }) {
           <TouchableOpacity
             style={styles.dateBox}
             onPress={() => {
-              setCurrentModal('start');
-              setModalOpen(true);
+              setShowStartPicker(true);
             }}
           >
             <TextInput
@@ -110,7 +89,7 @@ export default function CreatePostSecond({ navigation, route }) {
               editable={false}
               placeholder={'시작 일시를 선택하세요.'}
               placeholderTextColor={'#999'}
-              value={startDate}
+              value={moment(startDate).format('YYYY년 MM월 DD일')}
             />
           </TouchableOpacity>
         </View>
@@ -123,8 +102,7 @@ export default function CreatePostSecond({ navigation, route }) {
           <TouchableOpacity
             style={styles.dateBox}
             onPress={() => {
-              setCurrentModal('due');
-              setModalOpen(true);
+              setShowEndPicker(true);
             }}
           >
             <TextInput
@@ -132,12 +110,38 @@ export default function CreatePostSecond({ navigation, route }) {
               editable={false}
               placeholder={'종료 일시를 선택하세요.'}
               placeholderTextColor={'#999'}
-              value={dueDate}
+              value={moment(dueDate).format('YYYY년 MM월 DD일')}
             />
           </TouchableOpacity>
         </View>
 
-        {showDateModal()}
+        {showStartPicker && !showEndPicker && (
+          <DateTimePicker
+            testID="dateTimePicker"
+            value={startDate}
+            minimumDate={new Date()}
+            mode={'date'}
+            display="default"
+            onChange={(event, selectedDate) => {
+              setStartDate(selectedDate || startDate);
+              setShowStartPicker(false);
+            }}
+          />
+        )}
+
+        {!showStartPicker && showEndPicker && (
+          <DateTimePicker
+            testID="dateTimePicker"
+            value={dueDate}
+            minimumDate={startDate}
+            mode={'date'}
+            display="default"
+            onChange={(event, selectedDate) => {
+              setDueDate(selectedDate || dueDate);
+              setShowEndPicker(false);
+            }}
+          />
+        )}
       </View>
       {showSubmitButton()}
     </View>
