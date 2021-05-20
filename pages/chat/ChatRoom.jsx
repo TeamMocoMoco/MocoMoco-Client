@@ -9,6 +9,7 @@ import {
   FlatList,
   Text,
   Image,
+  Alert,
 } from 'react-native';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -99,6 +100,14 @@ export default function ChatRoom({ navigation, route }) {
     });
   }, []);
 
+  // 채팅방 정보 가져오기
+  const download = async () => {
+    const result = await getChatsByRoom(roomId);
+    participants.current = result.participants.participants;
+    setStatus(!status);
+  };
+
+  // 기획/개발/디자인 도형 및 윤곽선
   const showRoleIcon = (participant) => {
     let pickColor;
     let iconName;
@@ -127,78 +136,7 @@ export default function ChatRoom({ navigation, route }) {
     );
   };
 
-  const submitChatMessage = async () => {
-    await postChat(roomId, message);
-    setMessage('');
-  };
-
-  const showSendButton = () => {
-    if (message == '') {
-      return (
-        <TouchableOpacity disabled style={styles.offSendButton}>
-          <Feather name="send" size={24} color="#777" />
-        </TouchableOpacity>
-      );
-    } else {
-      return (
-        <TouchableOpacity
-          onPress={() => {
-            submitChatMessage();
-          }}
-          style={styles.sendButton}
-        >
-          <Feather name="send" size={24} color="black" />
-        </TouchableOpacity>
-      );
-    }
-  };
-
-  const download = async () => {
-    const result = await getChatsByRoom(roomId);
-    participants.current = result.participants.participants;
-    setStatus(!status);
-  };
-
-  const cancleConfirm = async () => {
-    await patchParticipants(
-      room.current.post._id,
-      room.current.participant._id
-    );
-    await download();
-  };
-
-  const confirm = async () => {
-    await postParticipants(room.current.post._id, room.current.participant._id);
-    await download();
-  };
-
-  const showConfirmButton = () => {
-    // 확정 취소 or 확정하기 버튼
-    return status ? (
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => {
-          cancleConfirm();
-        }}
-      >
-        <Text style={{ color: getColor('defaultColor'), fontSize: 12 }}>
-          확정 취소 ❌
-        </Text>
-      </TouchableOpacity>
-    ) : (
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => {
-          confirm();
-        }}
-      >
-        <Text style={{ color: getColor('defaultColor'), fontSize: 12 }}>
-          확정 ⭕
-        </Text>
-      </TouchableOpacity>
-    );
-  };
-
+  // 참가자 목록
   const showParticipantBox = () => {
     if (!participantBox) {
       return (
@@ -207,10 +145,14 @@ export default function ChatRoom({ navigation, route }) {
             <View style={{ flexDirection: 'row' }}>
               <TouchableOpacity
                 onPress={() => {
-                  navigation.push('ReadPost', { postId });
+                  title == ''
+                    ? Alert.alert('삭제된 게시글입니다.')
+                    : navigation.push('ReadPost', { postId });
                 }}
               >
-                <Text style={{ fontWeight: 'bold' }}>{title}</Text>
+                <Text style={{ fontWeight: 'bold' }}>
+                  {title == '' ? '삭제된 게시글' : title}
+                </Text>
               </TouchableOpacity>
               {/* <Text> 참가자</Text> */}
             </View>
@@ -234,12 +176,15 @@ export default function ChatRoom({ navigation, route }) {
             <View style={{ flexDirection: 'row' }}>
               <TouchableOpacity
                 onPress={() => {
-                  navigation.push('ReadPost', { postId });
+                  title == ''
+                    ? Alert.alert('삭제된 게시글입니다.')
+                    : navigation.push('ReadPost', { postId });
                 }}
               >
-                <Text style={{ fontWeight: 'bold' }}>{title}</Text>
+                <Text style={{ fontWeight: 'bold' }}>
+                  {title == '' ? '삭제된 게시글' : title}
+                </Text>
               </TouchableOpacity>
-              {/* <Text> 참가자</Text> */}
             </View>
             <TouchableOpacity style={{ paddingHorizontal: 5 }}>
               <Entypo
@@ -291,6 +236,79 @@ export default function ChatRoom({ navigation, route }) {
     }
   };
 
+  // 메시지 보내기 함수
+  const submitChatMessage = async () => {
+    await postChat(roomId, message);
+    setMessage('');
+  };
+
+  // 메시지 보내기 버튼
+  const showSendButton = () => {
+    if (title == '') {
+      return <></>;
+    } else if (message == '') {
+      return (
+        <TouchableOpacity disabled style={styles.offSendButton}>
+          <Feather name="send" size={24} color="#777" />
+        </TouchableOpacity>
+      );
+    } else {
+      return (
+        <TouchableOpacity
+          onPress={() => {
+            submitChatMessage();
+          }}
+          style={styles.sendButton}
+        >
+          <Feather name="send" size={24} color={getColor('defaultColor')} />
+        </TouchableOpacity>
+      );
+    }
+  };
+
+  // 확정 취소 함수
+  const cancleConfirm = async () => {
+    await patchParticipants(
+      room.current.post._id,
+      room.current.participant._id
+    );
+    await download();
+  };
+
+  // 확정 함수
+  const confirm = async () => {
+    await postParticipants(room.current.post._id, room.current.participant._id);
+    await download();
+  };
+
+  // 확정/확정 취소/신고 버튼
+  const showConfirmButton = () => {
+    // 확정 취소 or 확정하기 버튼
+    return status ? (
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => {
+          cancleConfirm();
+        }}
+      >
+        <Text style={{ color: getColor('defaultColor'), fontSize: 12 }}>
+          확정 취소 ❌
+        </Text>
+      </TouchableOpacity>
+    ) : (
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => {
+          confirm();
+        }}
+      >
+        <Text style={{ color: getColor('defaultColor'), fontSize: 12 }}>
+          확정 ⭕
+        </Text>
+      </TouchableOpacity>
+    );
+  };
+
   return ready ? (
     room.current.post == null ? (
       <View style={styles.container}>
@@ -324,11 +342,17 @@ export default function ChatRoom({ navigation, route }) {
           {/* 메세지 입력창 */}
           <View style={styles.bottomBox}>
             <View style={styles.sendBox}>
-              <TextInput
-                disabled
-                placeholder={'메세지를 입력하세요.'}
-                style={styles.input}
-              />
+              {title == '' ? (
+                <Text style={{ color: '#D00000' }}>
+                  삭제된 게시글의 채팅방입니다.
+                </Text>
+              ) : (
+                <TextInput
+                  disabled
+                  placeholder={'메세지를 입력하세요.'}
+                  style={styles.input}
+                />
+              )}
             </View>
             <View>{showSendButton()}</View>
           </View>
