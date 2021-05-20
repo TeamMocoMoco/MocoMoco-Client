@@ -87,6 +87,22 @@ export default function MyPage({ navigation }) {
     );
   };
 
+  const ProfileText = () => {
+    if (user.introduce == '') {
+      return (
+        <View style={styles.introduceBox}>
+          <Text>아직 소개 글이 없어요😥</Text>
+        </View>
+      );
+    } else {
+      return (
+        <View style={styles.introduceBox}>
+          <Text>{user.introduce}</Text>
+        </View>
+      );
+    }
+  };
+
   return ready ? (
     <View style={styles.container}>
       <HeaderSetting
@@ -150,9 +166,7 @@ export default function MyPage({ navigation }) {
         </TouchableOpacity>
 
         {/* 소개글 */}
-        <View style={styles.introduceBox}>
-          <Text>{user.introduce}</Text>
-        </View>
+        {ProfileText()}
       </ScrollView>
     </View>
   ) : (
