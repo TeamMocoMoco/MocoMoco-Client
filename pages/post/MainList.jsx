@@ -27,6 +27,7 @@ import { mogury } from '../../assets/images';
 export default function MainList({ navigation }) {
   const pageNum = useRef(1);
   const flatListRef = useRef();
+  const tabRef = useRef('전체보기');
 
   const [ready, setReady] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
@@ -65,6 +66,7 @@ export default function MainList({ navigation }) {
   const download = useCallback(async (title) => {
     pageNum.current = 1;
     setTab(title);
+    tabRef.current = title;
     let result = [];
     if (title == '전체보기') {
       result = await getPosts(pageNum.current);
@@ -78,13 +80,10 @@ export default function MainList({ navigation }) {
     flatListRef.current.scrollToOffset({ animated: true, y: 0 });
   };
 
-  const wait = (timeout) => {
-    return new Promise((resolve) => setTimeout(resolve, timeout));
-  };
-
-  const onRefresh = useCallback(() => {
+  const onRefresh = useCallback(async () => {
     setRefreshing(true);
-    wait(1000).then(() => setRefreshing(false));
+    await download(tabRef.current);
+    setRefreshing(false);
   }, []);
 
   return ready ? (
