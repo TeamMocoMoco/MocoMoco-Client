@@ -9,12 +9,6 @@ export default function SearchBar({ hint, keyword, doFunction }) {
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
-        <Ionicons
-          style={styles.search}
-          name="md-search-outline"
-          size={25}
-          color="#8E8E8E"
-        />
         <TextInput
           style={styles.input}
           value={value}
@@ -23,9 +17,13 @@ export default function SearchBar({ hint, keyword, doFunction }) {
           onChangeText={(text) => {
             setValue(text);
           }}
-          onEndEditing={() => {
-            doFunction(value);
-          }}
+        />
+        <Ionicons
+          style={styles.search}
+          name="md-search-outline"
+          size={25}
+          color="#8E8E8E"
+          onPress={() => doFunction(value)}
         />
       </View>
     </View>
@@ -55,6 +53,6 @@ const styles = StyleSheet.create({
   },
   search: {
     alignSelf: 'center',
-    marginLeft: '5%',
+    marginRight: '5%',
   },
 });
