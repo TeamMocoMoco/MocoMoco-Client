@@ -31,8 +31,6 @@ export default function CreatePostFourth({ navigation, route }) {
   let name = route.params.name;
   let startDate = route.params.startDate;
   let dueDate = route.params.dueDate;
-  let position = route.params.position;
-  let language = route.params.language;
 
   const upload = async () => {
     await postPosts(
@@ -45,8 +43,6 @@ export default function CreatePostFourth({ navigation, route }) {
       personnel,
       startDate,
       dueDate,
-      position,
-      language,
       title,
       intro,
       hashtagList
@@ -79,7 +75,7 @@ export default function CreatePostFourth({ navigation, route }) {
   };
 
   const showSubmitButton = () => {
-    if (intro == '' || hashtagList.length == 0) {
+    if (intro == '' || title == '') {
       return <FullButton title={'게시하기'} empty={true} />;
     } else {
       return (
@@ -211,16 +207,28 @@ export default function CreatePostFourth({ navigation, route }) {
         </View>
 
         {/* 선택된 해시태그 */}
-        <Text
-          style={{
-            color: '#263238',
-            fontSize: 14,
-            fontWeight: 'bold',
-            marginVertical: 10,
-          }}
-        >
-          해시태그
-        </Text>
+        <View style={{ flexDirection: 'row' }}>
+          <Text
+            style={{
+              color: '#263238',
+              fontSize: 14,
+              fontWeight: 'bold',
+              marginVertical: 10,
+            }}
+          >
+            해시태그
+          </Text>
+          <Text
+            style={{
+              color: 'grey',
+              fontSize: 14,
+              marginVertical: 10,
+              marginLeft: 20,
+            }}
+          >
+            해시태그 작성시 검색에 용이합니다.
+          </Text>
+        </View>
         {showSelectedHashtag()}
 
         {/* 해시태그 입력란 */}
@@ -243,6 +251,7 @@ export default function CreatePostFourth({ navigation, route }) {
                 <TextInput
                   placeholder={'해시태그를 입력하세요. (최대 5개)'}
                   value={hashtag}
+                  maxLength={14}
                   onChangeText={(text) => {
                     setHashtag(text);
                   }}

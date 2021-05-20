@@ -9,7 +9,7 @@ export default function HashtagButton({ feat, title, index, onRemove }) {
       <View disabled style={styles.container}>
         <Text style={styles.title}># {title}</Text>
         <TouchableOpacity
-          style={{ marginStart: 10 }}
+          style={{ marginStart: 5, paddingHorizontal: 5 }}
           onPress={() => {
             onRemove(index);
           }}

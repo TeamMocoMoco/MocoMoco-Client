@@ -91,7 +91,7 @@ export default function CreatePostFirst({ navigation }) {
       <HeaderBack navigation={navigation} title={'시작이 반이다!'} />
       {/* 진행도 현황 */}
       <ProgressBar
-        progress={0.25}
+        progress={0.33}
         color={Colors.grey900}
         backgroundColor={Colors.grey50}
       />

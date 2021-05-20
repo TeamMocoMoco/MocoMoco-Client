@@ -250,9 +250,6 @@ export default function ReadPost({ navigation, route }) {
               />
               <View>
                 <Text style={styles.tag}>{post.user.name}</Text>
-                <Text style={styles.position}>
-                  {post.position} / {post.language}
-                </Text>
               </View>
             </TouchableOpacity>
           </View>
@@ -389,10 +386,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: 'bold',
   },
-  position: {
-    color: '#8E9297',
-    marginTop: 5,
-  },
+
   descBox: {
     backgroundColor: '#F8F9FB',
     paddingVertical: 15,
