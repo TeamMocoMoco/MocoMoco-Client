@@ -32,6 +32,7 @@ import {
   ApplicationStudy,
   SaveStudy,
   OtherProfile,
+  ParticipantsList,
 } from '../pages/user';
 const Stack = createStackNavigator();
 
@@ -67,6 +68,8 @@ const StackNavigator = () => {
 
       <Stack.Screen name="UpdateProfile" component={UpdateProfile} />
       <Stack.Screen name="OtherProfile" component={OtherProfile} />
+      <Stack.Screen name="ParticipantsList" component={ParticipantsList} />
+
       <Stack.Screen name="RecruitStudy" component={RecruitStudy} />
       <Stack.Screen name="ApplicationStudy" component={ApplicationStudy} />
       <Stack.Screen name="SaveStudy" component={SaveStudy} />
