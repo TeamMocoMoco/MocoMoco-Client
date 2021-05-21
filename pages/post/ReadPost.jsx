@@ -40,6 +40,9 @@ export default function ReadPost({ navigation, route }) {
 
   const [status, setStatus] = useState(post.status);
 
+  const [locationLastPress, setLocationLastPress] = useState(false);
+  const [peopleLastPress, setPeopleLastPress] = useState(false);
+
   useEffect(() => {
     navigation.addListener('focus', (e) => {
       setTimeout(async () => {
@@ -49,12 +52,19 @@ export default function ReadPost({ navigation, route }) {
         setStartDate(new Date(result.startDate));
         setDueDate(new Date(result.dueDate));
 
-        const id = await AsyncStorage.getItem('myid');
-        setMyid(id);
+        const myId = await AsyncStorage.getItem('myid');
+        setMyid(myId);
         setStatus(post.status);
         setReady(true);
       });
     });
+
+    const id = setInterval(() => {
+      setLocationLastPress(false);
+      setPeopleLastPress(false);
+    }, 1000);
+
+    return () => clearInterval(id);
   }, [navigation]);
 
   // 채팅으로 신청할 때, 가입여부 확인
@@ -84,7 +94,10 @@ export default function ReadPost({ navigation, route }) {
         <TouchableOpacity
           style={styles.locationBox}
           onPress={() => {
-            navigation.push('LocationDetail', post.offLocation);
+            if (!locationLastPress) {
+              setLocationLastPress(true);
+              navigation.push('LocationDetail', post.offLocation);
+            }
           }}
         >
           <Text style={styles.location}>{post.address}</Text>
@@ -195,11 +208,11 @@ export default function ReadPost({ navigation, route }) {
         <View style={styles.m_h_25}>
           <View style={styles.arrowRow}>
             {/* 해시태그 */}
-            {post.hashtag.length >= 1 && (
-              <ScrollView
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}
-              >
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+            >
+              {post.hashtag.length >= 1 && (
                 <View style={styles.hashtagRow}>
                   {post.hashtag.map((title, i) => {
                     return (
@@ -207,8 +220,8 @@ export default function ReadPost({ navigation, route }) {
                     );
                   })}
                 </View>
-              </ScrollView>
-            )}
+              )}
+            </ScrollView>
 
             {/* 수정/삭제 모달 버튼 (작성자일 때 만) */}
             {showdotModal()}
@@ -278,10 +291,13 @@ export default function ReadPost({ navigation, route }) {
               <Text style={styles.tag}>{post.participants.length}명</Text>
               <TouchableOpacity
                 onPress={() => {
-                  navigation.push(
-                    'ParticipantsList',
-                    (navigation, post.participants)
-                  );
+                  if (!peopleLastPress) {
+                    setPeopleLastPress(true);
+                    navigation.push(
+                      'ParticipantsList',
+                      (navigation, post.participants)
+                    );
+                  }
                 }}
                 style={styles.goParticipantIcon}
               >

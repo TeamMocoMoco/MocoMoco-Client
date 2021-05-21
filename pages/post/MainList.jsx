@@ -34,6 +34,8 @@ export default function MainList({ navigation }) {
   const [posts, setPosts] = useState([]);
   const [tab, setTab] = useState('전체보기');
 
+  const [lastPress, setLastPress] = useState(false);
+
   useEffect(() => {
     navigation.addListener('focus', (e) => {
       setTimeout(() => {
@@ -42,6 +44,10 @@ export default function MainList({ navigation }) {
         setReady(true);
       });
     });
+    const id = setInterval(() => {
+      setLastPress(false);
+    }, 1000);
+    return () => clearInterval(id);
   }, [navigation]);
 
   const checkLogin = async () => {
@@ -148,10 +154,15 @@ export default function MainList({ navigation }) {
           }}
         />
       </View>
+
+      {/* 글쓰기 버튼 */}
       <TouchableOpacity
         style={styles.FAB}
         onPress={() => {
-          checkLogin();
+          if (!lastPress) {
+            setLastPress(true);
+            checkLogin();
+          }
         }}
       >
         <Entypo name="plus" size={24} color="white" />

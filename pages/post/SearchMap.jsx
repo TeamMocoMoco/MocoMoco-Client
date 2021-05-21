@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import {
   Alert,
@@ -54,12 +54,13 @@ export default function SearchMap({ navigation }) {
           mapRegion.longitude
         );
         setPosts(result);
-        setReady(true);
       });
+      setReady(true);
     });
-  }, []);
+    return () => setReady(false);
+  }, [navigation]);
 
-  const getCurrentLocation = async () => {
+  const getCurrentLocation = useCallback(async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== 'granted') {
       Alert.alert(
@@ -81,7 +82,6 @@ export default function SearchMap({ navigation }) {
       );
     } else {
       let location = await Location.getCurrentPositionAsync({});
-      console.log(location);
       mapRef.current.animateToRegion({
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
@@ -95,7 +95,7 @@ export default function SearchMap({ navigation }) {
         longitudeDelta: LONGITUDE_DELTA,
       });
     }
-  };
+  });
 
   const onRegionChange = (region) => {
     setMapRegion(region);

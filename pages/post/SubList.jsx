@@ -4,14 +4,12 @@ import {
   ActivityIndicator,
   FlatList,
   StyleSheet,
-  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
 
 import { Entypo } from '@expo/vector-icons';
 
-import { HeaderBack } from '../../components/header';
 import { MainCard } from '../../components/card';
 
 import {
@@ -28,6 +26,7 @@ export default function SubList({ navigation, route }) {
   const pageNum = useRef(1);
   const flatListRef = useRef();
 
+  const [lastPress, setLastPress] = useState(false);
   const [ready, setReady] = useState(false);
   const [keyword, setKeyword] = useState(route.params.value);
   const [posts, setPosts] = useState([]);
@@ -36,33 +35,43 @@ export default function SubList({ navigation, route }) {
     navigation.addListener('focus', (e) => {
       setTimeout(() => {
         setReady(false);
+        setLastPress(false);
         download(keyword);
         setReady(true);
       });
     });
   }, [navigation]);
 
-  const download = useCallback(async (keyword) => {
+  const download = useCallback(async (value) => {
     pageNum.current = 1;
     let result = [];
     if (meeting == '전체보기') {
-      result = await getPostsByKeyword(keyword, pageNum.current);
+      result = await getPostsByKeyword(value, pageNum.current);
     } else {
       result = await getPostsByMeetingByKeyword(
         meeting,
-        keyword,
+        value,
         pageNum.current
       );
     }
     setPosts(result);
   });
 
+  const back = () => {
+    if (!lastPress) {
+      setLastPress(true);
+      navigation.goBack();
+    }
+  };
+
   return ready ? (
     <View style={styles.container}>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <TouchableOpacity
           style={{ paddingVertical: 10, paddingEnd: 10 }}
-          onPress={() => navigation.goBack()}
+          onPress={() => {
+            back();
+          }}
         >
           <Entypo name="chevron-small-left" size={30} color="black" />
         </TouchableOpacity>
@@ -113,8 +122,23 @@ export default function SubList({ navigation, route }) {
     </View>
   ) : (
     <View style={styles.container}>
-      <View style={styles.inputContainer}>
-        <TextInput disabled style={styles.input} value={keyword} />
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <TouchableOpacity
+          style={{ paddingVertical: 10, paddingEnd: 10 }}
+          onPress={() => {
+            back();
+          }}
+        >
+          <Entypo name="chevron-small-left" size={30} color="black" />
+        </TouchableOpacity>
+        <SearchBar
+          hint={'해시태그 또는 대표 문구를 검색하세요.'}
+          keyword={route.params.value}
+          doFunction={(value) => {
+            download(value);
+            setKeyword(value);
+          }}
+        />
       </View>
       <ActivityIndicator
         size="large"

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import {
   StyleSheet,
@@ -15,6 +15,16 @@ import { getColor } from '../../styles/styles';
 const diviceWidth = Dimensions.get('window').width;
 
 export default function Landing({ navigation }) {
+  const [lastPress, setLastPress] = useState(false);
+
+  useEffect(() => {
+    navigation.addListener('focus', (e) => {
+      setTimeout(() => {
+        setLastPress(false);
+      });
+    });
+  });
+
   return (
     <View style={styles.container}>
       <View style={styles.content}>
@@ -39,7 +49,12 @@ export default function Landing({ navigation }) {
 
           {/* 버튼 */}
           <TouchableOpacity
-            onPress={() => navigation.push('TabNavigator')}
+            onPress={() => {
+              if (!lastPress) {
+                setLastPress(true);
+                navigation.push('TabNavigator');
+              }
+            }}
             style={styles.buttonContainer}
           >
             <Text style={styles.buttonText}>동료 만나러 가기</Text>
