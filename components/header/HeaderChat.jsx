@@ -16,9 +16,14 @@ const windowHeight = Dimensions.get('window').height;
 export default function HeaderChat({ navigation, name, outRoom }) {
   return (
     <View style={styles.header}>
-      <TouchableOpacity onPress={() => navigation.goBack()}>
-        <Entypo name="chevron-small-left" size={35} color="black" />
-      </TouchableOpacity>
+      <View style={styles.startBox}>
+        <Entypo
+          name="chevron-small-left"
+          size={35}
+          color="black"
+          onPress={() => navigation.goBack()}
+        />
+      </View>
 
       <Text style={styles.headerText}>{name}</Text>
 
@@ -26,8 +31,9 @@ export default function HeaderChat({ navigation, name, outRoom }) {
         onPress={() => {
           outRoom();
         }}
+        style={styles.endBox}
       >
-        <Text>채팅방 나가기</Text>
+        <Text style={styles.outText}>나가기</Text>
       </TouchableOpacity>
     </View>
   );
@@ -42,12 +48,18 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: getColor('HeaderBorderColor'),
     alignItems: 'center',
-    justifyContent: 'space-between',
   },
   headerText: {
+    flex: 5,
     color: '#000',
     fontSize: 17,
     fontWeight: 'bold',
     textAlign: 'center',
   },
+  startBox: {
+    flex: 1,
+    justifyContent: 'flex-start',
+  },
+  endBox: { flex: 1, justifyContent: 'flex-end' },
+  outText: { color: '#8E9297' },
 });
