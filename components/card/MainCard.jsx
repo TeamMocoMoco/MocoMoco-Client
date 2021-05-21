@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 
 import { HashtagButton } from '../button';
@@ -8,6 +8,7 @@ import { getColor } from '../../styles/styles';
 
 export default function MainCard({ navigation, post }) {
   let roleName = '';
+
   switch (post.user.role) {
     case '기획자':
       roleName = pmIcon;
@@ -19,6 +20,25 @@ export default function MainCard({ navigation, post }) {
       roleName = dvIcon;
       break;
   }
+
+  const [lastPress, setLastPress] = useState(false);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setLastPress(false);
+    }, 1000);
+    return () => clearInterval(id);
+  }, [lastPress]);
+
+  const back = () => {
+    if (!lastPress) {
+      setLastPress(true);
+      const postId = post._id;
+      navigation.push('ReadPost', { postId });
+    }
+  };
+
+  // 날짜 계산 함수
   const getDays = () => {
     const today = new Date();
     const startDate = new Date(post.startDate);
@@ -55,8 +75,7 @@ export default function MainCard({ navigation, post }) {
       <TouchableOpacity
         style={styles.cardContainer}
         onPress={() => {
-          const postId = post._id;
-          navigation.push('ReadPost', { postId });
+          back();
         }}
       >
         <View style={styles.participantsBox}>
@@ -88,7 +107,9 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
   },
-  row: { flexDirection: 'row' },
+  row: {
+    flexDirection: 'row',
+  },
   logoImgBox: {
     position: 'absolute',
     right: 0,
@@ -96,7 +117,10 @@ const styles = StyleSheet.create({
     width: 35,
     height: 35,
   },
-  logoImg: { width: '100%', height: '100%' },
+  logoImg: {
+    width: '100%',
+    height: '100%',
+  },
   cardContainer: {
     backgroundColor: '#FFF',
     width: '95%',
@@ -115,7 +139,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  participantsText: { fontSize: 12, color: '#8E9297', fontWeight: 'bold' },
+  participantsText: {
+    fontSize: 12,
+    color: '#8E9297',
+    fontWeight: 'bold',
+  },
   participantsNum: {
     fontSize: 12,
     color: getColor('defaultColor'),

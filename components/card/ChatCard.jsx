@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -10,11 +10,32 @@ import {
 
 import { Ionicons } from '@expo/vector-icons';
 
+import moment from 'moment';
+
 import { getColor } from '../../styles/styles';
 
 const diviceWidth = Dimensions.get('window').width;
 
 export default function ChatCard({ navigation, userId, room }) {
+  const [lastPress, setLastPress] = useState(false);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setLastPress(false);
+    }, 1000);
+    return () => clearInterval(id);
+  }, [lastPress]);
+
+  const back = () => {
+    if (!lastPress) {
+      setLastPress(true);
+      navigation.push('ChatRoom', {
+        roomId: room._id,
+        userName: showName(),
+      });
+    }
+  };
+
   const showName = () => {
     if (userId == room.admin._id) {
       return room.participant.name;
@@ -67,10 +88,7 @@ export default function ChatCard({ navigation, userId, room }) {
       <TouchableOpacity
         style={styles.container}
         onPress={() => {
-          navigation.push('ChatRoom', {
-            roomId: room._id,
-            userName: showName(),
-          });
+          back();
         }}
       >
         {/* 프로필사진 */}
@@ -80,7 +98,9 @@ export default function ChatCard({ navigation, userId, room }) {
           {/* 이름, 채팅온시간 */}
           <View style={styles.header}>
             <Text style={styles.name}>{showName()}</Text>
-            <Text style={styles.time}>{room.createdAt.substr(11, 5)}</Text>
+            <Text style={styles.time}>
+              {moment(room.createdAt).format('hh:mm')}
+            </Text>
           </View>
 
           <View style={styles.body}>
