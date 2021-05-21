@@ -1,15 +1,23 @@
 import React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
-
-import { SettingModal } from '../../components/modal';
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native';
 
 import { SimpleLineIcons } from '@expo/vector-icons';
 
-export default function HeaderSetting({ title, modalOpen, setModalOpen }) {
+import { getColor } from '../../styles/styles';
+
+const windowHeight = Dimensions.get('window').height;
+
+export default function HeaderSetting({ title, setModalOpen }) {
   return (
     <View style={styles.header}>
       <TouchableOpacity disabled style={styles.settingIcon}>
-        <SimpleLineIcons name="settings" size={24} color="transparent" />
+        <SimpleLineIcons name="settings" size={27} color="transparent" />
       </TouchableOpacity>
 
       <Text style={styles.headerText}>{title}</Text>
@@ -20,7 +28,7 @@ export default function HeaderSetting({ title, modalOpen, setModalOpen }) {
         }}
         style={styles.settingIcon}
       >
-        <SimpleLineIcons name="settings" size={24} color="black" />
+        <SimpleLineIcons name="settings" size={27} color="black" />
       </TouchableOpacity>
     </View>
   );
@@ -28,20 +36,23 @@ export default function HeaderSetting({ title, modalOpen, setModalOpen }) {
 
 const styles = StyleSheet.create({
   header: {
+    backgroundColor: '#FFF',
     flexDirection: 'row',
-    paddingVertical: 15,
+    paddingVertical: windowHeight * 0.015,
     paddingHorizontal: 15,
-    backgroundColor: 'white',
-    alignItems: 'center',
     borderBottomWidth: 1,
-    borderColor: 'lightgrey',
+    borderBottomColor: getColor('HeaderBorderColor'),
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   headerText: {
-    color: 'black',
-    flex: 1,
+    color: '#000',
     fontSize: 18,
     fontWeight: 'bold',
     textAlign: 'center',
   },
-  settingIcon: { paddingHorizontal: 20, paddingVertical: 5 },
+  settingIcon: {
+    paddingHorizontal: 20,
+    paddingVertical: 5,
+  },
 });
