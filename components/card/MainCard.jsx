@@ -26,10 +26,10 @@ export default function MainCard({ navigation, post }) {
     const difference = startDate.getTime() - today.getTime();
     let days = Math.floor(difference / (1000 * 60 * 60 * 24));
     const Remainder = difference % (1000 * 3600 * 24);
-    days = Remainder === 0 ? days : (days += 1);
+    days = Remainder === 0 ? days : days + 1;
 
     if (days >= 7) {
-      return `${Math.floor(days / 7)}주일 뒤 시작`;
+      return `${Math.floor(days / 7)}주 뒤 시작`;
     } else if (days > 1) {
       return `${days}일 뒤 시작`;
     } else if (days == 1) {
@@ -39,7 +39,7 @@ export default function MainCard({ navigation, post }) {
     } else if (days > -7) {
       return `${-days}일 지남`;
     } else if (days <= -7) {
-      return `${Math.floor(-days / 7)}주일 지남`;
+      return `${Math.floor(-days / 7)}주 지남`;
     }
   };
 
