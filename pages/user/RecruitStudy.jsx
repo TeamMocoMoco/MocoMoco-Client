@@ -5,7 +5,7 @@ import { ActivityIndicator, StyleSheet, View, FlatList } from 'react-native';
 import { MainCard } from '../../components/card';
 import { StudyTabButton } from '../../components/button';
 import { getColor } from '../../styles/styles';
-import { HeaderChat } from '../../components/header';
+import { HeaderBackTitle } from '../../components/header';
 
 import { getMyOpenPosts, getMyClosedPosts } from '../../config/api/PostAPI';
 
@@ -45,7 +45,7 @@ export default function RecruitStudy({ navigation }) {
 
   return ready ? (
     <View style={styles.container}>
-      <HeaderChat name={'모집 스터디'} navigation={navigation} />
+      <HeaderBackTitle title={'모집 스터디'} navigation={navigation} />
       <View
         style={{
           flexDirection: 'row',
@@ -98,7 +98,7 @@ export default function RecruitStudy({ navigation }) {
     </View>
   ) : (
     <View style={styles.container}>
-      <HeaderChat name={'모집 스터디'} navigation={navigation} />
+      <HeaderBackTitle title={'모집 스터디'} navigation={navigation} />
 
       <View style={{ flexDirection: 'row', marginVertical: 10 }}>
         <StudyTabButton
