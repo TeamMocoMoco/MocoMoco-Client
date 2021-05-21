@@ -7,13 +7,13 @@ import {
   Dimensions,
 } from 'react-native';
 
-import { Entypo } from '@expo/vector-icons';
-
 import { getColor } from '../../styles/styles';
+
+import { Entypo } from '@expo/vector-icons';
 
 const windowHeight = Dimensions.get('window').height;
 
-export default function HeaderChat({ navigation, name }) {
+export default function HeaderChat({ navigation, name, outRoom }) {
   return (
     <View style={styles.header}>
       <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -22,7 +22,13 @@ export default function HeaderChat({ navigation, name }) {
 
       <Text style={styles.headerText}>{name}</Text>
 
-      <Entypo name="chevron-small-left" size={35} color="transparent" />
+      <TouchableOpacity
+        onPress={() => {
+          outRoom();
+        }}
+      >
+        <Text>채팅방 나가기</Text>
+      </TouchableOpacity>
     </View>
   );
 }

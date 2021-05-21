@@ -22,7 +22,7 @@ import { ChatMessage } from '../../components/card';
 import { Feather, Entypo, Ionicons } from '@expo/vector-icons';
 
 import { getColor } from '../../styles/styles';
-import { getChatsByRoom, postChat } from '../../config/api/ChatAPI';
+import { getChatsByRoom, postChat, deleteRoom } from '../../config/api/ChatAPI';
 import { postParticipants, patchParticipants } from '../../config/api/PostAPI';
 
 // nginx
@@ -105,6 +105,28 @@ export default function ChatRoom({ navigation, route }) {
     const result = await getChatsByRoom(roomId);
     participants.current = result.participants.participants;
     setStatus(!status);
+  };
+
+  //채팅방 나가기
+  const outRoom = () => {
+    Alert.alert(
+      '이 게시물에서 다시 채팅을 하실 수 없습니다.',
+      '채팅방을 나가시겠습니까?',
+      [
+        {
+          text: '네',
+          onPress: async () => {
+            await deleteRoom(roomId);
+            navigation.navigate('TabNavigator');
+          },
+          style: 'default',
+        },
+        {
+          text: '아니오',
+          style: 'cancel',
+        },
+      ]
+    );
   };
 
   // 기획/개발/디자인 도형 및 윤곽선
@@ -312,7 +334,7 @@ export default function ChatRoom({ navigation, route }) {
   return ready ? (
     room.current.post == null ? (
       <View style={styles.container}>
-        <HeaderChat navigation={navigation} name={userName} />
+        <HeaderChat navigation={navigation} name={userName} outRoom={outRoom} />
         <View style={styles.content}>
           {showParticipantBox()}
           <FlatList
@@ -360,7 +382,7 @@ export default function ChatRoom({ navigation, route }) {
       </View>
     ) : (
       <View style={styles.container}>
-        <HeaderChat navigation={navigation} name={userName} />
+        <HeaderChat navigation={navigation} name={userName} outRoom={outRoom} />
         <View style={styles.content}>
           {showParticipantBox()}
           <FlatList

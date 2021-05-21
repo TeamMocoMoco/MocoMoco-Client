@@ -40,6 +40,29 @@ export async function createRoom(navigation, postId, userId, userName) {
   }
 }
 
+//채팅방 삭제하기
+export async function deleteRoom(roomId) {
+  const token = await SecureStore.getItemAsync('usertoken');
+  try {
+    const response = await axios({
+      method: 'delete',
+      url: host + '/rooms/' + roomId,
+      headers: {
+        token: token,
+      },
+    });
+    return response.data.result;
+  } catch (err) {
+    let error = err.response.data.err || err.message;
+
+    if (error.includes('Error: ')) {
+      error = error.substr(7);
+    }
+
+    Alert.alert(error);
+  }
+}
+
 // 채팅 내역 가져오기 - 완료
 export async function getChatsByRoom(roomId) {
   const token = await SecureStore.getItemAsync('usertoken');
