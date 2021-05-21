@@ -1,21 +1,29 @@
 import React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native';
 
 import { Entypo } from '@expo/vector-icons';
 
 import { getColor } from '../../styles/styles';
 
+const windowHeight = Dimensions.get('window').height;
+
 export default function HeaderBackTitle({ navigation, title }) {
   return (
     <View style={styles.header}>
       <TouchableOpacity onPress={() => navigation.goBack()}>
-        <Entypo name="chevron-small-left" size={38} color="black" />
+        <Entypo name="chevron-small-left" size={35} color="black" />
       </TouchableOpacity>
 
       <Text style={styles.headerText}>{title}</Text>
 
       <TouchableOpacity onPress={() => navigation.goBack()}>
-        <Entypo name="chevron-small-left" size={38} color="transparent" />
+        <Entypo name="chevron-small-left" size={35} color="transparent" />
       </TouchableOpacity>
     </View>
   );
@@ -23,18 +31,17 @@ export default function HeaderBackTitle({ navigation, title }) {
 
 const styles = StyleSheet.create({
   header: {
+    backgroundColor: '#FFF',
     flexDirection: 'row',
-    paddingVertical: 15,
+    paddingVertical: windowHeight * 0.015,
     paddingHorizontal: 15,
-    backgroundColor: 'white',
-    alignItems: 'center',
-    justifyContent: 'space-between',
     borderBottomWidth: 1,
     borderColor: getColor('inactiveBorderColor'),
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   headerText: {
-    color: 'black',
-    flex: 1,
+    color: '#000',
     fontSize: 18,
     fontWeight: 'bold',
     textAlign: 'center',
