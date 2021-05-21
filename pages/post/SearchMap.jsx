@@ -235,13 +235,13 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   modalContent: {
-    marginVertical: 10,
+    marginBottom: 50,
     marginHorizontal: 25,
   },
   FAB: {
     backgroundColor: getColor('defaultColor'),
     position: 'absolute',
-    bottom: 80,
+    bottom: 100,
     right: 20,
     width: 50,
     height: 50,
