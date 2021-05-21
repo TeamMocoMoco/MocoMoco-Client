@@ -23,7 +23,7 @@ export default function SearchBar({ hint, keyword, doFunction }) {
           onChangeText={(text) => {
             setValue(text);
           }}
-          onEndEditing={() => {
+          onSubmitEditing={() => {
             doFunction(value);
           }}
         />
