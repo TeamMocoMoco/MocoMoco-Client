@@ -24,6 +24,7 @@ import { DotModal } from '../../components/modal';
 
 import { getPostsById, closePost } from '../../config/api/PostAPI';
 import { createRoom } from '../../config/api/ChatAPI';
+import { getColor } from '../../styles/styles';
 
 export default function ReadPost({ navigation, route }) {
   const postId = route.params.postId;
@@ -192,23 +193,33 @@ export default function ReadPost({ navigation, route }) {
       <HeaderBack navigation={navigation} title={''} />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.m_h_25}>
-          {/* 해시태그 */}
-          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-            <View style={styles.hashtagRow}>
-              {post.hashtag.map((title, i) => {
-                return <HashtagButton feat={'read'} title={title} key={i} />;
-              })}
-            </View>
-          </ScrollView>
-
           <View style={styles.arrowRow}>
-            {/* 제목 */}
-            <Text style={styles.title}>
-              {post.meeting} {post.category}
-            </Text>
+            {/* 해시태그 */}
+            {post.hashtag.length >= 1 && (
+              <ScrollView
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+              >
+                <View style={styles.hashtagRow}>
+                  {post.hashtag.map((title, i) => {
+                    return (
+                      <HashtagButton feat={'read'} title={title} key={i} />
+                    );
+                  })}
+                </View>
+              </ScrollView>
+            )}
 
             {/* 수정/삭제 모달 버튼 (작성자일 때 만) */}
             {showdotModal()}
+          </View>
+
+          {/* 제목 */}
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={styles.badge}>
+              <Text style={styles.badgeText}>{post.meeting}</Text>
+            </View>
+            <Text style={styles.title}>{post.title}</Text>
           </View>
 
           <DotModal
@@ -219,7 +230,7 @@ export default function ReadPost({ navigation, route }) {
           />
 
           {/* 날짜 */}
-          <View style={{ marginVertical: 10 }}>
+          <View style={{ marginBottom: 10 }}>
             <Text style={styles.day}>{getDday()}</Text>
             <Text style={styles.date}>
               {moment(startDate).format('YYYY년 MM월 DD일')} ~{' '}
@@ -235,14 +246,14 @@ export default function ReadPost({ navigation, route }) {
           <View style={styles.divider}></View>
 
           {/* 주최자 */}
-          <View style={[styles.row, { alignItems: 'flex-start' }]}>
+          <View style={[styles.row, { alignItems: 'center' }]}>
             <Text style={styles.label}>주최자</Text>
 
             <TouchableOpacity
               onPress={() => {
                 navigation.push('OtherProfile', (navigation, post.user._id));
               }}
-              style={{ flexDirection: 'row' }}
+              style={{ flexDirection: 'row', alignItems: 'center' }}
             >
               <Image
                 source={{ uri: post.user.userImg }}
@@ -304,7 +315,7 @@ export default function ReadPost({ navigation, route }) {
     <View style={styles.container}>
       <HeaderBack navigation={navigation} title={''} />
       <View style={styles.content}>
-        <ActivityIndicator size="large" color="#0000ff" />
+        <ActivityIndicator size="large" color={getColor('defaultColor')} />
       </View>
     </View>
   );
@@ -338,12 +349,29 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  badge: {
+    backgroundColor: '#8E8E8E',
+    borderRadius: 5,
+    paddingHorizontal: 5,
+    paddingVertical: 2,
+    marginEnd: 10,
+  },
+  badgeText: {
+    color: '#FFF',
+    fontSize: 12,
+    fontWeight: 'bold',
+  },
   title: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
     marginVertical: 15,
   },
-  userImg: { width: 30, height: 30, borderRadius: 50, marginRight: 10 },
+  userImg: {
+    width: 25,
+    height: 25,
+    borderRadius: 25,
+    marginEnd: 10,
+  },
   day: {
     color: '#484848',
     fontSize: 12,
@@ -386,7 +414,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: 'bold',
   },
-
   descBox: {
     backgroundColor: '#F8F9FB',
     paddingVertical: 15,
@@ -396,7 +423,9 @@ const styles = StyleSheet.create({
     color: '#000',
     marginBottom: 10,
   },
-  upbottom: { marginBottom: 15 },
+  upbottom: {
+    marginBottom: 15,
+  },
   goParticipantIcon: {
     paddingHorizontal: 10,
   },
