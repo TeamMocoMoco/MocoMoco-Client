@@ -42,6 +42,8 @@ export default function ChatRoom({ navigation, route }) {
   const participants = useRef([]);
   const myid = useRef();
 
+  const outMessage = '상대방이 채팅방에서 나갔습니다.';
+
   const [ready, setReady] = useState(false);
 
   const [status, setStatus] = useState(false);
@@ -52,8 +54,9 @@ export default function ChatRoom({ navigation, route }) {
   const [title, setTitle] = useState('');
 
   const [admin, setAdmin] = useState(false);
-
   const [participantBox, setParticipantBox] = useState(false);
+
+  const [removeCheck, setRemoveCheck] = useState(false);
 
   useEffect(() => {
     // 소켓 연결 (완료)
@@ -63,6 +66,7 @@ export default function ChatRoom({ navigation, route }) {
       setTimeout(async () => {
         const result = await getChatsByRoom(roomId);
         room.current = result.roomInfo;
+        setRemoveCheck(result.removeCheck);
 
         if (room.current.post != null) {
           setPostId(room.current.post._id);
@@ -73,7 +77,6 @@ export default function ChatRoom({ navigation, route }) {
         if (result.participants != null) {
           participants.current = result.participants.participants;
         }
-
         // 해당 모집글에 참여중인 사람인지 판단
         participants.current.map((participant) => {
           if (room.current.participant._id == participant._id) {
@@ -104,6 +107,7 @@ export default function ChatRoom({ navigation, route }) {
   const download = async () => {
     const result = await getChatsByRoom(roomId);
     participants.current = result.participants.participants;
+    setRemoveCheck(result.removeCheck);
     setStatus(!status);
   };
 
@@ -117,6 +121,7 @@ export default function ChatRoom({ navigation, route }) {
           text: '네',
           onPress: async () => {
             await deleteRoom(roomId);
+            postChat(roomId, outMessage);
             navigation.navigate('TabNavigator');
           },
           style: 'default',
@@ -331,6 +336,29 @@ export default function ChatRoom({ navigation, route }) {
     );
   };
 
+  //채팅방 상태에 따른 메세지 입력란
+  const showMessageInput = () => {
+    if (title == '') {
+      return (
+        <Text style={{ color: '#D00000' }}>삭제된 게시글의 채팅방입니다.</Text>
+      );
+    } else if (removeCheck == true) {
+      return (
+        <Text style={{ color: '#D00000' }}>
+          상대방이 채팅방에서 나갔습니다.
+        </Text>
+      );
+    } else {
+      return (
+        <TextInput
+          disabled
+          placeholder={'메세지를 입력하세요.'}
+          style={styles.input}
+        />
+      );
+    }
+  };
+
   return ready ? (
     room.current.post == null ? (
       <View style={styles.container}>
@@ -363,19 +391,7 @@ export default function ChatRoom({ navigation, route }) {
         <View style={{ position: 'absolute', bottom: 0 }}>
           {/* 메세지 입력창 */}
           <View style={styles.bottomBox}>
-            <View style={styles.sendBox}>
-              {title == '' ? (
-                <Text style={{ color: '#D00000' }}>
-                  삭제된 게시글의 채팅방입니다.
-                </Text>
-              ) : (
-                <TextInput
-                  disabled
-                  placeholder={'메세지를 입력하세요.'}
-                  style={styles.input}
-                />
-              )}
-            </View>
+            <View style={styles.sendBox}>{showMessageInput()}</View>
             <View>{showSendButton()}</View>
           </View>
         </View>
@@ -412,17 +428,6 @@ export default function ChatRoom({ navigation, route }) {
           <View style={styles.buttonContainer}>
             {showConfirmButton()}
 
-            <TouchableOpacity
-              onPress={() => {
-                navigation.push('ReadPost', { postId });
-              }}
-              style={styles.button}
-            >
-              <Text style={{ color: '#999', fontSize: 12 }}>
-                게시물로 이동🤔
-              </Text>
-            </TouchableOpacity>
-
             <TouchableOpacity style={styles.button}>
               <Text style={{ color: '#999', fontSize: 12 }}>신고 🚨</Text>
             </TouchableOpacity>
@@ -435,17 +440,23 @@ export default function ChatRoom({ navigation, route }) {
           {/* 메세지 입력창 */}
           <View style={styles.bottomBox}>
             <View style={styles.sendBox}>
-              <TextInput
-                placeholder={'메세지를 입력하세요.'}
-                value={message}
-                onChangeText={(text) => {
-                  setMessage(text);
-                }}
-                onSubmitEditing={() => {
-                  submitChatMessage();
-                }}
-                style={styles.input}
-              />
+              {removeCheck == true ? (
+                <Text style={{ color: '#D00000' }}>
+                  상대방이 채팅방에서 나갔습니다.
+                </Text>
+              ) : (
+                <TextInput
+                  placeholder={'메세지를 입력하세요.'}
+                  value={message}
+                  onChangeText={(text) => {
+                    setMessage(text);
+                  }}
+                  onSubmitEditing={() => {
+                    submitChatMessage();
+                  }}
+                  style={styles.input}
+                />
+              )}
             </View>
             <View>{showSendButton()}</View>
           </View>
