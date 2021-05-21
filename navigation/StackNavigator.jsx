@@ -11,7 +11,6 @@ import {
 import TabNavigator from './TabNavigator';
 import {
   SubList,
-  CreatePost,
   ReadPost,
   LocationDetail,
   UpdatePost,
@@ -50,7 +49,6 @@ const StackNavigator = () => {
       <Stack.Screen name="SignUp" component={SignUp} />
 
       <Stack.Screen name="UpdatePost" component={UpdatePost} />
-      <Stack.Screen name="CreatePost" component={CreatePost} />
 
       <Stack.Screen name="SearchLocation" component={SearchLocation} />
 
