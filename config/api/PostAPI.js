@@ -348,8 +348,6 @@ export async function patchPosts(
         personnel: personnel,
         startDate: new Date(startDate).toISOString(),
         dueDate: new Date(dueDate).toISOString(),
-        position: position,
-        language: language,
         title: title,
         content: intro,
         hashtag: hashtagList,
