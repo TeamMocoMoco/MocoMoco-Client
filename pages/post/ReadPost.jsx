@@ -45,20 +45,8 @@ export default function ReadPost({ navigation, route }) {
         const result = await getPostsById(postId);
         setPost(result);
         setUserId(result.user._id);
-        setStartDate(
-          new Date(
-            new Date(result.startDate).toLocaleString('ko-KR', {
-              timeZone: 'UTC',
-            })
-          )
-        );
-        setDueDate(
-          new Date(
-            new Date(result.dueDate).toLocaleString('ko-KR', {
-              timeZone: 'UTC',
-            })
-          )
-        );
+        setStartDate(new Date(result.startDate));
+        setDueDate(new Date(result.dueDate));
 
         const id = await AsyncStorage.getItem('myid');
         setMyid(id);
@@ -68,6 +56,7 @@ export default function ReadPost({ navigation, route }) {
     });
   }, [navigation]);
 
+  // 채팅으로 신청할 때, 가입여부 확인
   const checkLogin = async () => {
     const token = await SecureStore.getItemAsync('usertoken');
     if (token == null) {
@@ -87,10 +76,10 @@ export default function ReadPost({ navigation, route }) {
     }
   };
 
+  // 오프라인일 경우 위치 표시
   const showLocation = () => {
     if (post.meeting == '오프라인') {
       return (
-        // post.location
         <TouchableOpacity
           style={styles.locationBox}
           onPress={() => {
@@ -104,8 +93,9 @@ export default function ReadPost({ navigation, route }) {
     }
   };
 
+  // 신청/모집마감/이미참여중 버튼
   const showApplyButton = () => {
-    if (post.status == false) {
+    if (!post.status) {
       return <RadiusButton title={'모집이 마감되었습니다.'} status={status} />;
     } else if (myid == userId) {
       return (
@@ -131,18 +121,37 @@ export default function ReadPost({ navigation, route }) {
         />
       );
     } else {
-      return (
-        <RadiusButton
-          title={'채팅으로 신청하기'}
-          status={true}
-          doFunction={() => {
-            checkLogin();
-          }}
-        />
-      );
+      let join = false;
+      post.participants.map((participant) => {
+        if (myid == participant._id) {
+          join = true;
+        }
+      });
+      if (join) {
+        return (
+          <RadiusButton
+            title={'참여중인 모집글입니다.'}
+            status={true}
+            doFunction={() => {
+              checkLogin();
+            }}
+          />
+        );
+      } else {
+        return (
+          <RadiusButton
+            title={'채팅으로 신청하기'}
+            status={true}
+            doFunction={() => {
+              checkLogin();
+            }}
+          />
+        );
+      }
     }
   };
 
+  // 게시글 수정/삭제 버튼
   const showdotModal = () => {
     if (myid == post.user._id) {
       return (
@@ -160,23 +169,14 @@ export default function ReadPost({ navigation, route }) {
     }
   };
 
-  const getStudyDate = (d) => {
-    const year = d.getFullYear();
-    const month = d.getMonth() + 1;
-    const date = d.getDate();
-    const hour = ((d.getHours() - 1) % 12) + 1;
-    const minutes = d.getMinutes() == 0 ? '' : d.getMinutes() + '분';
-
-    return year + '년 ' + month + '월 ' + date + '일 ' + hour + '시 ' + minutes;
-  };
-
+  // D-day 계산 함수
   const getDday = () => {
     const today = new Date();
 
     const difference = startDate.getTime() - today.getTime();
     let days = Math.floor(difference / (1000 * 60 * 60 * 24));
     const Remainder = difference % (1000 * 3600 * 24);
-    days = Remainder === 0 ? days : (days += 1);
+    days = Remainder === 0 ? days : days + 1;
 
     if (days > 0) {
       return `D-${days}`;
