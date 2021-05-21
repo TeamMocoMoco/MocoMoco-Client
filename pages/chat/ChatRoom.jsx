@@ -419,6 +419,9 @@ export default function ChatRoom({ navigation, route }) {
                 onChangeText={(text) => {
                   setMessage(text);
                 }}
+                onSubmitEditing={() => {
+                  submitChatMessage();
+                }}
                 style={styles.input}
               />
             </View>
