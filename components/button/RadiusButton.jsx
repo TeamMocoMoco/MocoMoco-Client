@@ -1,13 +1,29 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { getColor } from '../../styles/styles';
 
 export default function RadiusButton({ title, status, doFunction }) {
+  const [lastPress, setLastPress] = useState(false);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setLastPress(false);
+    }, 1000);
+    return () => clearInterval(id);
+  }, [lastPress]);
+
+  const back = () => {
+    if (!lastPress) {
+      setLastPress(true);
+      doFunction();
+    }
+  };
+
   if (status) {
     return (
       <TouchableOpacity
         style={[styles.buttonContainer, styles.active]}
-        onPress={() => doFunction()}
+        onPress={() => back()}
       >
         <Text style={styles.buttonText}>{title}</Text>
       </TouchableOpacity>
