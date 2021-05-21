@@ -2,12 +2,12 @@ import React from 'react';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { StyleSheet, View, Text } from 'react-native';
 
-import { HeaderChat } from '../../components/header';
+import { HeaderBackTitle } from '../../components/header';
 
 export default function SaveStudy({ navigation }) {
   return (
     <View style={styles.container}>
-      <HeaderChat name={'저장 스터디'} navigation={navigation} />
+      <HeaderBackTitle title={'저장 스터디'} navigation={navigation} />
       <View style={styles.content}>
         <Text style={styles.readyText}>🚧준비중입니다...🚧</Text>
       </View>
