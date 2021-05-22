@@ -65,7 +65,7 @@ export default function SearchMap({ navigation }) {
     if (status !== 'granted') {
       Alert.alert(
         '위치 정보를 가져올 수 없습니다.',
-        'MocoMoco 앱 설정에서 위치 접근 권한을 허용해주세요. ',
+        'MocoMoco 앱 설정에서 위치 권한을 허용해주세요. ',
         [
           {
             text: '취소',
