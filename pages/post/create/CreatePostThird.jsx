@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import {
   StyleSheet,
@@ -33,60 +33,43 @@ export default function CreatePostThird({ navigation, route }) {
   let startDate = route.params.startDate;
   let dueDate = route.params.dueDate;
 
-  const upload = () => {
-    Alert.alert('게시글을 등록 하시겠습니까?', '', [
-      {
-        text: '네',
-        onPress: () => {
-          postPosts(
-            navigation,
-            onAndOff,
-            location,
-            address,
-            name,
-            category,
-            personnel,
-            startDate,
-            dueDate,
-            title,
-            intro,
-            hashtagList
-          );
-        },
-        style: 'default',
-      },
-      {
-        text: '아니오',
-        style: 'cancel',
-      },
-    ]);
+  // 해시태그 삭제 함수
+  const onRemove = (index) => {
+    let list = hashtagList;
+    list.splice(index, 1);
+    setHashtagList([...list]);
   };
 
-  const showAddButton = () => {
-    if (hashtagList.length == 5) {
+  // 선택된 해시태그
+  const showSelectedHashtag = () => {
+    if (hashtagList.length > 0) {
       return (
-        <TouchableOpacity
-          disabled
-          style={[styles.buttonContainer, styles.inactive]}
-        >
-          <Text style={styles.buttonText}>추가</Text>
-        </TouchableOpacity>
-      );
-    } else {
-      return (
-        <TouchableOpacity
-          style={[styles.buttonContainer, styles.active]}
-          onPress={() => {
-            setHashtagList([...hashtagList, hashtag]);
-            setHashtag('');
-          }}
-        >
-          <Text style={styles.buttonText}>추가</Text>
-        </TouchableOpacity>
+        <View>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+            }}
+          >
+            {hashtagList.map((tag, i) => {
+              return (
+                <HashtagButton
+                  feat={'create'}
+                  title={tag}
+                  index={i}
+                  onRemove={onRemove}
+                  key={i}
+                />
+              );
+            })}
+          </View>
+        </View>
       );
     }
   };
 
+  // 해시태그 추가 Input
   const showHashtagInput = () => {
     if (hashtagList.length == 5) {
       return (
@@ -117,6 +100,63 @@ export default function CreatePostThird({ navigation, route }) {
     }
   };
 
+  // 해시태그 추가 버튼
+  const showAddButton = () => {
+    if (hashtagList.length == 5) {
+      return (
+        <TouchableOpacity
+          disabled
+          style={[styles.buttonContainer, styles.inactive]}
+        >
+          <Text style={styles.buttonText}>추가</Text>
+        </TouchableOpacity>
+      );
+    } else {
+      return (
+        <TouchableOpacity
+          style={[styles.buttonContainer, styles.active]}
+          onPress={() => {
+            setHashtagList([...hashtagList, hashtag]);
+            setHashtag('');
+          }}
+        >
+          <Text style={styles.buttonText}>추가</Text>
+        </TouchableOpacity>
+      );
+    }
+  };
+
+  // 게시글 업로드 함수
+  const upload = () => {
+    Alert.alert('게시글을 등록 하시겠습니까?', '', [
+      {
+        text: '네',
+        onPress: () => {
+          postPosts(
+            navigation,
+            onAndOff,
+            location,
+            address,
+            name,
+            category,
+            personnel,
+            startDate,
+            dueDate,
+            title,
+            intro,
+            hashtagList
+          );
+        },
+        style: 'default',
+      },
+      {
+        text: '아니오',
+        style: 'cancel',
+      },
+    ]);
+  };
+
+  // 게시글 업로드 버튼
   const showSubmitButton = () => {
     if (intro == '' || title == '') {
       return <FullButton title={'게시하기'} empty={true} />;
@@ -127,40 +167,6 @@ export default function CreatePostThird({ navigation, route }) {
           empty={false}
           doFunction={() => upload()}
         />
-      );
-    }
-  };
-
-  const onRemove = (index) => {
-    let list = hashtagList;
-    list.splice(index, 1);
-    setHashtagList(list);
-  };
-
-  const showSelectedHashtag = () => {
-    if (hashtagList.length > 0) {
-      return (
-        <View>
-          <View
-            style={{
-              flex: 1,
-              flexDirection: 'row',
-              flexWrap: 'wrap',
-            }}
-          >
-            {hashtagList.map((tag, i) => {
-              return (
-                <HashtagButton
-                  feat={'create'}
-                  title={tag}
-                  index={i}
-                  onRemove={onRemove}
-                  key={i}
-                />
-              );
-            })}
-          </View>
-        </View>
       );
     }
   };

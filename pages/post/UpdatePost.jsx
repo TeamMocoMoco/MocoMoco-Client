@@ -88,6 +88,13 @@ export default function UpdatePost({ navigation, route }) {
     }
   };
 
+  // 해시태그 삭제 함수
+  const onRemove = (index) => {
+    let list = hashtagList;
+    list.splice(index, 1);
+    setHashtagList([...list]);
+  };
+
   // 선택된 해시태그
   const showSelectedHashtag = () => {
     if (hashtagList.length > 0) {
@@ -146,14 +153,26 @@ export default function UpdatePost({ navigation, route }) {
     }
   };
 
-  // 해시태그 삭제 함수
-  const onRemove = (index) => {
-    let list = hashtagList;
-    list.splice(index, 1);
-    setHashtagList(list);
+  // 게시글 수정 함수
+  const update = async () => {
+    await patchPosts(
+      navigation,
+      post._id,
+      onAndOff,
+      location,
+      address,
+      name,
+      category,
+      personnel,
+      startDate,
+      dueDate,
+      title,
+      intro,
+      hashtagList
+    );
   };
 
-  // 게시글 업로드 버튼
+  // 게시글 수정 완료 버튼
   const showSubmitButton = () => {
     if (
       title == '' ||
@@ -179,25 +198,6 @@ export default function UpdatePost({ navigation, route }) {
         />
       );
     }
-  };
-
-  // 게시글 업로드 함수
-  const update = async () => {
-    await patchPosts(
-      navigation,
-      post._id,
-      onAndOff,
-      location,
-      address,
-      name,
-      category,
-      personnel,
-      startDate,
-      dueDate,
-      title,
-      intro,
-      hashtagList
-    );
   };
 
   return (
