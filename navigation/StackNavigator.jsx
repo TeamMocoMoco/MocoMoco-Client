@@ -21,7 +21,6 @@ import {
   CreatePostFirst,
   CreatePostSecond,
   CreatePostThird,
-  CreatePostFourth,
   SuccessPost,
 } from '../pages/post/create';
 
@@ -55,7 +54,6 @@ const StackNavigator = () => {
       <Stack.Screen name="CreatePostFirst" component={CreatePostFirst} />
       <Stack.Screen name="CreatePostSecond" component={CreatePostSecond} />
       <Stack.Screen name="CreatePostThird" component={CreatePostThird} />
-      <Stack.Screen name="CreatePostFourth" component={CreatePostFourth} />
       <Stack.Screen name="SuccessPost" component={SuccessPost} />
 
       <Stack.Screen name="ChatRoom" component={ChatRoom} />
