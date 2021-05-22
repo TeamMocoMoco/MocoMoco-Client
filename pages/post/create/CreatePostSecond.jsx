@@ -42,7 +42,7 @@ export default function CreatePostSecond({ navigation, route }) {
           title={'저장하고 다음으로'}
           empty={false}
           doFunction={() =>
-            navigation.push('CreatePostFourth', {
+            navigation.push('CreatePostThird', {
               onAndOff,
               category,
               personnel,
