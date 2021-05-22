@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import {
   Dimensions,
@@ -21,6 +21,22 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 export default function LocationDetail({ navigation, route }) {
   const location = route.params;
+
+  const [lastPress, setLastPress] = useState(false);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setLastPress(false);
+    }, 1000);
+    return () => clearInterval(id);
+  }, [lastPress]);
+
+  const back = () => {
+    if (!lastPress) {
+      setLastPress(true);
+      navigation.goBack();
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -46,20 +62,11 @@ export default function LocationDetail({ navigation, route }) {
           fillColor={'#435BEF99'}
         />
       </MapView>
-      <TouchableOpacity
-        style={{
-          flexDirection: 'row',
-          position: 'absolute',
-          top: 20,
-          left: 20,
-          alignItems: 'center',
-        }}
-        onPress={() => navigation.goBack()}
-      >
+
+      {/* 돌아가기 버튼 */}
+      <TouchableOpacity style={styles.backButton} onPress={() => back()}>
         <Entypo name="chevron-small-left" size={40} color="black" />
-        <Text style={{ fontSize: 18, fontWeight: 'bold' }}>
-          게시글로 돌아가기
-        </Text>
+        <Text style={styles.backText}>게시글로 돌아가기</Text>
       </TouchableOpacity>
     </View>
   );
@@ -72,5 +79,16 @@ const styles = StyleSheet.create({
   map: {
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height,
+  },
+  backButton: {
+    flexDirection: 'row',
+    position: 'absolute',
+    top: 20,
+    left: 20,
+    alignItems: 'center',
+  },
+  backText: {
+    fontSize: 18,
+    fontWeight: 'bold',
   },
 });

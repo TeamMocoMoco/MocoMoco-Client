@@ -1,14 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
   StyleSheet,
   View,
   Modal,
-  Dimensions,
   TouchableOpacity,
   Text,
   Alert,
 } from 'react-native';
-const pickerWidth = Dimensions.get('window').width * 0.8;
 
 import { deletePosts } from '../../config/api/PostAPI';
 
@@ -23,9 +21,9 @@ export default function DotModal({
       {
         text: '네',
         onPress: () => {
-          deletePosts(navigation, post._id), setModalOpen(false);
+          deletePosts(navigation, post._id);
+          setModalOpen(false);
         },
-
         style: 'default',
       },
       {
@@ -38,30 +36,20 @@ export default function DotModal({
   return (
     <Modal transparent visible={modalOpen} animationType={'fade'}>
       <TouchableOpacity
-        style={{
-          flex: 1,
-          alignItems: 'flex-end',
-          justifyContent: 'flex-start',
-          paddingTop: 140,
-          paddingRight: 40,
-        }}
+        style={styles.button}
         onPressOut={() => {
           setModalOpen(false);
         }}
       >
         <View
-          style={{
-            width: 180,
-            height: 130,
-            backgroundColor: 'white',
-            elevation: 3,
-          }}
+          style={styles.modalContainer}
           onPressOut={() => {
             setModalOpen(false);
           }}
         >
+          {/* 수정하기 */}
           <TouchableOpacity
-            style={{ padding: 20 }}
+            style={styles.setBox}
             onPress={() => {
               navigation.push('UpdatePost', post);
               setModalOpen(false);
@@ -70,9 +58,9 @@ export default function DotModal({
             <Text style={styles.setText}>수정하기</Text>
           </TouchableOpacity>
 
-          {/* 삭제하기 (누르면 알러트뜨고 확인누르면 실행으로 고치기) */}
+          {/* 삭제하기 (누르면 Alert뜨고 확인 누르면 실행으로 고치기) */}
           <TouchableOpacity
-            style={{ padding: 20 }}
+            style={styles.setBox}
             onPress={() => {
               {
                 doDelete();
@@ -88,5 +76,23 @@ export default function DotModal({
 }
 
 const styles = StyleSheet.create({
-  setText: { fontSize: 15 },
+  button: {
+    flex: 1,
+    alignItems: 'flex-end',
+    justifyContent: 'flex-start',
+    paddingTop: 140,
+    paddingRight: 40,
+  },
+  modalContainer: {
+    width: 180,
+    height: 130,
+    backgroundColor: 'white',
+    elevation: 3,
+  },
+  setBox: {
+    padding: 20,
+  },
+  setText: {
+    fontSize: 15,
+  },
 });

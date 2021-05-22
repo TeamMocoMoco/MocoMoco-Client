@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 import { HeaderBackTitle } from '../../components/header';
@@ -10,9 +10,19 @@ import { Ionicons } from '@expo/vector-icons';
 export default function ParticipantsList({ navigation, route }) {
   const participants = route.params;
 
+  const [lastPress, setLastPress] = useState(false);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setLastPress(false);
+    }, 1000);
+    return () => clearInterval(id);
+  }, [lastPress]);
+
   const showRoleIcon = (participant) => {
     let pickColor;
     let iconName;
+
     switch (participant.role) {
       case '기획자':
         pickColor = getColor('pmColor');
@@ -27,6 +37,7 @@ export default function ParticipantsList({ navigation, route }) {
         iconName = 'md-square-sharp';
         break;
     }
+
     return (
       <>
         <Ionicons name={iconName} size={15} color={pickColor} />
@@ -37,6 +48,7 @@ export default function ParticipantsList({ navigation, route }) {
       </>
     );
   };
+
   return (
     <View style={styles.container}>
       <HeaderBackTitle navigation={navigation} title={'참가자'} />
@@ -53,10 +65,13 @@ export default function ParticipantsList({ navigation, route }) {
                   key={participant._id}
                   style={styles.participantLine}
                   onPress={() => {
-                    navigation.push(
-                      'OtherProfile',
-                      (navigation, participant._id)
-                    );
+                    if (!lastPress) {
+                      setLastPress(true);
+                      navigation.push(
+                        'OtherProfile',
+                        (navigation, participant._id)
+                      );
+                    }
                   }}
                 >
                   {showRoleIcon(participant)}

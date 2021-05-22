@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -14,6 +14,22 @@ import { Entypo } from '@expo/vector-icons';
 const windowHeight = Dimensions.get('window').height;
 
 export default function HeaderChat({ navigation, name, outRoom }) {
+  const [lastPress, setLastPress] = useState(false);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setLastPress(false);
+    }, 1000);
+    return () => clearInterval(id);
+  }, [lastPress]);
+
+  const back = () => {
+    if (!lastPress) {
+      setLastPress(true);
+      navigation.goBack();
+    }
+  };
+
   return (
     <View style={styles.header}>
       <View style={styles.startBox}>
@@ -21,7 +37,7 @@ export default function HeaderChat({ navigation, name, outRoom }) {
           name="chevron-small-left"
           size={35}
           color="black"
-          onPress={() => navigation.goBack()}
+          onPress={() => back()}
         />
       </View>
 

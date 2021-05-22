@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -14,15 +14,31 @@ import { getColor } from '../../styles/styles';
 const windowHeight = Dimensions.get('window').height;
 
 export default function HeaderBackTitle({ navigation, title }) {
+  const [lastPress, setLastPress] = useState(false);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setLastPress(false);
+    }, 1000);
+    return () => clearInterval(id);
+  }, [lastPress]);
+
+  const back = () => {
+    if (!lastPress) {
+      setLastPress(true);
+      navigation.goBack();
+    }
+  };
+
   return (
     <View style={styles.header}>
-      <TouchableOpacity onPress={() => navigation.goBack()}>
+      <TouchableOpacity onPress={() => back()}>
         <Entypo name="chevron-small-left" size={35} color="black" />
       </TouchableOpacity>
 
       <Text style={styles.headerText}>{title}</Text>
 
-      <TouchableOpacity onPress={() => navigation.goBack()}>
+      <TouchableOpacity onPress={() => back()}>
         <Entypo name="chevron-small-left" size={35} color="transparent" />
       </TouchableOpacity>
     </View>

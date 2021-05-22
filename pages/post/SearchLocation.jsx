@@ -21,6 +21,21 @@ export default function SearchLocation({ navigation, route }) {
 
   const [ready, setReady] = useState(true);
   const [results, setResults] = useState([]);
+  const [lastPress, setLastPress] = useState(false);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setLastPress(false);
+    }, 1000);
+    return () => clearInterval(id);
+  }, [lastPress]);
+
+  const back = () => {
+    if (!lastPress) {
+      setLastPress(true);
+      navigation.goBack();
+    }
+  };
 
   const download = useCallback(async (address) => {
     setReady(false);
@@ -40,7 +55,7 @@ export default function SearchLocation({ navigation, route }) {
       >
         <TouchableOpacity
           style={{ paddingVertical: 10, paddingEnd: 10 }}
-          onPress={() => navigation.goBack()}
+          onPress={() => back()}
         >
           <Entypo name="chevron-small-left" size={30} color="black" />
         </TouchableOpacity>

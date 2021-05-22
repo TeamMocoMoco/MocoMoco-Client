@@ -1,11 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
+import moment from 'moment';
+
 import { getColor } from '../../styles/styles';
 
 export default function ChatMessage({ receiver, sender, message, createdAt }) {
-  const time = createdAt;
-
   if (receiver != sender) {
     return (
       <View style={styles.row}>
@@ -14,14 +14,14 @@ export default function ChatMessage({ receiver, sender, message, createdAt }) {
           <Text style={[styles.message, { color: '#000' }]}>{message}</Text>
         </View>
         {/* 시간 */}
-        <Text style={styles.time}>{time}</Text>
+        <Text style={styles.time}>{moment(createdAt).format('hh:mm')}</Text>
       </View>
     );
   } else {
     return (
       <View style={[styles.row, { justifyContent: 'flex-end' }]}>
         {/* 시간 */}
-        <Text style={styles.time}>{time}</Text>
+        <Text style={styles.time}>{moment(createdAt).format('hh:mm')}</Text>
         {/* 메세지 박스 */}
         <View style={[styles.messageContainer, styles.user_message]}>
           <Text style={[styles.message, { color: '#FFF' }]}>{message}</Text>

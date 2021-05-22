@@ -2,14 +2,8 @@ import React from 'react';
 import { StyleSheet, View, Text, TextInput } from 'react-native';
 
 export default function SignInput({ label, value, type, hint, setValue }) {
-  // const message = () => {
-  //   if (msg !== undefined) {
-  //     return <Text style={styles.msg}>{msg}</Text>;
-  //   }
-  // };
-
   return (
-    <View style={{ width: '100%', marginBottom: 20 }}>
+    <View style={styles.container}>
       <Text style={styles.label}>{label}</Text>
       <View style={styles.inputBox}>
         <TextInput
@@ -24,12 +18,15 @@ export default function SignInput({ label, value, type, hint, setValue }) {
           }}
         />
       </View>
-      {/* {message()} */}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    width: '100%',
+    marginBottom: 20,
+  },
   label: {
     color: '#263238',
     fontWeight: 'bold',

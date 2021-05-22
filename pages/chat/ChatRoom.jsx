@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import {
   ActivityIndicator,
@@ -58,9 +58,17 @@ export default function ChatRoom({ navigation, route }) {
 
   const [removeCheck, setRemoveCheck] = useState(false);
 
+  const [postLastPress, setPostLastPress] = useState(false);
+  const [peopleLastPress, setPeopleLastPress] = useState(false);
+
   useEffect(() => {
     // 소켓 연결 (완료)
     const socket = io(SOCKET_URL);
+
+    const id = setInterval(() => {
+      setPostLastPress(false);
+      setPeopleLastPress(false);
+    }, 1000);
 
     navigation.addListener('focus', (e) => {
       setTimeout(async () => {
@@ -93,6 +101,7 @@ export default function ChatRoom({ navigation, route }) {
         setReady(true);
       });
     });
+
     // room._id emit (완료)
     socket.emit('connectRoom', { roomId });
 
@@ -101,6 +110,8 @@ export default function ChatRoom({ navigation, route }) {
       chat.current = [data, ...chat.current];
       setSocketState(false);
     });
+
+    return () => clearInterval(id);
   }, []);
 
   // 채팅방 정보 가져오기
@@ -163,67 +174,53 @@ export default function ChatRoom({ navigation, route }) {
     );
   };
 
+  const showParticipantBoxHeader = () => {
+    return (
+      <View style={styles.row}>
+        {/* 참가자 목록 박스 타이틀 */}
+        <View style={{ flexDirection: 'row' }}>
+          <TouchableOpacity onPress={() => goPost()}>
+            <Text style={{ fontWeight: 'bold' }}>
+              {title == '' ? '삭제된 게시글' : title}
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* 참가자 목록 자세히 보기 버튼 */}
+        <TouchableOpacity style={{ paddingHorizontal: 5 }}>
+          <Entypo
+            name="chevron-small-down"
+            size={35}
+            color="black"
+            onPress={() => {
+              setParticipantBox(true);
+            }}
+          />
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
+  const goPost = () => {
+    if (!postLastPress) {
+      setPostLastPress(true);
+      title == ''
+        ? Alert.alert('삭제된 게시글입니다.')
+        : navigation.push('ReadPost', { postId });
+    }
+  };
+
   // 참가자 목록
   const showParticipantBox = () => {
     if (!participantBox) {
       return (
-        <View style={styles.participantBox}>
-          <View style={styles.row}>
-            <View style={{ flexDirection: 'row' }}>
-              <TouchableOpacity
-                onPress={() => {
-                  title == ''
-                    ? Alert.alert('삭제된 게시글입니다.')
-                    : navigation.push('ReadPost', { postId });
-                }}
-              >
-                <Text style={{ fontWeight: 'bold' }}>
-                  {title == '' ? '삭제된 게시글' : title}
-                </Text>
-              </TouchableOpacity>
-              {/* <Text> 참가자</Text> */}
-            </View>
-            <TouchableOpacity style={{ paddingHorizontal: 5 }}>
-              <Entypo
-                name="chevron-small-down"
-                size={35}
-                color="black"
-                onPress={() => {
-                  setParticipantBox(true);
-                }}
-              />
-            </TouchableOpacity>
-          </View>
-        </View>
+        <View style={styles.participantBox}>{showParticipantBoxHeader()}</View>
       );
     } else {
       return (
         <View style={styles.participantBox}>
-          <View style={styles.row}>
-            <View style={{ flexDirection: 'row' }}>
-              <TouchableOpacity
-                onPress={() => {
-                  title == ''
-                    ? Alert.alert('삭제된 게시글입니다.')
-                    : navigation.push('ReadPost', { postId });
-                }}
-              >
-                <Text style={{ fontWeight: 'bold' }}>
-                  {title == '' ? '삭제된 게시글' : title}
-                </Text>
-              </TouchableOpacity>
-            </View>
-            <TouchableOpacity style={{ paddingHorizontal: 5 }}>
-              <Entypo
-                name="chevron-small-down"
-                size={35}
-                color="black"
-                onPress={() => {
-                  setParticipantBox(false);
-                }}
-              />
-            </TouchableOpacity>
-          </View>
+          {showParticipantBoxHeader()}
+
           <View style={styles.participants}>
             {participants.current.length == 0 ||
             participants.current == null ? (
@@ -237,10 +234,13 @@ export default function ChatRoom({ navigation, route }) {
                     key={participant._id}
                     style={styles.participantLine}
                     onPress={() => {
-                      navigation.push(
-                        'OtherProfile',
-                        (navigation, participant._id)
-                      );
+                      if (!peopleLastPress) {
+                        setPeopleLastPress(true);
+                        navigation.push(
+                          'OtherProfile',
+                          (navigation, participant._id)
+                        );
+                      }
                     }}
                   >
                     {showRoleIcon(participant)}
@@ -342,7 +342,7 @@ export default function ChatRoom({ navigation, route }) {
       return (
         <Text style={{ color: '#D00000' }}>삭제된 게시글의 채팅방입니다.</Text>
       );
-    } else if (removeCheck == true) {
+    } else if (removeCheck) {
       return (
         <Text style={{ color: '#D00000' }}>
           상대방이 채팅방에서 나갔습니다.
@@ -359,6 +359,21 @@ export default function ChatRoom({ navigation, route }) {
     }
   };
 
+  // FlatList 함수
+  const keyExtractor = useCallback((item) => item._id, []);
+  const renderItem = useCallback(
+    (chatInfo) => (
+      <ChatMessage
+        receiver={myid.current}
+        sender={chatInfo.item.user}
+        message={chatInfo.item.content}
+        createdAt={chatInfo.item.createdAt}
+        key={chatInfo.item._id}
+      />
+    ),
+    []
+  );
+
   return ready ? (
     room.current.post == null ? (
       <View style={styles.container}>
@@ -373,18 +388,8 @@ export default function ChatRoom({ navigation, route }) {
             ]}
             data={chat.current}
             inverted={-1}
-            keyExtractor={(item) => item._id}
-            renderItem={(chatInfo) => {
-              return (
-                <ChatMessage
-                  receiver={myid.current}
-                  sender={chatInfo.item.user}
-                  message={chatInfo.item.content}
-                  createdAt={chatInfo.item.createdAt.substr(11, 5)}
-                  key={chatInfo.item._id}
-                />
-              );
-            }}
+            keyExtractor={keyExtractor}
+            renderItem={renderItem}
           />
         </View>
 
@@ -409,18 +414,8 @@ export default function ChatRoom({ navigation, route }) {
             ]}
             data={chat.current}
             inverted={-1}
-            keyExtractor={(item) => item._id}
-            renderItem={(chatInfo) => {
-              return (
-                <ChatMessage
-                  receiver={myid.current}
-                  sender={chatInfo.item.user}
-                  message={chatInfo.item.content}
-                  createdAt={chatInfo.item.createdAt.substr(11, 5)}
-                  key={chatInfo.item._id}
-                />
-              );
-            }}
+            keyExtractor={keyExtractor}
+            renderItem={renderItem}
           />
         </View>
 

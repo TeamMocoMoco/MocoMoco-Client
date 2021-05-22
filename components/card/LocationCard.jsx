@@ -1,15 +1,32 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { getColor } from '../../styles/styles';
 
 export default function LocationCard({ navigation, location, info }) {
+  const [lastPress, setLastPress] = useState(false);
+
+  useEffect(() => {
+    navigation.addListener('focus', (e) => {
+      setTimeout(() => {
+        setLastPress(false);
+      });
+    });
+  }, [navigation]);
+
+  const back = () => {
+    if (!lastPress) {
+      setLastPress(true);
+      info.current = location;
+      navigation.goBack();
+    }
+  };
+
   return (
     <TouchableOpacity
       style={styles.cardContainer}
       onPress={() => {
-        info.current = location;
-        navigation.goBack();
+        back();
       }}
     >
       <Text style={styles.name}>{location.name}</Text>
