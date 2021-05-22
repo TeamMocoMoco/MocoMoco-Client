@@ -43,6 +43,8 @@ export default function ChatRoom({ navigation, route }) {
   const myid = useRef();
 
   const outMessage = '상대방이 채팅방에서 나갔습니다.';
+  const confirmMessage = userName + '님의 참가신청이 확정되었습니다.';
+  const cancleMessage = userName + '님의 참가확정이 취소되었습니다.';
 
   const [ready, setReady] = useState(false);
 
@@ -300,12 +302,15 @@ export default function ChatRoom({ navigation, route }) {
       room.current.participant._id
     );
     await download();
+    postChat(roomId, cancleMessage);
+    removeCheck;
   };
 
   // 확정 함수
   const confirm = async () => {
     await postParticipants(room.current.post._id, room.current.participant._id);
     await download();
+    postChat(roomId, confirmMessage);
   };
 
   // 확정/확정 취소/신고 버튼
