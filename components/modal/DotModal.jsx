@@ -36,6 +36,7 @@ export default function DotModal({
   return (
     <Modal transparent visible={modalOpen} animationType={'fade'}>
       <TouchableOpacity
+        activeOpacity={1}
         style={styles.button}
         onPressOut={() => {
           setModalOpen(false);

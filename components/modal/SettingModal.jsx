@@ -38,6 +38,7 @@ export default function SettingModal({
   return (
     <Modal transparent visible={modalOpen} animationType={'fade'}>
       <TouchableOpacity
+        activeOpacity={1}
         style={styles.button}
         onPressOut={() => {
           setModalOpen(false);
@@ -77,7 +78,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'flex-end',
     justifyContent: 'flex-start',
-    paddingTop: 50,
+    paddingTop: 55,
     paddingRight: 45,
   },
   modalContainer: {
