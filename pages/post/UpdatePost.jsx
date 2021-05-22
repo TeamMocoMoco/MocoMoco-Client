@@ -366,8 +366,8 @@ export default function UpdatePost({ navigation, route }) {
               style={{ flex: 3, fontSize: 18 }}
               value={title}
               type={'title'}
-              placeholder={'최대 30글자 작성 가능'}
-              maxLength={30}
+              placeholder={'최대 20글자 작성 가능'}
+              maxLength={20}
               onChangeText={(text) => {
                 setTitle(text);
               }}

@@ -205,9 +205,9 @@ export default function CreatePostThird({ navigation, route }) {
             style={{ flex: 3, fontSize: 22, fontWeight: 'bold' }}
             value={title}
             type={'title'}
-            placeholder={'최대 30글자 작성 가능'}
+            placeholder={'최대 20글자 작성 가능'}
             placeholderTextColor={getColor('inactiveBorderColor')}
-            maxLength={30}
+            maxLength={20}
             onChangeText={(text) => {
               setTitle(text);
             }}
