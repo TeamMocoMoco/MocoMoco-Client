@@ -21,8 +21,7 @@ import { patchUserInfo } from '../../config/api/UserAPI';
 import * as ImagePicker from 'expo-image-picker';
 
 export default function UpdateProfile({ navigation, route }) {
-  const userinfo = route.params.user;
-
+  const userinfo = route.params;
   const [name, setName] = useState(userinfo.name);
   const [introduce, setIntroduce] = useState(userinfo.introduce);
   const [imgUri, setImgUri] = useState(userinfo.userImg);

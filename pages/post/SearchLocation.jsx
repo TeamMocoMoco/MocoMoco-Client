@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import {
   ActivityIndicator,
