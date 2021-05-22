@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'flex-end',
     justifyContent: 'flex-start',
-    paddingTop: 140,
+    paddingTop: 90,
     paddingRight: 40,
   },
   modalContainer: {
