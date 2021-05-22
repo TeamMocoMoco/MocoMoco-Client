@@ -158,7 +158,7 @@ export default function MyPage({ navigation }) {
 
         <TouchableOpacity
           onPress={() => {
-            navigation.push('UpdateProfile', { user });
+            navigation.push('UpdateProfile', user);
           }}
           style={styles.editBox}
         >
