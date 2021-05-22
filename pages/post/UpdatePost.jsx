@@ -99,17 +99,14 @@ export default function UpdatePost({ navigation, route }) {
   const showSelectedHashtag = () => {
     if (hashtagList.length > 0) {
       return (
-        <View style={{ marginBottom: 10 }}>
-          <Text
+        <View>
+          <View
             style={{
-              color: '#263238',
-              fontWeight: 'bold',
-              marginVertical: 10,
+              flex: 1,
+              flexDirection: 'row',
+              flexWrap: 'wrap',
             }}
           >
-            해시태그
-          </Text>
-          <View style={{ flexDirection: 'row' }}>
             {hashtagList.map((tag, i) => {
               return (
                 <HashtagButton
@@ -123,6 +120,37 @@ export default function UpdatePost({ navigation, route }) {
             })}
           </View>
         </View>
+      );
+    }
+  };
+
+  // 해시태그 추가 Input
+  const showHashtagInput = () => {
+    if (hashtagList.length == 5) {
+      return (
+        <TextInput
+          placeholder={'해시태그를 입력하세요. (최대 5개)'}
+          value={hashtag}
+          maxLength={14}
+          onChangeText={(text) => {
+            setHashtag(text);
+          }}
+        />
+      );
+    } else {
+      return (
+        <TextInput
+          placeholder={'해시태그를 입력하세요. (최대 5개)'}
+          value={hashtag}
+          maxLength={14}
+          onChangeText={(text) => {
+            setHashtag(text);
+          }}
+          onSubmitEditing={() => {
+            setHashtagList([...hashtagList, hashtag]);
+            setHashtag('');
+          }}
+        />
       );
     }
   };
@@ -394,20 +422,33 @@ export default function UpdatePost({ navigation, route }) {
           </View>
 
           {/* 선택된 해시태그 */}
+          <View style={{ flexDirection: 'row' }}>
+            <Text
+              style={{
+                color: '#263238',
+                fontSize: 14,
+                fontWeight: 'bold',
+                marginVertical: 10,
+              }}
+            >
+              해시태그
+            </Text>
+            <Text
+              style={{
+                color: 'grey',
+                fontSize: 14,
+                marginVertical: 10,
+                marginLeft: 20,
+              }}
+            >
+              해시태그 작성시 검색에 용이합니다.
+            </Text>
+          </View>
           {showSelectedHashtag()}
 
           {/* 해시태그 */}
           <View style={[styles.row, { width: '100%', paddingBottom: 20 }]}>
-            <View style={styles.hashtagBox}>
-              <TextInput
-                placeholder={'해시태그를 입력하세요. (최대 5개)'}
-                value={hashtag}
-                maxLength={14}
-                onChangeText={(text) => {
-                  setHashtag(text);
-                }}
-              />
-            </View>
+            <View style={styles.hashtagBox}>{showHashtagInput()}</View>
             <View style={{ width: '17%' }}>{showAddButton()}</View>
           </View>
         </View>
