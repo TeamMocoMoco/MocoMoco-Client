@@ -37,13 +37,9 @@ export default function MainList({ navigation }) {
   const [lastPress, setLastPress] = useState(false);
 
   useEffect(() => {
-    navigation.addListener('focus', (e) => {
-      setTimeout(() => {
-        setReady(false);
-        download(tab);
-        setReady(true);
-      });
-    });
+    setReady(false);
+    download(tab);
+    setReady(true);
     const id = setInterval(() => {
       setLastPress(false);
     }, 1000);
