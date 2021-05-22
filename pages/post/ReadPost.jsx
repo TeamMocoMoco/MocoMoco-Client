@@ -206,33 +206,18 @@ export default function ReadPost({ navigation, route }) {
       <HeaderBack navigation={navigation} title={''} />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.m_h_25}>
-          <View style={styles.arrowRow}>
-            {/* 해시태그 */}
-            <ScrollView
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-            >
-              {post.hashtag.length >= 1 && (
-                <View style={styles.hashtagRow}>
-                  {post.hashtag.map((title, i) => {
-                    return (
-                      <HashtagButton feat={'read'} title={title} key={i} />
-                    );
-                  })}
-                </View>
-              )}
-            </ScrollView>
+          {/* 제목 */}
+          <View
+            style={{
+              flexDirection: 'row',
+            }}
+          >
+            <View style={{ flex: 1 }}>
+              <Text style={styles.title}>{post.title}</Text>
+            </View>
 
             {/* 수정/삭제 모달 버튼 (작성자일 때 만) */}
-            {showdotModal()}
-          </View>
-
-          {/* 제목 */}
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <View style={styles.badge}>
-              <Text style={styles.badgeText}>{post.meeting}</Text>
-            </View>
-            <Text style={styles.title}>{post.title}</Text>
+            <View style={{ marginBottom: 15 }}>{showdotModal()}</View>
           </View>
 
           <DotModal
@@ -281,6 +266,7 @@ export default function ReadPost({ navigation, route }) {
           {/* 모집 인원 */}
           <View style={styles.row}>
             <Text style={styles.label}>모집 인원</Text>
+
             <Text style={styles.tag}>{post.personnel}명</Text>
           </View>
 
@@ -309,6 +295,9 @@ export default function ReadPost({ navigation, route }) {
           {/* 모집 분류 */}
           <View style={styles.row}>
             <Text style={styles.label}>모집 분류</Text>
+            <View style={styles.badge}>
+              <Text style={styles.badgeText}>{post.meeting}</Text>
+            </View>
             <Text style={styles.tag}>{post.category}</Text>
           </View>
         </View>
@@ -319,6 +308,22 @@ export default function ReadPost({ navigation, route }) {
         </View>
         <View style={styles.descBox}>
           <Text style={styles.desc}>{post.content}</Text>
+        </View>
+
+        <View style={{ marginHorizontal: 25, marginTop: 15 }}>
+          {/* 해시태그 */}
+          {post.hashtag.length >= 1 && (
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+            >
+              <View style={styles.hashtagRow}>
+                {post.hashtag.map((title, i) => {
+                  return <HashtagButton feat={'read'} title={title} key={i} />;
+                })}
+              </View>
+            </ScrollView>
+          )}
         </View>
 
         {/* 신청 버튼 */}
@@ -380,7 +385,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: 'bold',
-    marginVertical: 15,
+    marginBottom: 15,
   },
   userImg: {
     width: 25,
