@@ -3,10 +3,10 @@ import * as SecureStore from 'expo-secure-store';
 import axios from 'axios';
 
 // nginx
-// const host = 'http://3.35.133.180';
+const host = 'http://13.124.0.54';
 
 // pm2
-const host = 'http://15.165.163.126';
+// const host = 'http://15.165.163.126';
 
 // 채팅방 만들기 - 완료
 export async function createRoom(navigation, postId, userId, userName) {
