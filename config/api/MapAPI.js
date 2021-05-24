@@ -13,7 +13,7 @@ export async function getPostsByLocation(lat, log) {
       method: 'get',
       url: host + '/posts/map',
       params: {
-        center: (lat, log),
+        center: lat + ',' + log,
       },
     });
 

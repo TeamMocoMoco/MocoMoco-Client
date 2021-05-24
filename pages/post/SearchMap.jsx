@@ -44,21 +44,27 @@ export default function SearchMap({ navigation }) {
     latitudeDelta: LATITUDE_DELTA,
     longitudeDelta: LONGITUDE_DELTA,
   });
+  const [searchState, setSearchState] = useState(true);
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    navigation.addListener('focus', (e) => {
-      setTimeout(async () => {
-        const result = await getPostsByLocation(
-          mapRegion.latitude,
-          mapRegion.longitude
-        );
-        setPosts(result);
-      });
-      setReady(true);
+    setTimeout(async () => {
+      await download(mapRegion);
     });
+    setReady(true);
     return () => setReady(false);
   }, [navigation]);
+
+  const download = async (region) => {
+    const result = await getPostsByLocation(region.latitude, region.longitude);
+    setPosts(result);
+    setSearchState(true);
+  };
+
+  const onRegionChange = async (region) => {
+    setMapRegion(region);
+    setSearchState(false);
+  };
 
   const getCurrentLocation = useCallback(async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
@@ -96,10 +102,6 @@ export default function SearchMap({ navigation }) {
       });
     }
   });
-
-  const onRegionChange = (region) => {
-    setMapRegion(region);
-  };
 
   return ready ? (
     <View style={styles.container}>
@@ -165,6 +167,23 @@ export default function SearchMap({ navigation }) {
           )}
         </SlidingUpPanel>
       </View>
+
+      {/* 현 지도에서 검색 버튼 */}
+      {!searchState && (
+        <TouchableOpacity
+          style={styles.topFAB}
+          onPress={() => {
+            download(mapRegion);
+          }}
+        >
+          <View style={styles.topFABView}>
+            <Feather name="rotate-cw" size={13} color="white" />
+            <Text style={styles.topFABText}>현 지도에서 검색</Text>
+          </View>
+        </TouchableOpacity>
+      )}
+
+      {/* 현위치 버튼 */}
       <TouchableOpacity
         style={styles.FAB}
         onPress={() => {
@@ -238,10 +257,28 @@ const styles = StyleSheet.create({
     marginBottom: 50,
     marginHorizontal: 25,
   },
+  topFAB: {
+    backgroundColor: getColor('defaultColor'),
+    position: 'absolute',
+    top: windowHeight * 0.05,
+    width: 150,
+    borderRadius: 50,
+    alignSelf: 'center',
+  },
+  topFABView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 8,
+  },
+  topFABText: {
+    color: '#FFF',
+    marginStart: 10,
+  },
   FAB: {
     backgroundColor: getColor('defaultColor'),
     position: 'absolute',
-    bottom: 100,
+    bottom: windowHeight * 0.12,
     right: 20,
     width: 50,
     height: 50,
