@@ -26,10 +26,10 @@ import { getChatsByRoom, postChat, deleteRoom } from '../../config/api/ChatAPI';
 import { postParticipants, patchParticipants } from '../../config/api/PostAPI';
 
 // nginx
-// const SOCKET_URL = 'http://3.35.133.180/chat';
+const SOCKET_URL = 'http://13.124.0.54/chat';
 
 // pm2
-const SOCKET_URL = 'http://15.165.163.126/chat';
+// const SOCKET_URL = 'http://15.165.163.126/chat';
 
 export default function ChatRoom({ navigation, route }) {
   const roomId = route.params.roomId;
