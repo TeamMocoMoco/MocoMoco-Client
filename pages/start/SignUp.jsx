@@ -25,9 +25,8 @@ export default function SignUp({ navigation }) {
 
   const doRegister = async () => {
     await register(name, pickRole);
-    navigation.push('TabNavigator');
+    navigation.push('Starting', { navigation, name, pickRole });
   };
-
   const roles = [
     { role: '기획자', name: 'ellipse' },
     { role: '디자이너', name: 'triangle-sharp' },

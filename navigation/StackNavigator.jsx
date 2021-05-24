@@ -46,7 +46,7 @@ const StackNavigator = () => {
         component={VerificationConfirm}
       />
       <Stack.Screen name="SignUp" component={SignUp} />
-
+      <Stack.Screen name="Starting" component={Starting} />
       <Stack.Screen name="UpdatePost" component={UpdatePost} />
 
       <Stack.Screen name="SearchLocation" component={SearchLocation} />
