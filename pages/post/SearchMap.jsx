@@ -47,6 +47,8 @@ export default function SearchMap({ navigation }) {
   const [searchState, setSearchState] = useState(true);
   const [posts, setPosts] = useState([]);
 
+  const [markerlatitude, setMarkerlatitude] = useState('');
+  const [markerlongitude, setMarkerlongitude] = useState('');
   useEffect(() => {
     setTimeout(async () => {
       await download(mapRegion);
@@ -123,6 +125,8 @@ export default function SearchMap({ navigation }) {
                 }}
                 onPress={() => {
                   pannelRef.current.show();
+                  setMarkerlatitude(post.location[0]);
+                  setMarkerlongitude(post.location[1]);
                 }}
                 pinColor={getColor('defaultColor')}
                 key={post._id}
@@ -139,10 +143,10 @@ export default function SearchMap({ navigation }) {
               <View style={styles.modalHeader} {...dragHandler}>
                 <View style={styles.dragHandle}></View>
                 <View style={styles.modalHeaderText}>
-                  <Text style={styles.nearby}>{'내 주변\n3Km 이내'}</Text>
+                  {/* <Text style={styles.nearby}>{'내 주변\n3Km 이내'}</Text>
                   <Text style={styles.studyCount}>
                     {`총 ${posts.length}개의 스터디 진행중...`}
-                  </Text>
+                  </Text> */}
                 </View>
               </View>
 
@@ -153,13 +157,18 @@ export default function SearchMap({ navigation }) {
                   showsVerticalScrollIndicator={false}
                   keyExtractor={(item) => item._id}
                   renderItem={(post) => {
-                    return (
-                      <MainCard
-                        navigation={navigation}
-                        post={post.item}
-                        key={post.item._id}
-                      />
-                    );
+                    if (
+                      markerlatitude == post.item.location[0] ||
+                      markerlongitude == post.item.location[0]
+                    ) {
+                      return (
+                        <MainCard
+                          navigation={navigation}
+                          post={post.item}
+                          key={post.item._id}
+                        />
+                      );
+                    }
                   }}
                 />
               </View>
@@ -240,6 +249,7 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     paddingHorizontal: 25,
+    paddingVertical: 10,
     marginBottom: 10,
     alignItems: 'flex-end',
     justifyContent: 'space-between',
