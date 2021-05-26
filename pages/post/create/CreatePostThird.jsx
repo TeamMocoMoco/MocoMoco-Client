@@ -175,7 +175,7 @@ export default function CreatePostThird({ navigation, route }) {
     <View style={styles.container}>
       <HeaderBack
         navigation={navigation}
-        title={'자신을 마음껏 표현해보세요 :)'}
+        title={'모집글을 자유롭게 작성해보세요 :)'}
       />
       {/* 진행도 현황 */}
       <ProgressBar
@@ -275,7 +275,7 @@ export default function CreatePostThird({ navigation, route }) {
               marginLeft: 20,
             }}
           >
-            해시태그 작성시 검색에 용이합니다.
+            *해시태그 작성시 검색에 용이합니다.
           </Text>
         </View>
         {showSelectedHashtag()}
