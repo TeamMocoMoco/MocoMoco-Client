@@ -2,7 +2,7 @@
   "expo": {
     "name": "모코모코",
     "slug": "MocoMoco",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -22,7 +22,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "versionCode": 2,
+      "versionCode": 3,
       "package": "com.teammocomoco.android.mocomoco",
       "config": {
         "googleMaps": { "apiKey": "AIzaSyDrSoi6PGcKc7IoIxN7ucfMpCq7Jf670b0" }
