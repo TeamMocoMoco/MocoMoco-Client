@@ -183,30 +183,57 @@ export default function ChatRoom({ navigation, route }) {
   };
 
   const showParticipantBoxHeader = () => {
-    return (
-      <View style={styles.row}>
-        {/* 참가자 목록 박스 타이틀 */}
-        <View style={{ flexDirection: 'row' }}>
-          <TouchableOpacity onPress={() => goPost()}>
-            <Text style={{ fontWeight: 'bold' }}>
-              {title == '' ? '삭제된 게시글' : title}
-            </Text>
+    if (!participantBox) {
+      return (
+        <View style={styles.row}>
+          {/* 참가자 목록 박스 타이틀 */}
+          <View style={{ flexDirection: 'row' }}>
+            <TouchableOpacity onPress={() => goPost()}>
+              <Text style={{ fontWeight: 'bold' }}>
+                {title == '' ? '삭제된 게시글' : title}
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* 참가자 목록 자세히 보기 버튼 */}
+          <TouchableOpacity style={{ paddingHorizontal: 5 }}>
+            <Entypo
+              name="chevron-small-down"
+              size={35}
+              color="black"
+              onPress={() => {
+                setParticipantBox(true);
+              }}
+            />
           </TouchableOpacity>
         </View>
+      );
+    } else {
+      return (
+        <View style={styles.row}>
+          {/* 참가자 목록 박스 타이틀 */}
+          <View style={{ flexDirection: 'row' }}>
+            <TouchableOpacity onPress={() => goPost()}>
+              <Text style={{ fontWeight: 'bold' }}>
+                {title == '' ? '삭제된 게시글' : title}
+              </Text>
+            </TouchableOpacity>
+          </View>
 
-        {/* 참가자 목록 자세히 보기 버튼 */}
-        <TouchableOpacity style={{ paddingHorizontal: 5 }}>
-          <Entypo
-            name="chevron-small-down"
-            size={35}
-            color="black"
-            onPress={() => {
-              setParticipantBox(true);
-            }}
-          />
-        </TouchableOpacity>
-      </View>
-    );
+          {/* 참가자 목록 자세히 보기 버튼 */}
+          <TouchableOpacity style={{ paddingHorizontal: 5 }}>
+            <Entypo
+              name="chevron-small-up"
+              size={35}
+              color="black"
+              onPress={() => {
+                setParticipantBox(false);
+              }}
+            />
+          </TouchableOpacity>
+        </View>
+      );
+    }
   };
 
   const goPost = () => {
