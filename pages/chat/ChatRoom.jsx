@@ -58,6 +58,9 @@ export default function ChatRoom({ navigation, route }) {
   const [admin, setAdmin] = useState(false);
   const [participantBox, setParticipantBox] = useState(false);
 
+  const [participantInfo, setParticipantInfo] = useState({});
+  const [adminInfo, setAdminInfo] = useState({});
+
   const [removeCheck, setRemoveCheck] = useState(false);
 
   const [postLastPress, setPostLastPress] = useState(false);
@@ -94,7 +97,10 @@ export default function ChatRoom({ navigation, route }) {
           }
         });
 
+        setParticipantInfo(room.current.participant);
+
         myid.current = await AsyncStorage.getItem('myid');
+        setAdminInfo(room.current.admin);
         if (myid.current == room.current.admin._id) {
           setAdmin(true);
         } else {
@@ -382,7 +388,13 @@ export default function ChatRoom({ navigation, route }) {
   return ready ? (
     room.current.post == null ? (
       <View style={styles.container}>
-        <HeaderChat navigation={navigation} name={userName} outRoom={outRoom} />
+        <HeaderChat
+          navigation={navigation}
+          name={userName}
+          outRoom={outRoom}
+          participantInfo={participantInfo}
+          adminInfo={adminInfo}
+        />
         <View style={styles.content}>
           {showParticipantBox()}
           <FlatList
@@ -408,7 +420,13 @@ export default function ChatRoom({ navigation, route }) {
       </View>
     ) : (
       <View style={styles.container}>
-        <HeaderChat navigation={navigation} name={userName} outRoom={outRoom} />
+        <HeaderChat
+          navigation={navigation}
+          name={userName}
+          outRoom={outRoom}
+          participantInfo={participantInfo}
+          adminInfo={adminInfo}
+        />
         <View style={styles.content}>
           {showParticipantBox()}
           <FlatList
