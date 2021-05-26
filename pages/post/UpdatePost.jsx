@@ -441,7 +441,7 @@ export default function UpdatePost({ navigation, route }) {
                 marginLeft: 20,
               }}
             >
-              *해시태그 작성시 검색에 용이합니다.
+              * 해시태그 작성시 검색에 용이합니다.
             </Text>
           </View>
           {showSelectedHashtag()}
