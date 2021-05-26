@@ -60,7 +60,7 @@ export default function CreatePostSecond({ navigation, route }) {
 
   return (
     <View style={styles.container}>
-      <HeaderBack navigation={navigation} title={'시간까지 설정하는 센스!'} />
+      <HeaderBack navigation={navigation} title={'날짜까지 설정하는 센스!'} />
       {/* 진행 현황 */}
       <ProgressBar
         progress={0.66}
