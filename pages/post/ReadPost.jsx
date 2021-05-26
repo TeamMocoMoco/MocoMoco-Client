@@ -442,7 +442,6 @@ const styles = StyleSheet.create({
   },
   desc: {
     color: '#000',
-    marginBottom: 10,
   },
   upbottom: {
     marginBottom: 15,
