@@ -59,7 +59,7 @@ export default function Verification({ navigation }) {
       <View style={styles.content}>
         {/* 타이틀 */}
         <Text style={styles.title}>
-          스터디 신청을 위해{'\n'}전화번호 인증이 필요합니다
+          회원가입 또는 로그인을 위해{'\n'}전화번호 인증이 필요합니다
         </Text>
 
         {/* 전화번호 입력란 */}
