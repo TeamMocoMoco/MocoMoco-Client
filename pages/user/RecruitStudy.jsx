@@ -45,7 +45,7 @@ export default function RecruitStudy({ navigation }) {
 
   return ready ? (
     <View style={styles.container}>
-      <HeaderBackTitle title={'모집 스터디'} navigation={navigation} />
+      <HeaderBackTitle title={'모집 내역'} navigation={navigation} />
       <View
         style={{
           flexDirection: 'row',
@@ -98,7 +98,7 @@ export default function RecruitStudy({ navigation }) {
     </View>
   ) : (
     <View style={styles.container}>
-      <HeaderBackTitle title={'모집 스터디'} navigation={navigation} />
+      <HeaderBackTitle title={'모집 내역'} navigation={navigation} />
 
       <View style={{ flexDirection: 'row', marginVertical: 10 }}>
         <StudyTabButton
