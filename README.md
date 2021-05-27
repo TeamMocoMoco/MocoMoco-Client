@@ -3,6 +3,8 @@
 
 
 ## ✨ Demo
+![KakaoTalk_20210528_001141137](https://user-images.githubusercontent.com/43000137/119851778-a8c60680-bf49-11eb-9f87-aa550b8e32ee.gif)
+![KakaoTalk_20210528_001141137_01](https://user-images.githubusercontent.com/43000137/119851953-d4e18780-bf49-11eb-98c2-56934d5f5559.gif)
 
 
 ## 🌱 모코모코 기획 의도
