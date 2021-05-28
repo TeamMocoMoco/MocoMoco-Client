@@ -123,12 +123,19 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     backgroundColor: '#FFF',
-    width: '95%',
     padding: 14,
     marginVertical: 9,
-    marginHorizontal: 5,
+    marginStart: 5,
+    marginEnd: 15,
     borderRadius: 5,
     elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
   },
   date: {
     color: getColor('defaultColor'),
