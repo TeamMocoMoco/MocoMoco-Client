@@ -41,11 +41,11 @@ const TabNavigator = () => {
 
           if (iconKind === 'SimpleLineIcons') {
             return (
-              <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+              <View style={styles.icon}>
                 <SimpleLineIcons
                   name={iconName}
                   color={focused ? getColor('defaultColor') : '#CBCBCB'}
-                  size={28}
+                  size={24}
                 />
                 <Text
                   style={[
@@ -61,7 +61,7 @@ const TabNavigator = () => {
             );
           } else if (iconKind === 'Ionicons') {
             return (
-              <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+              <View style={styles.icon}>
                 <Ionicons
                   name={iconName}
                   color={focused ? getColor('defaultColor') : '#CBCBCB'}
@@ -102,6 +102,11 @@ const TabNavigator = () => {
 export default TabNavigator;
 
 const styles = StyleSheet.create({
+  icon: {
+    width: 60,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   label: {
     fontSize: 10,
     marginTop: 5,
