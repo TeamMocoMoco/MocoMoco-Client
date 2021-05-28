@@ -132,6 +132,9 @@ export async function getMyRooms() {
       error = error.substr(7);
     }
 
+    await SecureStore.deleteItemAsync('usertoken');
+    await AsyncStorage.clear();
+
     Alert.alert(error);
   }
 }
