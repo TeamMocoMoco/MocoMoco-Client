@@ -1,6 +1,10 @@
 # 🎊 Welcome to MocoMoco-Client
 ![모코모코-유튜브용-썸네일](https://user-images.githubusercontent.com/43000137/119843714-c5127500-bf42-11eb-8e8e-9a674b48b777.png)
 
+<b>함께하는 스터디 어플, 모코모코</b>🌏<br/>
+
+모코모코(MocoMoco)는 함께 스터디 또는 프로젝트 등을 하면서 성장할<br/><br/>
+기획자, 개발자, 디자이너 동료들을 찾을 수 있는 어플리케이션입니다✨
 <hr>
 
 ## ✨ Demo
