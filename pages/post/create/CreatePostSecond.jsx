@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import {
+  Platform,
   StyleSheet,
   Text,
   TextInput,
@@ -11,7 +12,7 @@ import {
 import moment from 'moment';
 
 import { ProgressBar, Colors } from 'react-native-paper';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import RNDateTimePicker from '@react-native-community/datetimepicker';
 
 import { HeaderBack } from '../../../components/header';
 import { FullButton } from '../../../components/button';
@@ -116,12 +117,15 @@ export default function CreatePostSecond({ navigation, route }) {
         </View>
 
         {showStartPicker && !showEndPicker && (
-          <DateTimePicker
+          <RNDateTimePicker
             testID="dateTimePicker"
             value={startDate}
             minimumDate={new Date()}
             mode={'date'}
-            display="default"
+            display={Platform.select({
+              android: 'calendar',
+              ios: 'inline',
+            })}
             onChange={(event, selectedDate) => {
               setStartDate(selectedDate || startDate);
               setShowStartPicker(false);
@@ -131,12 +135,15 @@ export default function CreatePostSecond({ navigation, route }) {
         )}
 
         {!showStartPicker && showEndPicker && (
-          <DateTimePicker
+          <RNDateTimePicker
             testID="dateTimePicker"
             value={dueDate}
             minimumDate={startDate}
             mode={'date'}
-            display="default"
+            display={Platform.select({
+              android: 'calendar',
+              ios: 'inline',
+            })}
             onChange={(event, selectedDate) => {
               setDueDate(selectedDate || dueDate);
               setShowStartPicker(false);

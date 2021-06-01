@@ -1,6 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 import { Entypo, Ionicons } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker';
@@ -134,19 +140,37 @@ export default function CreatePostFirst({ navigation }) {
           <View style={{ flex: 2, marginEnd: 20 }}>
             <Text style={styles.label}>모집 분류</Text>
           </View>
-          <View style={styles.dropdownBox}>
-            <Picker
-              mode="dropdown"
-              style={styles.picker}
-              itemStyle={styles.pickerItem}
-              selectedValue={category}
-              onValueChange={(value) => setCategory(value)}
-            >
-              {categoryList.map((item, i) => {
-                return <Picker.Item label={item} value={item} key={i} />;
-              })}
-            </Picker>
-          </View>
+
+          {Platform.select({
+            ios: (
+              <View style={styles.iosPicker}>
+                <Picker
+                  style={styles.picker}
+                  itemStyle={{ fontSize: 14 }}
+                  selectedValue={category}
+                  onValueChange={(value) => setCategory(value)}
+                >
+                  {categoryList.map((item, i) => {
+                    return <Picker.Item label={item} value={item} key={i} />;
+                  })}
+                </Picker>
+              </View>
+            ),
+            android: (
+              <View style={styles.androidPicker}>
+                <Picker
+                  mode="dropdown"
+                  style={styles.picker}
+                  selectedValue={category}
+                  onValueChange={(value) => setCategory(value)}
+                >
+                  {categoryList.map((item, i) => {
+                    return <Picker.Item label={item} value={item} key={i} />;
+                  })}
+                </Picker>
+              </View>
+            ),
+          })}
         </View>
 
         {/* 모집 인원 */}
@@ -225,22 +249,13 @@ const styles = StyleSheet.create({
     marginBottom: '5%',
     paddingHorizontal: 20,
   },
-  picker: {
-    backgroundColor: '#FFF0E0',
-    flex: 1,
-    minHeight: 28,
-  },
-  pickerItem: {
-    color: 'red',
-    height: 44,
-    fontSize: 20,
-  },
   catepersonBox: {
     flexDirection: 'row',
     marginBottom: 20,
     alignItems: 'center',
   },
-  dropdownBox: {
+
+  androidPicker: {
     flex: 5,
     paddingVertical: 10,
     paddingHorizontal: 20,
@@ -248,6 +263,13 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#CBCBCB',
   },
+  iosPicker: {
+    flex: 5,
+  },
+  picker: {
+    minHeight: 28,
+  },
+
   buttonBox: {
     flex: 5,
     flexDirection: 'row',
