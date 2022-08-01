@@ -67,7 +67,7 @@ export default function Verification({ navigation }) {
           <View style={styles.inputContainer}>
             <TextInput
               maxLength={11}
-              placeholder={'01020021004'}
+              placeholder={'01012345678'}
               value={phone}
               onChangeText={(text) => {
                 setPhone(text);
