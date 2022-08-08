@@ -49,6 +49,12 @@ export default function SearchMap({ navigation }) {
 
   const [markerlatitude, setMarkerlatitude] = useState('');
   const [markerlongitude, setMarkerlongitude] = useState('');
+
+  const [currentRegion, setCurrentRegion] = useState({
+    latitude: undefined,
+    longitude: undefined,
+  });
+
   useEffect(() => {
     setTimeout(async () => {
       await download(mapRegion);
@@ -102,8 +108,26 @@ export default function SearchMap({ navigation }) {
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LONGITUDE_DELTA,
       });
+      setCurrentRegion({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      });
     }
   });
+
+  const showCurrentRegionPin = () => {
+    if (currentRegion.latitude !== undefined) {
+      return (
+        <Marker
+          coordinate={{
+            latitude: currentRegion.latitude,
+            longitude: currentRegion.longitude,
+          }}
+          pinColor={'red'}
+        />
+      );
+    }
+  };
 
   return ready ? (
     <View style={styles.container}>
@@ -120,8 +144,8 @@ export default function SearchMap({ navigation }) {
             return (
               <Marker
                 coordinate={{
-                  latitude: post.location[0],
-                  longitude: post.location[1],
+                  latitude: mapRegion.location[0],
+                  longitude: mapRegion.location[1],
                 }}
                 onPress={() => {
                   pannelRef.current.show();
@@ -133,6 +157,9 @@ export default function SearchMap({ navigation }) {
               />
             );
           })}
+
+          {/* 현재 내 위치 핀 */}
+          {showCurrentRegionPin()}
         </MapView>
 
         {/* 슬라이딩 패널 */}
