@@ -115,18 +115,25 @@ export default function SearchMap({ navigation }) {
     }
   });
 
+  // const showCurrentRegionPin = () => {
+  //   if (currentRegion.latitude !== undefined) {
+  //     return (
+  //       <Marker
+  //         coordinate={{
+  //           latitude: currentRegion.latitude,
+  //           longitude: currentRegion.longitude,
+  //         }}
+  //         pinColor={'red'}
+  //       />
+  //     );
+  //   }
+  // };
+
   const showCurrentRegionPin = () => {
     if (currentRegion.latitude !== undefined) {
-      return (
-        <Marker
-          coordinate={{
-            latitude: currentRegion.latitude,
-            longitude: currentRegion.longitude,
-          }}
-          pinColor={'red'}
-        />
-      );
+      return true;
     }
+    return false;
   };
 
   return ready ? (
@@ -159,7 +166,17 @@ export default function SearchMap({ navigation }) {
           })}
 
           {/* 현재 내 위치 핀 */}
-          {showCurrentRegionPin()}
+          {showCurrentRegionPin ? (
+            <Marker
+              coordinate={{
+                latitude: currentRegion.latitude,
+                longitude: currentRegion.longitude,
+              }}
+              pinColor={'red'}
+            />
+          ) : (
+            <></>
+          )}
         </MapView>
 
         {/* 슬라이딩 패널 */}
